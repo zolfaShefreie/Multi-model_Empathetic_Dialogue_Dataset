@@ -160,5 +160,5 @@ cython_debug/
 .idea/
 
 # project folders
-.raw_dataset/
-.pretrained_models/
+raw_dataset/
+pretrained_models/
