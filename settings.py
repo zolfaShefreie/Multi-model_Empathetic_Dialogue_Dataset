@@ -7,3 +7,4 @@ environ.Env.read_env(env_path)
 
 
 RAW_DATASET_PATH = env("RAW_DATASET_PATH", default="./raw_dataset")
+PREFIX_CLASSIFIER_DIR = env("PREFIX_CLASSIFIER_DIR", default="./")
