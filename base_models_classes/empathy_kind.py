@@ -1,7 +1,11 @@
-from transformers import RobertaModel
+from transformers import RobertaModel, RobertaTokenizer
 import torch
 import lightning.pytorch as pl
 import torchmetrics
+
+from utils import model_utils
+from utils import dataset_transforms
+from settings import PREFIX_CLASSIFIER_DIR
 
 
 class EmpathyKindRobertaModel(pl.LightningModule):
@@ -59,3 +63,42 @@ class EmpathyKindRobertaModel(pl.LightningModule):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-5)
         return optimizer
 
+
+class EmpathyKindClassifier(model_utils.BaseDeployedModel):
+
+    def _get_checkpoint_path(self) -> str:
+        """
+        :return: path of model checkpoint
+        """
+        return f"{PREFIX_CLASSIFIER_DIR}/empathy_kind_classifier.ckpt"
+
+    def _get_model_class(self):
+        """
+        :return: model class
+        """
+        return EmpathyKindRobertaModel
+
+    def _get_data_pre_process_pipeline(self) -> dataset_transforms.Pipeline:
+        """
+        :return: a pipeline to preprocess input data
+        """
+        return dataset_transforms.Pipeline([
+            dataset_transforms.TextCleaner(have_label=False),
+            dataset_transforms.Tokenizer(tokenizer=RobertaTokenizer.from_pretrained("roberta-base"),
+                                         have_label=False),
+            dataset_transforms.ToTensor(),
+            dataset_transforms.AddBatchDimension(),
+            dataset_transforms.ConvertInputToDict(dict_meta_data={
+                'ids': 0,
+                'mask': 1,
+                'token_type_ids': 2
+            })
+        ])
+
+    def _get_result_after_process_pipeline(self) -> dataset_transforms.Pipeline:
+        """
+        :return: a pipeline to apply
+        """
+        return dataset_transforms.Pipeline([
+            torch.nn.functional.sigmoid
+        ])
