@@ -2,6 +2,17 @@ import numpy as np
 import torch
 
 
+class Pipeline:
+
+    def __int__(self, functions: list):
+        self.functions = functions
+
+    def __call__(self, data):
+        for func in self.functions:
+            data = func(data)
+        return data
+
+
 class TextCleaner:
     PUNC = '''!()-[]{.};:'"\,<>/?@#$%^&*_~`|’“”…—–'''
 
