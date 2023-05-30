@@ -4,7 +4,7 @@ import torch
 
 class Pipeline:
 
-    def __int__(self, functions: list):
+    def __init__(self, functions: list):
         self.functions = functions
 
     def __call__(self, data):
@@ -151,3 +151,30 @@ class ToTensor:
 
     def __call__(self, sample):
         return tuple(torch.from_numpy(np.array(each)) for each in sample)
+
+
+class AddBatchDimension:
+    """
+    add batch dimension to one sample
+    """
+    def __call__(self, sample):
+        return [torch.unsqueeze(x, 0) for x in sample]
+
+
+class ConvertInputToDict:
+
+    def __init__(self, dict_meta_data: dict):
+        """
+
+        :param dict_meta_data: meta data about how the output must be look like
+         (key, index in sample)
+        """
+        self.dict_meta_data = dict_meta_data
+
+    def __call__(self, sample):
+        """
+
+        :param sample:
+        :return:
+        """
+        return {key: sample[index] for key, index in self.dict_meta_data.items()}
