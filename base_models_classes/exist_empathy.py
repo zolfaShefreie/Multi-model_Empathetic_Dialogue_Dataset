@@ -69,3 +69,48 @@ class EmpathyDetectionRobertaModel(pl.LightningModule):
         result = self(ids, mask, token_type_ids)
         return torch.nn.functional.sigmoid(result)
 
+
+class ExistEmpathyClassifier(model_utils.BaseDeployedModel):
+
+    def _get_checkpoint_path(self) -> str:
+        """
+        :return: path of model checkpoint
+        """
+        return f"{PREFIX_CLASSIFIER_DIR}/exist_empathy_classifier.ckpt"
+
+    def _get_model_class(self):
+        """
+        :return: model class
+        """
+        return EmpathyDetectionRobertaModel
+
+    def _get_data_pre_process_pipeline(self) -> dataset_transforms.Pipeline:
+        """
+        :return: a pipeline to preprocess input data
+        """
+        return dataset_transforms.Pipeline([dataset_transforms.TextCleaner(have_label=False),
+                                            dataset_transforms.ConversationFormatter(have_label=False),
+                                            dataset_transforms.Tokenizer(tokenizer=RobertaTokenizer.from_pretrained("roberta-base"),
+                                                                         new_special_tokens={
+                                                                             'additional_special_tokens': [dataset_transforms.ConversationFormatter.SPECIAL_TOKEN_START_UTTERANCE,
+                                                                                                           dataset_transforms.ConversationFormatter.SPECIAL_TOKEN_END_UTTERANCE],
+                                                                             'pad_token': '[PAD]'},
+                                                                         max_len=512,
+                                                                         have_label=False),
+                                            dataset_transforms.ToTensor(),
+                                            dataset_transforms.AddBatchDimension(),
+                                            dataset_transforms.ConvertInputToDict({
+                                                'ids': 0,
+                                                'mask': 1,
+                                                'token_type_ids': 2
+                                            })
+                                            ])
+
+    def _get_result_after_process_pipeline(self) -> dataset_transforms.Pipeline:
+        """
+        :return: a pipeline to apply
+        """
+        return dataset_transforms.Pipeline([
+            torch.nn.functional.sigmoid
+            #TODO thershold 0 or 1
+        ])

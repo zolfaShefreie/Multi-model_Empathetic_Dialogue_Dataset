@@ -101,4 +101,5 @@ class EmpathyKindClassifier(model_utils.BaseDeployedModel):
         """
         return dataset_transforms.Pipeline([
             torch.nn.functional.sigmoid
+            # TODO return 0, 1, 2
         ])
