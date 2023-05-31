@@ -30,6 +30,7 @@ class BaseDeployedModel(ABC):
         self.model = self.model_class.load_from_checkpoint(self._get_checkpoint_path(),
                                                            map_location=torch.device('cuda' if torch.cuda.is_available()
                                                                                      else 'cpu'))
+        self.model.eval()
 
     def predict(self, data):
         """
@@ -37,7 +38,7 @@ class BaseDeployedModel(ABC):
         :return:
         """
         processed_data = self.data_pre_process_pipeline(data)
-        model_output = self.model(processed_data)
+        model_output = self.model(**processed_data) if isinstance(processed_data, dict) else self.model(processed_data)
         return self.result_after_process_pipeline(model_output)
 
     def __call__(self, data):

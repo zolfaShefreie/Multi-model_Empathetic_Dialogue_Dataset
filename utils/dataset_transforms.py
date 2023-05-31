@@ -47,10 +47,12 @@ class TextCleaner:
         :param sample:
         :return:
         """
-        texts = sample[0][0] if self.have_label else sample
+        texts = sample[0][0] if self.have_label else sample[0]
 
         # value of each (row, col) can be list type or str type
-        cleaned_result = self._clean_list_of_texts(texts) if isinstance(texts, list) else self._clean_single_text(texts)
+        cleaned_result = self._clean_list_of_texts(texts) if isinstance(texts, list) or isinstance(texts,
+                                                                                                   np.ndarray) else self._clean_single_text(
+            texts)
 
         if self.have_label:
             return np.array([cleaned_result]), sample[-1]
@@ -106,18 +108,24 @@ class ConversationFormatter:
     SPECIAL_TOKEN_START_UTTERANCE = "<BOU>"
     SPECIAL_TOKEN_END_UTTERANCE = "<EOU>"
 
+    def __init__(self, have_label=True):
+        self.have_label = have_label
+
     def __call__(self, sample):
         """
         :param sample:
         :return:
         """
-        texts, target = sample
-        texts = texts[0]
+        texts = sample[0] if self.have_label else sample
 
         conversation = str()
         for text in texts:
             conversation += f"{self.SPECIAL_TOKEN_START_UTTERANCE} {text} {self.SPECIAL_TOKEN_END_UTTERANCE} "
-        return np.array([conversation]), target
+
+        if self.have_label:
+            return np.array([conversation]), sample[-1]
+        else:
+            return np.array([conversation])
 
 
 class OneHotLabel:
@@ -157,6 +165,7 @@ class AddBatchDimension:
     """
     add batch dimension to one sample
     """
+
     def __call__(self, sample):
         return [torch.unsqueeze(x, 0) for x in sample]
 
