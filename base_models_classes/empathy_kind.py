@@ -4,7 +4,7 @@ import lightning.pytorch as pl
 import torchmetrics
 
 from utils import model_utils
-from utils import dataset_transforms
+from utils import util_transforms
 from settings import PREFIX_CLASSIFIER_DIR
 
 
@@ -78,28 +78,29 @@ class EmpathyKindClassifier(model_utils.BaseDeployedModel):
         """
         return EmpathyKindRobertaModel
 
-    def _get_data_pre_process_pipeline(self) -> dataset_transforms.Pipeline:
+    def _get_data_pre_process_pipeline(self) -> util_transforms.Pipeline:
         """
         :return: a pipeline to preprocess input data
         """
-        return dataset_transforms.Pipeline([
-            dataset_transforms.TextCleaner(have_label=False),
-            dataset_transforms.Tokenizer(tokenizer=RobertaTokenizer.from_pretrained("roberta-base"),
-                                         have_label=False),
-            dataset_transforms.ToTensor(),
-            dataset_transforms.AddBatchDimension(),
-            dataset_transforms.ConvertInputToDict(dict_meta_data={
+        return util_transforms.Pipeline([
+            util_transforms.TextCleaner(have_label=False),
+            util_transforms.Tokenizer(tokenizer=RobertaTokenizer.from_pretrained("roberta-base"),
+                                      have_label=False),
+            util_transforms.ToTensor(),
+            util_transforms.AddBatchDimension(),
+            util_transforms.ConvertInputToDict(dict_meta_data={
                 'ids': 0,
                 'mask': 1,
                 'token_type_ids': 2
             })
         ])
 
-    def _get_result_after_process_pipeline(self) -> dataset_transforms.Pipeline:
+    def _get_result_after_process_pipeline(self) -> util_transforms.Pipeline:
         """
         :return: a pipeline to apply
         """
-        return dataset_transforms.Pipeline([
-            torch.nn.functional.sigmoid
-            # TODO return 0, 1, 2
+        return util_transforms.Pipeline([
+            torch.nn.functional.sigmoid,
+            util_transforms.DelBatchDimension(),
+            util_transforms.IntegerConverterWithIndex()
         ])
