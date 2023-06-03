@@ -66,6 +66,10 @@ class EmpathyKindRobertaModel(pl.LightningModule):
 
 class EmpathyKindClassifier(model_utils.BaseDeployedModel):
 
+    def __init__(self, have_batch_d=True):
+        super().__init__()
+        self.have_batch_d = have_batch_d
+
     def _get_checkpoint_path(self) -> str:
         """
         :return: path of model checkpoint
@@ -82,25 +86,34 @@ class EmpathyKindClassifier(model_utils.BaseDeployedModel):
         """
         :return: a pipeline to preprocess input data
         """
-        return util_transforms.Pipeline([
+        process = [
             util_transforms.TextCleaner(have_label=False),
             util_transforms.Tokenizer(tokenizer=RobertaTokenizer.from_pretrained("roberta-base"),
                                       have_label=False),
             util_transforms.ToTensor(),
-            util_transforms.AddBatchDimension(),
-            util_transforms.ConvertInputToDict(dict_meta_data={
+        ]
+
+        if not self.have_batch_d:
+            process.append(util_transforms.AddBatchDimension())
+
+        process.append(util_transforms.ConvertInputToDict(dict_meta_data={
                 'ids': 0,
                 'mask': 1,
                 'token_type_ids': 2
-            })
-        ])
+            }))
+
+        return util_transforms.Pipeline(process)
 
     def _get_result_after_process_pipeline(self) -> util_transforms.Pipeline:
         """
         :return: a pipeline to apply
         """
-        return util_transforms.Pipeline([
+        process = [
             torch.nn.functional.sigmoid,
-            util_transforms.DelBatchDimension(),
-            util_transforms.IntegerConverterWithIndex()
-        ])
+        ]
+        if not self.have_batch_d:
+            process.append(util_transforms.DelBatchDimension())
+
+        process.append(util_transforms.IntegerConverterWithIndex(dim=1 if self.have_batch_d else 0))
+
+        return util_transforms.Pipeline(process)

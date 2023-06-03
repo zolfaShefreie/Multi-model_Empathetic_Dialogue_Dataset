@@ -211,5 +211,8 @@ class IntegerConverterWithThreshold:
 
 class IntegerConverterWithIndex:
 
+    def __init__(self, dim=1):
+        self.dim = dim
+
     def __call__(self, model_output):
-        return torch.argmax(model_output, dim=0)
+        return torch.argmax(model_output, dim=self.dim)

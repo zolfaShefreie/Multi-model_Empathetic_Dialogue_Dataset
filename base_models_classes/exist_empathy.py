@@ -72,6 +72,10 @@ class EmpathyDetectionRobertaModel(pl.LightningModule):
 
 class ExistEmpathyClassifier(model_utils.BaseDeployedModel):
 
+    def __init__(self, have_batch_d=True):
+        super().__init__()
+        self.have_batch_d = have_batch_d
+
     def _get_checkpoint_path(self) -> str:
         """
         :return: path of model checkpoint
@@ -88,30 +92,37 @@ class ExistEmpathyClassifier(model_utils.BaseDeployedModel):
         """
         :return: a pipeline to preprocess input data
         """
-        return util_transforms.Pipeline([util_transforms.TextCleaner(have_label=False),
-                                         util_transforms.ConversationFormatter(have_label=False),
-                                         util_transforms.Tokenizer(tokenizer=RobertaTokenizer.from_pretrained("roberta-base"),
-                                                                   new_special_tokens={
-                                                                       'additional_special_tokens': [util_transforms.ConversationFormatter.SPECIAL_TOKEN_START_UTTERANCE,
-                                                                                                     util_transforms.ConversationFormatter.SPECIAL_TOKEN_END_UTTERANCE],
-                                                                       'pad_token': '[PAD]'},
-                                                                   max_len=512,
-                                                                   have_label=False),
-                                         util_transforms.ToTensor(),
-                                         util_transforms.AddBatchDimension(),
-                                         util_transforms.ConvertInputToDict({
+        process = [
+            util_transforms.TextCleaner(have_label=False),
+            util_transforms.ConversationFormatter(have_label=False),
+            util_transforms.Tokenizer(tokenizer=RobertaTokenizer.from_pretrained("roberta-base"),
+                                      new_special_tokens={
+                                          'additional_special_tokens': [
+                                              util_transforms.ConversationFormatter.SPECIAL_TOKEN_START_UTTERANCE,
+                                              util_transforms.ConversationFormatter.SPECIAL_TOKEN_END_UTTERANCE],
+                                          'pad_token': '[PAD]'},
+                                      max_len=512,
+                                      have_label=False),
+            util_transforms.ToTensor(),
+        ]
+
+        if not self.have_batch_d:
+            process.append(util_transforms.AddBatchDimension())
+        process.append(util_transforms.ConvertInputToDict({
                                              'ids': 0,
                                              'mask': 1,
                                              'token_type_ids': 2
-                                            })
-                                         ])
+                                            }))
+        return util_transforms.Pipeline(process)
 
     def _get_result_after_process_pipeline(self) -> util_transforms.Pipeline:
         """
         :return: a pipeline to apply
         """
-        return util_transforms.Pipeline([
+        process = [
             torch.nn.functional.sigmoid,
-            util_transforms.DelBatchDimension(),
-            util_transforms.IntegerConverterWithThreshold(threshold=0.5)
-        ])
+        ]
+        if not self.have_batch_d:
+            process.append(util_transforms.DelBatchDimension())
+        process.append(util_transforms.IntegerConverterWithThreshold(threshold=0.5))
+        return util_transforms.Pipeline(process)
