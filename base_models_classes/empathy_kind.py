@@ -2,10 +2,17 @@ from transformers import RobertaModel, RobertaTokenizer
 import torch
 import lightning.pytorch as pl
 import torchmetrics
+import enum
 
 from utils import model_utils
 from utils import util_transforms
 from settings import PREFIX_CLASSIFIER_DIR
+
+
+class EmpathyKindEnum(enum):
+    NONE = 0
+    SEEKING = 1
+    PROVIDING = 2
 
 
 class EmpathyKindRobertaModel(pl.LightningModule):
@@ -113,7 +120,6 @@ class EmpathyKindClassifier(model_utils.BaseDeployedModel):
         ]
         if not self.have_batch_d:
             process.append(util_transforms.DelBatchDimension())
-
         process.append(util_transforms.IntegerConverterWithIndex(dim=1 if self.have_batch_d else 0))
 
         return util_transforms.Pipeline(process)
