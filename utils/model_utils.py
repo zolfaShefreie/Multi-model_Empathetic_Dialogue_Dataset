@@ -7,8 +7,8 @@ import numpy as np
 
 
 class BaseDataset(Dataset):
-    def __init__(self, data: pd.DataFrame, pipeline_transforms=None):
-        self.x = data.to_numpy()
+    def __init__(self, data, pipeline_transforms=None):
+        self.x = data
         self.n_sample = len(data)
         self.pipeline_transforms = pipeline_transforms
 
