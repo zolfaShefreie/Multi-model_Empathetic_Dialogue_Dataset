@@ -206,8 +206,7 @@ class IntegerConverterWithThreshold:
         self.threshold = threshold
 
     def __call__(self, model_output):
-        # todo: add convert to numpy
-        return (model_output > self.threshold).float()
+        return (model_output > self.threshold).float().numpy()
 
 
 class IntegerConverterWithIndex:
@@ -216,5 +215,4 @@ class IntegerConverterWithIndex:
         self.dim = dim
 
     def __call__(self, model_output):
-        # todo: add convert to numpy
-        return torch.argmax(model_output, dim=self.dim)
+        return torch.argmax(model_output, dim=self.dim).numpy()
