@@ -12,21 +12,6 @@ class EmpathyFunctions:
     MAX_BATCH_SIZE = 50
 
     @classmethod
-    def _get_result(cls, input_data, module) -> np.ndarray:
-        """
-        define a dataloader and get results to decrease memory usage
-        :param input_data: module input data
-        :param module: can be EMPATHY_KIND_MODULE or EMPATHY_EXIST_MODULE
-        :return: result of apply module on input data
-        """
-        results = list()
-        dataloader = DataLoader(input_data, batch_size=cls.MAX_BATCH_SIZE)
-        iter_data_loader = iter(dataloader)
-        for data in iter_data_loader:
-            results += module(data)
-        return np.array(results)
-
-    @classmethod
     def get_empathy_kind(cls,
                          data: pd.DataFrame,
                          utter_key_name='utterance',
@@ -39,7 +24,7 @@ class EmpathyFunctions:
         :return: dataframe contains result col
         """
         utterances = data[[utter_key_name]].to_numpy()
-        data[result_key_name] = cls._get_result(input_data=utterances, module=cls.EMPATHY_KIND_MODULE)
+        data[result_key_name] = cls.EMPATHY_KIND_MODULE(utterances)
         return data
 
     @classmethod
@@ -47,18 +32,21 @@ class EmpathyFunctions:
                           data: pd.DataFrame,
                           utter_key_name='utterance',
                           conv_id_key_name='conv_id',
+                          utter_id_key_name='utterance_idx',
                           result_key_name='is_empathy') -> pd.DataFrame:
         """
         apply EMPATHY_EXIST_MODULE
         :param data:
         :param utter_key_name: name of col that have utterance values
         :param conv_id_key_name: name of col that have conv_id values
+        :param utter_id_key_name:
         :param result_key_name: name of col that gonna add as result of module
         :return: dataframe contains result col
         """
-        conv_df = data.groupby(conv_id_key_name)[utter_key_name].apply(list).reset_index()
+        conv_df = data.sort_values(by=[conv_id_key_name, utter_id_key_name])
+        conv_df = conv_df.groupby(conv_id_key_name)[utter_key_name].apply(list).reset_index()
         conversations = conv_df[[utter_key_name]].to_numpy()
-        conv_df[result_key_name] = cls._get_result(input_data=conversations, module=cls.EMPATHY_EXIST_MODULE)
+        conv_df[result_key_name] = cls.EMPATHY_EXIST_MODULE(conversations)
         return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
 
     @classmethod

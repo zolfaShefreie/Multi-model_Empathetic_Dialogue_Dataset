@@ -65,16 +65,15 @@ class EmpathyDetectionRobertaModel(pl.LightningModule):
         return optimizer
 
     def predict_step(self, batch, batch_idx, dataloader_idx=0):
-        ids, mask, token_type_ids = batch
-        result = self(ids, mask, token_type_ids)
+        result = self(**batch)
         return torch.nn.functional.sigmoid(result)
 
 
 class ExistEmpathyClassifier(model_utils.BaseDeployedModel):
 
     def __init__(self, have_batch_d=True):
-        super().__init__()
         self.have_batch_d = have_batch_d
+        super().__init__()
 
     def _get_checkpoint_path(self) -> str:
         """

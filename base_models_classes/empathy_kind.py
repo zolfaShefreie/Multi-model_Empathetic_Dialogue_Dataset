@@ -9,7 +9,7 @@ from utils import util_transforms
 from settings import PREFIX_CLASSIFIER_DIR
 
 
-class EmpathyKindEnum(enum):
+class EmpathyKindEnum(enum.Enum):
     NONE = 0
     SEEKING = 1
     PROVIDING = 2
@@ -62,8 +62,7 @@ class EmpathyKindRobertaModel(pl.LightningModule):
         return test_loss
 
     def predict_step(self, batch, batch_idx, dataloader_idx=0):
-        ids, mask, token_type_ids = batch
-        result = self(ids, mask, token_type_ids)
+        result = self(**batch)
         return torch.nn.functional.sigmoid(result)
 
     def configure_optimizers(self):
@@ -74,8 +73,8 @@ class EmpathyKindRobertaModel(pl.LightningModule):
 class EmpathyKindClassifier(model_utils.BaseDeployedModel):
 
     def __init__(self, have_batch_d=True):
-        super().__init__()
         self.have_batch_d = have_batch_d
+        super().__init__()
 
     def _get_checkpoint_path(self) -> str:
         """
