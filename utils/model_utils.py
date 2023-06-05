@@ -62,6 +62,7 @@ class BaseDeployedModel(ABC):
         dataset = BaseDataset(data, pipeline_transforms=self.data_pre_process_pipeline)
         dataloader = DataLoader(dataset, batch_size=self.MAX_BATCH_SIZE)
         y_hat = self.trainer.predict(self.model, dataloader)
+        y_hat = [output for batch in y_hat for output in batch]
         return self.result_after_process_pipeline(torch.stack(y_hat, dim=0))
 
     def _predict_single_data(self, data):

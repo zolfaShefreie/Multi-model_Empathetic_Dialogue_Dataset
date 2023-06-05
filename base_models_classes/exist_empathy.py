@@ -64,9 +64,8 @@ class EmpathyDetectionRobertaModel(pl.LightningModule):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-5)
         return optimizer
 
-    def predict_step(self, batch, batch_idx, dataloader_idx=0):
-        result = self(**batch)
-        return torch.nn.functional.sigmoid(result)
+    def predict_step(self, batch:dict, batch_idx, dataloader_idx=0):
+        return self(**batch)
 
 
 class ExistEmpathyClassifier(model_utils.BaseDeployedModel):

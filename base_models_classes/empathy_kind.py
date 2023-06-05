@@ -61,9 +61,8 @@ class EmpathyKindRobertaModel(pl.LightningModule):
                       on_step=True, on_epoch=True, prog_bar=True, logger=True, sync_dist=True)
         return test_loss
 
-    def predict_step(self, batch, batch_idx, dataloader_idx=0):
-        result = self(**batch)
-        return torch.nn.functional.sigmoid(result)
+    def predict_step(self, batch: dict, batch_idx, dataloader_idx=0):
+        return self(**batch)
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-5)
