@@ -64,7 +64,7 @@ class EmpathyFunctions:
                                conv_id_key_name='conv_id',
                                empathy_kind_key_name='empathy_kind',
                                empathy_seq_key_name='empathy_kind_seq',
-                               result_key_name='contain_empathy_seq'):
+                               result_key_name='contain_empathy_seq') -> pd.DataFrame:
         """
         check a sequence of empathy kind
         :param empathy_seq_key_name: it is gonna be new col that this func add it
@@ -88,6 +88,44 @@ class EmpathyFunctions:
         return conv_df[[conv_id_key_name, empathy_seq_key_name, result_key_name]].merge(data,
                                                                                         on=conv_id_key_name,
                                                                                         how='inner')
+
+    @classmethod
+    def add_all_empathy_cols(cls,
+                             data: pd.DataFrame,
+                             utter_key_name='utterance',
+                             utter_id_key_name='utterance_idx',
+                             conv_id_key_name='conv_id',
+                             empathy_kind_key_name='empathy_kind',
+                             empathy_seq_key_name='empathy_kind_seq',
+                             contain_empathy_key_name='contain_empathy_seq',
+                             is_empathy_key_name='is_empathy'):
+        """
+        :param data:
+        :param utter_key_name:
+        :param utter_id_key_name:
+        :param conv_id_key_name:
+        :param empathy_kind_key_name:
+        :param empathy_seq_key_name:
+        :param contain_empathy_key_name:
+        :param is_empathy_key_name:
+        :return:
+        """
+
+        data = cls.get_empathy_kind(data=data,
+                                    utter_key_name=utter_key_name,
+                                    result_key_name=empathy_kind_key_name)
+        data = cls.get_empathy_exist(data=data,
+                                     utter_key_name=utter_key_name,
+                                     conv_id_key_name=conv_id_key_name,
+                                     utter_id_key_name=utter_id_key_name,
+                                     result_key_name=is_empathy_key_name)
+        return cls.check_empathy_kind_seq(data=data,
+                                          utter_key_name=utter_key_name,
+                                          utter_id_key_name=utter_id_key_name,
+                                          conv_id_key_name=conv_id_key_name,
+                                          empathy_kind_key_name=empathy_kind_key_name,
+                                          empathy_seq_key_name=empathy_seq_key_name,
+                                          result_key_name=contain_empathy_key_name)
 
     @classmethod
     def segment_empathy_dialogue(cls,
