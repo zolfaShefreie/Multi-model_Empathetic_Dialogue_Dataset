@@ -2,14 +2,14 @@ import pandas as pd
 from torch.utils.data import DataLoader
 import numpy as np
 
-from base_models_classes.empathy_kind import EmpathyKindClassifier
+from base_models_classes.empathy_kind import EmpathyKindClassifier, EmpathyKindEnum
 from base_models_classes.exist_empathy import ExistEmpathyClassifier
 
 
 class EmpathyFunctions:
     EMPATHY_KIND_MODULE = EmpathyKindClassifier(have_batch_d=True)
     EMPATHY_EXIST_MODULE = ExistEmpathyClassifier(have_batch_d=True)
-    MAX_BATCH_SIZE = 50
+    EMPATHY_KIND_SEQUENCE = f".*(({EmpathyKindEnum.SEEKING.value}, )+({EmpathyKindEnum.NONE.value}, )*({EmpathyKindEnum.PROVIDING.value}(, )?)+)+.*"
 
     @classmethod
     def get_empathy_kind(cls,
@@ -50,20 +50,31 @@ class EmpathyFunctions:
         return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
 
     @classmethod
-    def detect(cls,
-               data: pd.DataFrame,
-               utter_key_name='utterance',
-               utter_id_key_name='utterance_idx',
-               conv_id_key_name='conv_id'):
+    def check_empathy_kind_seq(cls,
+                               data: pd.DataFrame,
+                               utter_key_name='utterance',
+                               utter_id_key_name='utterance_idx',
+                               conv_id_key_name='conv_id',
+                               empathy_kind_key_name='empathy_kind',
+                               result_key_name='empathy_kind_seq'):
         """
-
+        check a sequence of empathy kind
+        :param result_key_name:
+        :param empathy_kind_key_name:
         :param data: must be dataframe
         :param utter_key_name:
         :param utter_id_key_name:
         :param conv_id_key_name:
         :return:
         """
-        pass
+        if empathy_kind_key_name not in data.columns:
+            data = cls.get_empathy_kind(data, utter_key_name=utter_key_name, result_key_name=empathy_kind_key_name)
+
+        df_copy = data.sort_values(by=[conv_id_key_name, utter_id_key_name]).copy()
+        df_copy[empathy_kind_key_name] = df_copy[empathy_kind_key_name].apply(str)
+        conv_df = df_copy[[conv_id_key_name, empathy_kind_key_name]].groupby([conv_id_key_name])[empathy_kind_key_name].apply(', '.join).reset_index()
+        conv_df[result_key_name] = conv_df[empathy_kind_key_name].str.match(cls.EMPATHY_KIND_SEQUENCE)
+        return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
 
     @classmethod
     def segment_empathy_dialogue(cls,
