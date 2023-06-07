@@ -5,6 +5,8 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import numpy as np
 
+from utils.util_transforms import Pipeline, ConvertInputToDict, AddBatchDimension, DelBatchDimension
+
 
 class BaseDataset(Dataset):
     def __init__(self, data, pipeline_transforms=None):
@@ -24,27 +26,48 @@ class BaseDataset(Dataset):
 
 class BaseDeployedModel(ABC):
     MAX_BATCH_SIZE = 50
+    # todo: refactoring to delete have_batch_dimaination => در واقعه این باید پشتبانی بکنه از ترانسفومری که یدونه ای و نیاز به اضافه کردن دایمنشن داره یا نه
 
     @abstractmethod
     def _get_checkpoint_path(self) -> str:
+        """
+        :return: path of model checkpoint
+        """
         raise NotImplementedError
 
     @abstractmethod
     def _get_model_class(self):
+        """
+        :return: model class
+        """
         raise NotImplementedError
 
     @abstractmethod
-    def _get_data_pre_process_pipeline(self):
+    def _get_data_pre_process_list(self) -> list:
+        """"
+        :return: a list of process to apply to input data
+        """
         raise NotImplementedError
 
     @abstractmethod
-    def _get_result_after_process_pipeline(self):
+    def _get_result_after_process_list(self) -> list:
+        """
+        :return: a list of process to apply to model output
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_arg_index_model_input(self):
+        """
+        :return: kwargs format of model()
+        """
         raise NotImplementedError
 
     def __init__(self):
 
-        self.data_pre_process_pipeline = self._get_data_pre_process_pipeline()
-        self.result_after_process_pipeline = self._get_result_after_process_pipeline()
+        self.data_pre_process_list = self._get_data_pre_process_list()
+        self.result_after_process_list = self._get_result_after_process_list()
+        self.input_dict_format = self.get_arg_index_model_input()
 
         # load model
         self.trainer = pl.Trainer(accelerator='auto')
@@ -54,25 +77,46 @@ class BaseDeployedModel(ABC):
                                                                                      else 'cpu'))
         self.model.eval()
 
+    def _make_preprocess_pipeline(self, is_single=False):
+        """
+        :param is_single: a bool that shows data is a single sample or multisample
+        :return: pipeline
+        """
+        if is_single:
+            return Pipeline(self.data_pre_process_list +
+                            [AddBatchDimension(), ConvertInputToDict(dict_meta_data=self.input_dict_format)])
+
+        return Pipeline(self.data_pre_process_list + [ConvertInputToDict(dict_meta_data=self.input_dict_format)])
+
+    def _make_result_after_process_pipeline(self, is_single=False):
+        """
+            :param is_single: a bool that shows data is a single sample or multisample
+            :return: pipeline
+        """
+        if is_single:
+            return Pipeline(self.result_after_process_list + [DelBatchDimension(), ])
+
+        return Pipeline(self.result_after_process_list)
+
     def _predict_dataset(self, data):
         """
         :param data:
         :return:
         """
-        dataset = BaseDataset(data, pipeline_transforms=self.data_pre_process_pipeline)
+        dataset = BaseDataset(data, pipeline_transforms=self._make_preprocess_pipeline(is_single=False))
         dataloader = DataLoader(dataset, batch_size=self.MAX_BATCH_SIZE)
         y_hat = self.trainer.predict(self.model, dataloader)
         y_hat = [output for batch in y_hat for output in batch]
-        return self.result_after_process_pipeline(torch.stack(y_hat, dim=0))
+        return self._make_result_after_process_pipeline(is_single=False)(torch.stack(y_hat, dim=0))
 
     def _predict_single_data(self, data):
         """
         :param data:
         :return:
         """
-        processed_data = self.data_pre_process_pipeline(data)
+        processed_data = self._make_preprocess_pipeline(is_single=True)(data)
         model_output = self.model(**processed_data) if isinstance(processed_data, dict) else self.model(processed_data)
-        return self.result_after_process_pipeline(model_output)
+        return self._make_result_after_process_pipeline(is_single=True)(model_output)
 
     def predict(self, data, is_multi_data=True):
         """

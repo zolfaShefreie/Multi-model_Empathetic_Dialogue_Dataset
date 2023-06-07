@@ -70,10 +70,6 @@ class EmpathyDetectionRobertaModel(pl.LightningModule):
 
 class ExistEmpathyClassifier(model_utils.BaseDeployedModel):
 
-    def __init__(self, have_batch_d=True):
-        self.have_batch_d = have_batch_d
-        super().__init__()
-
     def _get_checkpoint_path(self) -> str:
         """
         :return: path of model checkpoint
@@ -86,11 +82,11 @@ class ExistEmpathyClassifier(model_utils.BaseDeployedModel):
         """
         return EmpathyDetectionRobertaModel
 
-    def _get_data_pre_process_pipeline(self) -> util_transforms.Pipeline:
+    def _get_data_pre_process_list(self) -> list:
         """
-        :return: a pipeline to preprocess input data
+        :return: a list of process to apply to input data
         """
-        process = [
+        return [
             util_transforms.TextCleaner(have_label=False),
             util_transforms.ConversationFormatter(have_label=False),
             util_transforms.Tokenizer(tokenizer=RobertaTokenizer.from_pretrained("roberta-base"),
@@ -104,23 +100,22 @@ class ExistEmpathyClassifier(model_utils.BaseDeployedModel):
             util_transforms.ToTensor(),
         ]
 
-        if not self.have_batch_d:
-            process.append(util_transforms.AddBatchDimension())
-        process.append(util_transforms.ConvertInputToDict({
-                                             'ids': 0,
-                                             'mask': 1,
-                                             'token_type_ids': 2
-                                            }))
-        return util_transforms.Pipeline(process)
-
-    def _get_result_after_process_pipeline(self) -> util_transforms.Pipeline:
+    def _get_result_after_process_list(self) -> list:
         """
-        :return: a pipeline to apply
+        :return: a list of process to apply to model output
         """
-        process = [
+        return [
             torch.nn.functional.sigmoid,
+            util_transforms.IntegerConverterWithThreshold(threshold=0.5)
         ]
-        if not self.have_batch_d:
-            process.append(util_transforms.DelBatchDimension())
-        process.append(util_transforms.IntegerConverterWithThreshold(threshold=0.5))
-        return util_transforms.Pipeline(process)
+
+    def get_arg_index_model_input(self):
+        """
+        :return: kwargs format of model()
+        """
+        return {
+            'ids': 0,
+            'mask': 1,
+            'token_type_ids': 2
+        }
+
