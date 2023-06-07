@@ -6,9 +6,16 @@ from base_models_classes.empathy_kind import EmpathyKindClassifier, EmpathyKindE
 from base_models_classes.exist_empathy import ExistEmpathyClassifier
 
 
+class DialogueFunctions:
+
+    @classmethod
+    def number_of_party(cls, df):
+        pass
+
+
 class EmpathyFunctions:
-    EMPATHY_KIND_MODULE = EmpathyKindClassifier(have_batch_d=True)
-    EMPATHY_EXIST_MODULE = ExistEmpathyClassifier(have_batch_d=True)
+    EMPATHY_KIND_MODULE = EmpathyKindClassifier()
+    EMPATHY_EXIST_MODULE = ExistEmpathyClassifier()
     EMPATHY_KIND_SEQUENCE = f".*(({EmpathyKindEnum.SEEKING.value}, )+({EmpathyKindEnum.NONE.value}, )*({EmpathyKindEnum.PROVIDING.value}(, )?)+)+.*"
 
     @classmethod
@@ -56,9 +63,11 @@ class EmpathyFunctions:
                                utter_id_key_name='utterance_idx',
                                conv_id_key_name='conv_id',
                                empathy_kind_key_name='empathy_kind',
-                               result_key_name='empathy_kind_seq'):
+                               empathy_seq_key_name='empathy_kind_seq',
+                               result_key_name='contain_empathy_seq'):
         """
         check a sequence of empathy kind
+        :param empathy_seq_key_name: it is gonna be new col that this func add it
         :param result_key_name:
         :param empathy_kind_key_name:
         :param data: must be dataframe
@@ -72,9 +81,13 @@ class EmpathyFunctions:
 
         df_copy = data.sort_values(by=[conv_id_key_name, utter_id_key_name]).copy()
         df_copy[empathy_kind_key_name] = df_copy[empathy_kind_key_name].apply(str)
-        conv_df = df_copy[[conv_id_key_name, empathy_kind_key_name]].groupby([conv_id_key_name])[empathy_kind_key_name].apply(', '.join).reset_index()
-        conv_df[result_key_name] = conv_df[empathy_kind_key_name].str.match(cls.EMPATHY_KIND_SEQUENCE)
-        return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
+        conv_df = df_copy[[conv_id_key_name, empathy_kind_key_name]].\
+            groupby([conv_id_key_name])[empathy_kind_key_name].apply(', '.join).reset_index().\
+            rename(columns={empathy_kind_key_name: empathy_seq_key_name})
+        conv_df[result_key_name] = conv_df[empathy_seq_key_name].str.match(cls.EMPATHY_KIND_SEQUENCE)
+        return conv_df[[conv_id_key_name, empathy_seq_key_name, result_key_name]].merge(data,
+                                                                                        on=conv_id_key_name,
+                                                                                        how='inner')
 
     @classmethod
     def segment_empathy_dialogue(cls,
@@ -83,4 +96,10 @@ class EmpathyFunctions:
                                  utter_id_key_name='utterance_idx',
                                  conv_id_key_name='conv_id',
                                  empathy_kind_key_name='empathy_kind'):
+        """:param
+        برای سگمنت دو تا چیز مهمه یکی اینکه باید بری نوع همدلی و یکی همگام کنی این دوستان عزیز رو با اشخاصی که طرف روبه رو عه
+        یعنی مکالمه از طرف یکی شروع میشه که جویای همدلیه و با یه فرد مقابل اولیه تموم میشه که همدلی رو تهیه میکنه یا کلا با شخص رو به رو واکنش همدلی نشون میده
+        اینو به این مدلی که همدلی وجود داره یا نه هم باید بدی که ببینی همدلی وجود داره یا نه چون ممکنه نسبت به فرد مقابل و داده هاش همدلی نشون نده
+        بعد یه تگ جدیدی میسازی که ببینی برای آیدی مکالمه جدید و ترتیب انجام گفتگو
+        """
         pass
