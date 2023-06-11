@@ -9,8 +9,44 @@ from base_models_classes.exist_empathy import ExistEmpathyClassifier
 class DialogueFunctions:
 
     @classmethod
-    def number_of_party(cls, df):
-        pass
+    def number_of_party(cls,
+                        data: pd.DataFrame,
+                        conv_id_key_name='conv_id',
+                        speaker_idx_key_name='speaker_idx',
+                        result_key_name='num_party'):
+        """
+        calculate number of parties on conversation
+        :param data:
+        :param conv_id_key_name:
+        :param speaker_idx_key_name:
+        :param result_key_name:
+        :return:
+        """
+        conv_df = data[[conv_id_key_name, speaker_idx_key_name]].groupby(conv_id_key_name)[speaker_idx_key_name].\
+            apply(set).apply(len).reset_index().rename({speaker_idx_key_name: result_key_name})
+        return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
+
+    @classmethod
+    def filter_two_party_dialogues(cls,
+                                   data: pd.DataFrame,
+                                   conv_id_key_name='conv_id',
+                                   speaker_idx_key_name='speaker_idx',
+                                   num_parties_key_name='num_party'):
+        """
+        get conversations with two parties
+        :param data:
+        :param conv_id_key_name:
+        :param speaker_idx_key_name:
+        :param num_parties_key_name:
+        :return: conversations with two parties as data dataframe
+        """
+        if num_parties_key_name not in data.columns:
+            data = cls.number_of_party(data,
+                                       conv_id_key_name=conv_id_key_name,
+                                       speaker_idx_key_name=speaker_idx_key_name,
+                                       result_key_name=num_parties_key_name)
+
+        return data[data[num_parties_key_name] == 2]
 
 
 class EmpathyFunctions:
