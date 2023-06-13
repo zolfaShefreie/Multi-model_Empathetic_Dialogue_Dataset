@@ -50,6 +50,9 @@ class DialogueFunctions:
 
 
 class EmpathyFunctions:
+    """
+    this class is considered the dialogues are two-party
+    """
     EMPATHY_KIND_MODULE = EmpathyKindClassifier()
     EMPATHY_EXIST_MODULE = ExistEmpathyClassifier()
     EMPATHY_KIND_SEQUENCE = f".*(({EmpathyKindEnum.SEEKING.value}, )+({EmpathyKindEnum.NONE.value}, )*({EmpathyKindEnum.PROVIDING.value}(, )?)+)+.*"
@@ -120,7 +123,7 @@ class EmpathyFunctions:
         conv_df = df_copy[[conv_id_key_name, empathy_kind_key_name]].\
             groupby([conv_id_key_name])[empathy_kind_key_name].apply(', '.join).reset_index().\
             rename(columns={empathy_kind_key_name: empathy_seq_key_name})
-        conv_df[result_key_name] = conv_df[empathy_seq_key_name].str.match(cls.EMPATHY_KIND_SEQUENCE)
+        conv_df[result_key_name] = conv_df[empathy_seq_key_name].str.match(cls.EMPATHY_KIND_SEQUENCE).apply(int)
         return conv_df[[conv_id_key_name, empathy_seq_key_name, result_key_name]].merge(data,
                                                                                         on=conv_id_key_name,
                                                                                         how='inner')
@@ -162,6 +165,80 @@ class EmpathyFunctions:
                                           empathy_kind_key_name=empathy_kind_key_name,
                                           empathy_seq_key_name=empathy_seq_key_name,
                                           result_key_name=contain_empathy_key_name)
+
+    @classmethod
+    def filter_empathetic_conversations(cls,
+                                        data: pd.DataFrame,
+                                        based_on='both',
+                                        contain_empathy_key_name='contain_empathy_seq',
+                                        is_empathy_key_name='is_empathy'):
+        """
+
+        :param data:
+        :param based_on: can be 'both', 'contain_empathy', 'is_empathy'
+        :param contain_empathy_key_name:
+        :param is_empathy_key_name:
+        :return:
+        """
+        if based_on == 'both':
+            return data[((data[contain_empathy_key_name] == 1) & (data[is_empathy_key_name] == 1))]
+        elif based_on == 'contain_empathy':
+            return data[data[contain_empathy_key_name] == 1]
+        elif based_on == 'is_empathy':
+            return data[data[is_empathy_key_name] == 1]
+
+        else:
+            raise Exception('invalid based_on ')
+
+    @classmethod
+    def get_empathetic_user(cls,
+                            data: pd.DataFrame,
+                            speaker_idx_key_name='speaker_idx',
+                            conv_id_key_name='conv_id',
+                            utter_idx_key_name='utterance_idx',
+                            empathy_kind_key_name='empathy_kind',
+                            result_key_name='empathetic_speaker'):
+        """
+        get the user has the most empathy providing in one dialogue
+        (this function is written for detect which user can be empathetic bot)
+        :param result_key_name:
+        :param data:
+        :param speaker_idx_key_name:
+        :param conv_id_key_name:
+        :param utter_idx_key_name:
+        :param empathy_kind_key_name:
+        :return:
+        """
+        conv_df = data[data[empathy_kind_key_name] == EmpathyKindEnum.PROVIDING.value].\
+            groupby([conv_id_key_name, speaker_idx_key_name, empathy_kind_key_name]).count().reset_index()
+        conv_df = conv_df.loc[conv_df.reset_index().groupby([conv_id_key_name])[utter_idx_key_name].idxmax()].\
+            rename(columns={speaker_idx_key_name: result_key_name})
+        return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
+
+    # @classmethod
+    # def get_empathy_role_speaker(cls,
+    #                              data: pd.DataFrame,
+    #                              speaker_idx_key_name='speaker_idx',
+    #                              conv_id_key_name='conv_id',
+    #                              utter_idx_key_name='utterance_idx',
+    #                              empathy_kind_key_name='empathy_kind',
+    #                              result_key_name='empathy_role'):
+    #     """
+    #     get empathy_role of speaker
+    #     (this function is written for detect which user can be empathetic bot and user)
+    #     :param result_key_name:
+    #     :param data:
+    #     :param speaker_idx_key_name:
+    #     :param conv_id_key_name:
+    #     :param utter_idx_key_name:
+    #     :param empathy_kind_key_name:
+    #     :return:
+    #     """
+    #     conv_df = data[data[empathy_kind_key_name] == EmpathyKindEnum.PROVIDING.value]. \
+    #         groupby([conv_id_key_name, speaker_idx_key_name, empathy_kind_key_name]).count().reset_index()
+    #     conv_df = conv_df.loc[conv_df.reset_index().groupby([conv_id_key_name])[utter_idx_key_name].idxmax()]. \
+    #         rename(columns={speaker_idx_key_name: result_key_name})
+    #     return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
 
     @classmethod
     def segment_empathy_dialogue(cls,
