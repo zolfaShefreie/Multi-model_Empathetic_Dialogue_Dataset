@@ -1,6 +1,7 @@
 import pandas as pd
 from torch.utils.data import DataLoader
 import numpy as np
+import re
 
 from base_models_classes.empathy_kind import EmpathyKindClassifier, EmpathyKindEnum
 from base_models_classes.exist_empathy import ExistEmpathyClassifier
@@ -56,6 +57,7 @@ class EmpathyFunctions:
     EMPATHY_KIND_MODULE = EmpathyKindClassifier()
     EMPATHY_EXIST_MODULE = ExistEmpathyClassifier()
     EMPATHY_KIND_SEQUENCE = f".*(({EmpathyKindEnum.SEEKING.value}, )+({EmpathyKindEnum.NONE.value}, )*({EmpathyKindEnum.PROVIDING.value}(, )?)+)+.*"
+    EMPATHY_KIND_SEGMENT_CONDITION = re.compile(f"(({EmpathyKindEnum.SEEKING.value})({EmpathyKindEnum.PROVIDING.value}))+")
 
     @classmethod
     def get_empathy_kind(cls,
@@ -240,17 +242,50 @@ class EmpathyFunctions:
     #         rename(columns={speaker_idx_key_name: result_key_name})
     #     return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
 
+
     @classmethod
     def segment_empathy_dialogue(cls,
-                                 data,
-                                 utter_key_name='utterance',
-                                 utter_id_key_name='utterance_idx',
+                                 data: pd.pandas,
                                  conv_id_key_name='conv_id',
-                                 empathy_kind_key_name='empathy_kind'):
-        """:param
-        برای سگمنت دو تا چیز مهمه یکی اینکه باید بری نوع همدلی و یکی همگام کنی این دوستان عزیز رو با اشخاصی که طرف روبه رو عه
-        یعنی مکالمه از طرف یکی شروع میشه که جویای همدلیه و با یه فرد مقابل اولیه تموم میشه که همدلی رو تهیه میکنه یا کلا با شخص رو به رو واکنش همدلی نشون میده
-        اینو به این مدلی که همدلی وجود داره یا نه هم باید بدی که ببینی همدلی وجود داره یا نه چون ممکنه نسبت به فرد مقابل و داده هاش همدلی نشون نده
-        بعد یه تگ جدیدی میسازی که ببینی برای آیدی مکالمه جدید و ترتیب انجام گفتگو
+                                 empathy_kind_key_name='empathy_kind',
+                                 new_conv_id_key_name='new_conv_id'):
         """
-        pass
+            برای سگمنت دو تا چیز مهمه یکی اینکه باید بری نوع همدلی و یکی همگام کنی این دوستان عزیز رو با اشخاصی که طرف روبه رو عه
+            یعنی مکالمه از طرف یکی شروع میشه که جویای همدلیه و با یه فرد مقابل اولیه تموم میشه که همدلی رو تهیه میکنه یا کلا با شخص رو به رو واکنش همدلی نشون میده
+            اینو به این مدلی که همدلی وجود داره یا نه هم باید بدی که ببینی همدلی وجود داره یا نه چون ممکنه نسبت به فرد مقابل و داده هاش همدلی نشون نده
+            بعد یه تگ جدیدی میسازی که ببینی برای آیدی مکالمه جدید و ترتیب انجام گفتگو
+            :param data:
+            :param conv_id_key_name:
+            :param empathy_kind_key_name:
+            :param new_conv_id_key_name:
+            :return:
+        """
+        conv_df = data.groupby(conv_id_key_name)[empathy_kind_key_name].apply(list).reset_index()
+        conv_df[new_conv_id_key_name] = conv_df.\
+            apply(lambda x: cls.get_new_conv_id_segments(empathy_kind_seq=x[empathy_kind_key_name],
+                                                         cov_name_prefix=x[conv_id_key_name]),
+                  axis=1)
+        conv_df = conv_df.explode(new_conv_id_key_name)
+        return conv_df[[conv_id_key_name, new_conv_id_key_name]].merge(data, on=conv_id_key_name, how='inner')
+
+    @classmethod
+    def get_new_conv_id_segments(cls,
+                                 empathy_kind_seq: list,
+                                 cov_name_prefix: str,
+                                 default_conv_id=np.nan):
+        """
+            start with empathy_seeker and another speaker provide empathy
+            conversation pattern "(12)*"
+            and return list of new conv_id
+            :param default_conv_id:
+            :param cov_name_prefix:
+            :param empathy_kind_seq:
+            :return: list of new conv_ids
+        """
+        conv_id_positions = dict()
+        empathy_kind_seq = "".join(empathy_kind_seq)
+        for index, match_exp in enumerate(cls.EMPATHY_KIND_SEGMENT_CONDITION.finditer(empathy_kind_seq)):
+            conv_id_positions.update({pos: f"{cov_name_prefix}_{index}" for pos in range(match_exp.start(),
+                                                                                         match_exp.end())})
+        return [conv_id_positions.get(i, default_conv_id) for i in range(len(empathy_kind_seq))]
+
