@@ -26,7 +26,6 @@ class BaseDataset(Dataset):
 
 class BaseDeployedModel(ABC):
     MAX_BATCH_SIZE = 50
-    # todo: refactoring to delete have_batch_dimaination => در واقعه این باید پشتبانی بکنه از ترانسفومری که یدونه ای و نیاز به اضافه کردن دایمنشن داره یا نه
 
     @abstractmethod
     def _get_checkpoint_path(self) -> str:
