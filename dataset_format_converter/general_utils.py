@@ -24,7 +24,7 @@ class DialogueFunctions:
         :return:
         """
         conv_df = data[[conv_id_key_name, speaker_idx_key_name]].groupby(conv_id_key_name)[speaker_idx_key_name].\
-            apply(set).apply(len).reset_index().rename({speaker_idx_key_name: result_key_name})
+            apply(set).apply(len).reset_index().rename(columns={speaker_idx_key_name: result_key_name})
         return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
 
     @classmethod
@@ -56,7 +56,7 @@ class EmpathyFunctions:
     """
     EMPATHY_KIND_MODULE = EmpathyKindClassifier()
     EMPATHY_EXIST_MODULE = ExistEmpathyClassifier()
-    EMPATHY_KIND_SEQUENCE = f".*(({EmpathyKindEnum.SEEKING.value}, )+({EmpathyKindEnum.NONE.value}, )*({EmpathyKindEnum.PROVIDING.value}(, )?)+)+.*"
+    EMPATHY_KIND_SEQUENCE = f".*(({EmpathyKindEnum.SEEKING.value}, )(({EmpathyKindEnum.NONE.value}, )\1)*({EmpathyKindEnum.PROVIDING.value}(, )?))+.*"
     EMPATHY_KIND_SEGMENT_CONDITION = re.compile(f"(({EmpathyKindEnum.SEEKING.value})({EmpathyKindEnum.PROVIDING.value}))+")
 
     @classmethod
@@ -241,7 +241,6 @@ class EmpathyFunctions:
     #     conv_df = conv_df.loc[conv_df.reset_index().groupby([conv_id_key_name])[utter_idx_key_name].idxmax()]. \
     #         rename(columns={speaker_idx_key_name: result_key_name})
     #     return conv_df[[conv_id_key_name, result_key_name]].merge(data, on=conv_id_key_name, how='inner')
-
 
     @classmethod
     def segment_empathy_dialogue(cls,
