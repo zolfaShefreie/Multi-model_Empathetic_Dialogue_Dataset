@@ -1,8 +1,8 @@
-from settings import PREFIX_MID_PROCESS_DIR, PREFIX_MID_PROCESS_CACHE_DIR
-
 from zipfile import ZipFile
 import pandas as pd
 import os
+
+from settings import PREFIX_MID_PROCESS_DIR, PREFIX_MID_PROCESS_CACHE_DIR
 
 
 def unzip(zip_path: str, des_path: str):

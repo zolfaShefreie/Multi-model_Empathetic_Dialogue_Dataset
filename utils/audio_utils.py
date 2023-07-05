@@ -58,3 +58,4 @@ class AudioModule:
 
         return segments_path
 
+# todo: add manger that get dataframe and organize the audio files

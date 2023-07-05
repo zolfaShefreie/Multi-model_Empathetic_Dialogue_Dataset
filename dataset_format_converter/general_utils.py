@@ -265,6 +265,7 @@ class EmpathyFunctions:
                                                          cov_name_prefix=x[conv_id_key_name]),
                   axis=1)
         conv_df = conv_df.explode(new_conv_id_key_name)
+        # todo filter the new conversations
         return conv_df[[conv_id_key_name, new_conv_id_key_name]].merge(data, on=conv_id_key_name, how='inner')
 
     @classmethod
