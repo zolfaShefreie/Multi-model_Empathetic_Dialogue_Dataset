@@ -1,4 +1,4 @@
-from settings import PREFIX_MID_PROCESS_DIR
+from settings import PREFIX_MID_PROCESS_DIR, PREFIX_MID_PROCESS_CACHE_DIR
 
 from zipfile import ZipFile
 import pandas as pd
@@ -18,6 +18,7 @@ class WriterLoaderHandler:
     The supported format for data is pandas.DataFrame
     """
     PREFIX_PATH = PREFIX_MID_PROCESS_DIR
+    CACHE_DIR = PREFIX_MID_PROCESS_CACHE_DIR
     SEP = "<SEP>"
 
     @classmethod
@@ -29,7 +30,7 @@ class WriterLoaderHandler:
         :param process_seq: list of process that sorted by running turn
         :return:
         """
-        dir_path = f"{cls.PREFIX_PATH}/{dataset_name}"
+        dir_path = f"{cls.CACHE_DIR}/{dataset_name}"
         if os.path.exists(dir_path):
             # get all files in dir path
             files = [file for file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, file))]
@@ -78,7 +79,20 @@ class WriterLoaderHandler:
         """
         data_path = cls._get_path(dataset_name=dataset_name, func_name=func_name)
         data.to_csv(data_path)
+        cls._cache(data=data, dataset_name=dataset_name, func_name=func_name)
         cls._log(path=data_path, is_load_process=False)
+
+    @classmethod
+    def _cache(cls, data: pd.DataFrame, dataset_name: str, func_name: str):
+        """
+        save data in cache
+        this folder is not allowed to be changed by user just used for automatic processes
+        :param data: new data that function was processed
+        :param dataset_name: name of dataset
+        :param func_name: name of stage function
+        :return:
+        """
+        data.to_csv(f"{cls.CACHE_DIR}/{dataset_name}/{dataset_name}{cls.SEP}{func_name}")
 
     @classmethod
     def _get_entry_data(cls, dataset_name: str, process_seq: list, func_name: str, data_arg_name: str,
