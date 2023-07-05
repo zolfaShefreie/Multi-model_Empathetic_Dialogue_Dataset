@@ -1,6 +1,7 @@
 from speechbrain.pretrained import EncoderDecoderASR
 from speechbrain.alignment.ctc_segmentation import CTCSegmentation
 import moviepy.editor as mp
+from pydub import AudioSegment
 
 from settings import ASR_MODEL_NAME
 
@@ -20,10 +21,6 @@ class AudioModule:
         mp.VideoFileClip(video_path).audio.write_audiofile(saved_path)
 
     @classmethod
-    def convert_to_wav(cls):
-        pass
-
-    @classmethod
     def get_timestamp(cls, file_path: str, utterances: list) -> list:
         """
         get timestamps of utterances
@@ -37,5 +34,27 @@ class AudioModule:
         return [(each[0], each[1]) for each in segments.segments]
 
     @classmethod
-    def segment_audio(cls, file_path: str, utterances: list, save_dir: str):
-        pass
+    def segment_audio(cls, file_path: str, utterances: list, prefix_name: str, save_dir: str) -> list:
+        """
+        split audio to get audio of each utterance and save it with wav format
+        :param file_path: path of audio file
+        :param utterances: list of utterance
+        :param prefix_name: prefix name of sub audios
+        :param save_dir: dir that audios gonna be saved
+        :return: a list of sub audio path
+        """
+        timestamps = cls.get_timestamp(file_path=file_path, utterances=utterances)
+        audio = AudioSegment.from_wav(file_path)
+
+        segments_path = list()
+
+        for index, seg in enumerate(timestamps):
+            # pydub works with milliseconds and speechBrain works with seconds
+            start, end = seg[0] * 1000, seg[1] * 1000
+
+            audio_chunk = audio[start:end]
+            audio_chunk.export(f"{save_dir}/{prefix_name}_{index}.wav", format="wav")
+            segments_path.append(f"{save_dir}/{prefix_name}_{index}.wav")
+
+        return segments_path
+
