@@ -12,3 +12,5 @@ PREFIX_CLASSIFIER_DIR = env("PREFIX_CLASSIFIER_DIR", default="./")
 # use for writerLoaderHandler
 PREFIX_MID_PROCESS_DIR = "./middle_pipeline_stage"
 PREFIX_MID_PROCESS_CACHE_DIR = "./.cache_stages"
+
+ASR_MODEL_NAME = "speechbrain/asr-transformer-transformerlm-librispeech"
