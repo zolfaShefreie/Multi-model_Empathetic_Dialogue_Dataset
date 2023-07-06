@@ -160,6 +160,7 @@ class EmpathyFunctions:
                                      conv_id_key_name=conv_id_key_name,
                                      utter_id_key_name=utter_id_key_name,
                                      result_key_name=is_empathy_key_name)
+        #todo: قسمت اضافه کردن سکوئنس رو بردار چون قراره ادیت توسط انسان بشه بعد اینکار انجام بشه
         return cls.check_empathy_kind_seq(data=data,
                                           utter_key_name=utter_key_name,
                                           utter_id_key_name=utter_id_key_name,
