@@ -137,8 +137,6 @@ class EmpathyFunctions:
                              utter_id_key_name='utterance_idx',
                              conv_id_key_name='conv_id',
                              empathy_kind_key_name='empathy_kind',
-                             empathy_seq_key_name='empathy_kind_seq',
-                             contain_empathy_key_name='contain_empathy_seq',
                              is_empathy_key_name='is_empathy'):
         """
         :param data:
@@ -146,8 +144,6 @@ class EmpathyFunctions:
         :param utter_id_key_name:
         :param conv_id_key_name:
         :param empathy_kind_key_name:
-        :param empathy_seq_key_name:
-        :param contain_empathy_key_name:
         :param is_empathy_key_name:
         :return:
         """
@@ -155,19 +151,11 @@ class EmpathyFunctions:
         data = cls.get_empathy_kind(data=data,
                                     utter_key_name=utter_key_name,
                                     result_key_name=empathy_kind_key_name)
-        data = cls.get_empathy_exist(data=data,
+        return cls.get_empathy_exist(data=data,
                                      utter_key_name=utter_key_name,
                                      conv_id_key_name=conv_id_key_name,
                                      utter_id_key_name=utter_id_key_name,
                                      result_key_name=is_empathy_key_name)
-        #todo: قسمت اضافه کردن سکوئنس رو بردار چون قراره ادیت توسط انسان بشه بعد اینکار انجام بشه
-        return cls.check_empathy_kind_seq(data=data,
-                                          utter_key_name=utter_key_name,
-                                          utter_id_key_name=utter_id_key_name,
-                                          conv_id_key_name=conv_id_key_name,
-                                          empathy_kind_key_name=empathy_kind_key_name,
-                                          empathy_seq_key_name=empathy_seq_key_name,
-                                          result_key_name=contain_empathy_key_name)
 
     @classmethod
     def filter_empathetic_conversations(cls,

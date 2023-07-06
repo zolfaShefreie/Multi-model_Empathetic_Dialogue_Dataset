@@ -34,13 +34,15 @@ class AudioModule:
         return [(each[0], each[1]) for each in segments.segments]
 
     @classmethod
-    def segment_audio(cls, file_path: str, utterances: list, prefix_name: str, save_dir: str) -> list:
+    def segment_audio(cls, file_path: str, utterances: list, prefix_name: str, save_dir: str,
+                      first_utter_id: int = 0) -> list:
         """
         split audio to get audio of each utterance and save it with wav format
         :param file_path: path of audio file
         :param utterances: list of utterance
         :param prefix_name: prefix name of sub audios
         :param save_dir: dir that audios gonna be saved
+        :param first_utter_id: the index of the first element of utterances(param) in the complete conversation
         :return: a list of sub audio path
         """
         timestamps = cls.get_timestamp(file_path=file_path, utterances=utterances)
@@ -53,8 +55,8 @@ class AudioModule:
             start, end = seg[0] * 1000, seg[1] * 1000
 
             audio_chunk = audio[start:end]
-            audio_chunk.export(f"{save_dir}/{prefix_name}_{index}.wav", format="wav")
-            segments_path.append(f"{save_dir}/{prefix_name}_{index}.wav")
+            audio_chunk.export(f"{save_dir}/{prefix_name}_{index + first_utter_id}.wav", format="wav")
+            segments_path.append(f"{save_dir}/{prefix_name}_{index + first_utter_id}.wav")
 
         return segments_path
 
