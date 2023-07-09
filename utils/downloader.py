@@ -1,4 +1,5 @@
 import yt_dlp as youtube_dl
+import os
 
 
 class Downloader:
@@ -23,16 +24,16 @@ class Downloader:
         if download_type not in cls.VALID_URLS:
             raise Exception("download type not found")
         download_func = getattr(cls, f"_download_{download_type}")
-        download_func(urls=urls, file_path=file_path, file_format=file_format)
+        return download_func(urls=urls, file_path=file_path, file_format=file_format)
 
     @staticmethod
     def _download_youtube(urls: list, file_path: str, only_audio=True, file_format="wav"):
         """
-
-        :param urls: 
-        :param file_path: 
-        :param only_audio: 
-        :param format: 
+        download multi file from youtube
+        :param urls: list of url
+        :param file_path: it can be like youtube_dl format or just path
+        :param only_audio: option to save audio or video
+        :param file_format: format of file
         :return: 
         """""
 
@@ -44,7 +45,7 @@ class Downloader:
             'format': 'bestaudio/best',
             'extractaudio': only_audio,
             'audioformat': file_format,
-            'outtmpl': f"{file_path}.{file_format}",
+            'outtmpl': f"{file_path}",
             'noplaylist': True,
             'quiet': True,
             'no-warnings': True
@@ -52,3 +53,5 @@ class Downloader:
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download(urls)
+
+        return file_path if os.path.exists(file_path) else None

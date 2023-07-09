@@ -8,6 +8,7 @@ from settings import RAW_DATASET_PATH
 from dataset_format_converter.conversation_utils import EmpathyFunctions, DialogueFunctions
 from utils.other_utils import WriterLoaderHandler
 from utils.audio_utils import AudioModule
+from utils.downloader import Downloader
 
 
 class BaseDialogueDatasetFormatter(ABC):
@@ -55,6 +56,7 @@ class BaseDialogueDatasetFormatter(ABC):
     def file_path_manager(self, data):
         raise NotImplementedError
 
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def audio_processing(self, data: pd.DataFrame) -> pd.DataFrame:
         """
         use each audio processing method in some conditions
@@ -62,7 +64,7 @@ class BaseDialogueDatasetFormatter(ABC):
         :return: metadata with audio file path
         """
         if self.NEED_DOWNLOAD:
-            pass
+            data = self._download_manager(data)
 
         if self.NEED_VIDEO_TO_AUDIO:
             data = self._convertor_manager(data=data)
@@ -72,8 +74,22 @@ class BaseDialogueDatasetFormatter(ABC):
 
         return data
 
-    def _download_manager(self):
-        pass
+    def _download_manager(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        download files from youtube with wav format and save in {dataset_dir}/audio_files/
+        :param data: metadata with dataframe format
+        :return: metadata with audio file path
+        """
+        # get unique urls for each conversation
+        df = data[[self.CONV_ID_COL_NAME, self.URL_COL_NAME]].drop_duplicates()
+        # download files and save files at dataset_dir
+        df[self.FILE_PATH_COL_NAME] = df.apply(
+            lambda x: Downloader.download(download_type='youtube',
+                                          urls=[x[self.URL_COL_NAME], ],
+                                          file_path=f"{self.dataset_dir}/audio_files/{x[self.CONV_ID_COL_NAME]}_{x.name}.{self.AUDIO_FORMAT}",
+                                          file_format="wav"))
+        # merge the result with data
+        return data.merge(df, on=[self.CONV_ID_COL_NAME, self.URL_COL_NAME], how='inner')
 
     def _convertor_manager(self, data: pd.DataFrame) -> pd.DataFrame:
         """
