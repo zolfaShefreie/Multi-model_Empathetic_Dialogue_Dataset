@@ -46,17 +46,24 @@ class AudioModule:
         :param first_utter_id: the index of the first element of utterances(param) in the complete conversation
         :return: a list of sub audio path
         """
-        timestamps = cls.get_timestamp(file_path=file_path, utterances=utterances)
-        audio = AudioSegment.from_wav(file_path)
+        if len(utterances) > 1:
+            timestamps = cls.get_timestamp(file_path=file_path, utterances=utterances)
+            audio = AudioSegment.from_wav(file_path)
 
-        segments_path = list()
+            segments_path = list()
 
-        for index, seg in enumerate(timestamps):
-            # pydub works with milliseconds and speechBrain works with seconds
-            start, end = seg[0] * 1000, seg[1] * 1000
+            for index, seg in enumerate(timestamps):
+                # pydub works with milliseconds and speechBrain works with seconds
+                start, end = seg[0] * 1000, seg[1] * 1000
 
-            audio_chunk = audio[start:end]
-            audio_chunk.export(f"{save_dir}/{prefix_name}_{index + first_utter_id}.wav", format="wav")
-            segments_path.append(f"{save_dir}/{prefix_name}_{index + first_utter_id}.wav")
+                audio_chunk = audio[start:end]
+                audio_chunk.export(f"{save_dir}/{prefix_name}_{index + first_utter_id}.wav", format="wav")
+                segments_path.append(f"{save_dir}/{prefix_name}_{index + first_utter_id}.wav")
 
-        return segments_path
+            return segments_path
+
+        elif utterances == 1:
+            return [file_path]
+
+        else:
+            return list()
