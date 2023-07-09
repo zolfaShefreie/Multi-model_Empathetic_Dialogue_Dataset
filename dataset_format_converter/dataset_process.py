@@ -7,6 +7,7 @@ from utils import other_utils
 from settings import RAW_DATASET_PATH
 from dataset_format_converter.conversation_utils import EmpathyFunctions, DialogueFunctions
 from utils.other_utils import WriterLoaderHandler
+from utils.audio_utils import AudioModule
 
 
 class BaseDialogueDatasetFormatter(ABC):
@@ -22,12 +23,17 @@ class BaseDialogueDatasetFormatter(ABC):
     NEED_DOWNLOAD = False
     NEED_VIDEO_TO_AUDIO = False
     NEED_AUDIO_SEGMENTATION = False
+    AUDIO_FORMAT = 'wav'
 
-    # metadata configs
+    # metadata configs if metadata doesn't have these columns, these variables would use as default column name
     CONV_ID_COL_NAME = str()
     UTTER_ID_COL_NAME = str()
     UTTER_COL_NAME = str()
     SPEAKER_ID_COL_NAME = str()
+    URL_COL_NAME = str()
+    FILE_PATH_COL_NAME = str()
+
+    FILE_FORMAT = 'mp4'
 
     def __int__(self, dataset_dir: str, save_dir: str):
         """
@@ -46,18 +52,78 @@ class BaseDialogueDatasetFormatter(ABC):
     # Audio Processing Module Part
 
     @abstractmethod
-    def file_path_manager(self):
+    def file_path_manager(self, data):
         raise NotImplementedError
 
-    def audio_processing(self):
+    def audio_processing(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        use each audio processing method in some conditions
+        :param data: metadata with dataframe format
+        :return: metadata with audio file path
+        """
         if self.NEED_DOWNLOAD:
             pass
 
         if self.NEED_VIDEO_TO_AUDIO:
-            pass
+            data = self._convertor_manager(data=data)
 
         if self.NEED_AUDIO_SEGMENTATION:
-            pass
+            data = self._audio_segmentation_manager(data=data)
+
+        return data
+
+    def _download_manager(self):
+        pass
+
+    def _convertor_manager(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        convert video to audio and save audio file at filepath location
+        :param data: metadata with dataframe format
+        :return: metadata with audio file path
+        """
+        # get file paths of each conversation
+        conv_df = data[[self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME]].drop_duplicates()
+        # create new column and save the path of audio
+        # audio will be saved on video location with the same names
+        conv_df[f"new_{self.FILE_PATH_COL_NAME}"] = conv_df.apply(
+            lambda x: AudioModule.extract_audio_from_video(x[self.FILE_PATH_COL_NAME],
+                                                           f"{x[self.FILE_PATH_COL_NAME].strip(self.FILE_FORMAT)[0]}.{self.AUDIO_FORMAT}"))
+
+        # merge result with metadata and replace new column values with default file_path column
+        return data.merge(conv_df, on=[self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME], how='inner').\
+            drop(columns=[self.FILE_PATH_COL_NAME]).\
+            rename(columns={f"new_{self.FILE_PATH_COL_NAME}": self.FILE_PATH_COL_NAME})
+
+    def _audio_segmentation_manager(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        segment audio files and save audio file for each utterance at filepath location
+        :param data: metadata with dataframe format
+        :return: metadata with audio file path for each utterance
+        """
+        # get unique path of audio of each conversation and the minimum turns
+        conv_df = data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_ID_COL_NAME].apply(
+            int).min().reset_index().rename(columns={self.UTTER_ID_COL_NAME: 'first_id'})
+        # get list of utterance of each audio and merge to conv_df
+        conv_df = conv_df.merge(
+            data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_COL_NAME]).\
+            apply(list).reset_index()
+        # get list of utterance_ids
+        conv_df = conv_df.merge(
+            data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_ID_COL_NAME]).\
+            apply(list).reset_index()
+        # segment audio file
+        conv_df['audio_files_path'] = conv_df.apply(
+            lambda x: AudioModule.segment_audio(file_path=x[self.FILE_PATH_COL_NAME],
+                                                utterances=x[self.UTTER_COL_NAME],
+                                                prefix_name=x[self.CONV_ID_COL_NAME],
+                                                save_dir=f"{x[self.FILE_PATH_COL_NAME].strip(self.AUDIO_FORMAT)[0]}",
+                                                first_utter_id=x['first_id']))
+        # explode the utter_ids and list of seg audio file path
+        conv_df = conv_df.explode([self.UTTER_ID_COL_NAME, 'audio_files_path']).reset_index(drop=True)
+        # merge result with metadata and replace new column values with default file_path column
+        return data.merge(conv_df, on=[self.CONV_ID_COL_NAME, self.UTTER_ID_COL_NAME], how="inner").\
+            drop(columns=[self.FILE_PATH_COL_NAME]).\
+            rename(columns={'audio_files_path': self.FILE_PATH_COL_NAME})
 
     # Empathetic part
 
@@ -145,16 +211,4 @@ class DailyTalkDatasetFormatter:
                                                      utter_key_name='text',
                                                      utter_id_key_name='utterance_idx',
                                                      conv_id_key_name='dialog_idx')
-
-
-
-# class DatasetFormatter:
-#
-#     @classmethod
-#     def annoml_formatter(cls, raw_dataset_csv_path):
-#         pass
-#
-#     @classmethod
-#     def dailytalk_formatter(cls, raw_dataset_zip_path):
-#         des_path = other_utils.unzip(raw_dataset_zip_path, RAW_DATASET_PATH + 'DialyDialoge_DailyTalk')
 

@@ -11,7 +11,7 @@ class AudioModule:
     ALIGNER = CTCSegmentation(ASR_MODEL, kaldi_style_text=False)
 
     @classmethod
-    def extract_audio_from_video(cls, video_path: str, saved_path: str):
+    def extract_audio_from_video(cls, video_path: str, saved_path: str) -> str:
         """
         extract audio from video
         :param video_path: path of video
@@ -19,6 +19,7 @@ class AudioModule:
         :return:
         """
         mp.VideoFileClip(video_path).audio.write_audiofile(saved_path)
+        return saved_path
 
     @classmethod
     def get_timestamp(cls, file_path: str, utterances: list) -> list:
@@ -59,5 +60,3 @@ class AudioModule:
             segments_path.append(f"{save_dir}/{prefix_name}_{index + first_utter_id}.wav")
 
         return segments_path
-
-# todo: add manger that get dataframe and organize the audio files
