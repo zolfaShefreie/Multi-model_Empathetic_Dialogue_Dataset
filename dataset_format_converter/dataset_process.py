@@ -116,7 +116,7 @@ class BaseDialogueDatasetFormatter(ABC):
             lambda x: AudioModule.segment_audio(file_path=x[self.FILE_PATH_COL_NAME],
                                                 utterances=x[self.UTTER_COL_NAME],
                                                 prefix_name=x[self.CONV_ID_COL_NAME],
-                                                save_dir=f"{x[self.FILE_PATH_COL_NAME].strip(self.AUDIO_FORMAT)[0]}",
+                                                save_dir=f"{'/'.join(x[self.FILE_PATH_COL_NAME].strip('/')[:-1])}",
                                                 first_utter_id=x['first_id']))
         # explode the utter_ids and list of seg audio file path
         conv_df = conv_df.explode([self.UTTER_ID_COL_NAME, 'audio_files_path']).reset_index(drop=True)
