@@ -84,7 +84,7 @@ class WriterLoaderHandler:
         :return:
         """
         if human_editable:
-            data_path = cls._get_path(dataset_name=dataset_name, func_name=func_name, is_cache=False)
+            data_path = cls.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=False)
             data.to_csv(data_path)
             cls._log(path=data_path, is_load_process=False)
         cls._cache(data=data, dataset_name=dataset_name, func_name=func_name)
@@ -99,7 +99,7 @@ class WriterLoaderHandler:
         :param func_name: name of stage function
         :return:
         """
-        data_path = cls._get_path(dataset_name=dataset_name, func_name=func_name, is_cache=True)
+        data_path = cls.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=True)
         data.to_csv(data_path)
 
     @classmethod
@@ -127,7 +127,7 @@ class WriterLoaderHandler:
             previous_func_name = process_seq[process_seq.index(func_name) - 1]
 
             # if file is exists in editable folder, load data
-            data_path = cls._get_path(dataset_name=dataset_name, func_name=previous_func_name, is_cache=False)
+            data_path = cls.get_path(dataset_name=dataset_name, func_name=previous_func_name, is_cache=False)
             if os.path.exists(data_path):
                 data = pd.read_csv(data_path)
                 cls._log(path=data_path, is_load_process=True)
@@ -135,7 +135,7 @@ class WriterLoaderHandler:
 
             else:
                 # if file is exists in cache folder, load data
-                data_path = cls._get_path(dataset_name=dataset_name, func_name=previous_func_name, is_cache=True)
+                data_path = cls.get_path(dataset_name=dataset_name, func_name=previous_func_name, is_cache=True)
                 if os.path.exists(data_path):
                     data = pd.read_csv(data_path)
                     return data
@@ -145,7 +145,7 @@ class WriterLoaderHandler:
             return kwargs[data_arg_name]
 
     @classmethod
-    def _get_path(cls, dataset_name: str, func_name: str, is_cache: bool = True) -> str:
+    def get_path(cls, dataset_name: str, func_name: str, is_cache: bool = True) -> str:
         """
         get the path based on name of dataset and name of stage
         :param dataset_name: name of dataset

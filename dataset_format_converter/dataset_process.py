@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import ast
 from abc import ABC, abstractmethod
+import warnings
 
 from utils import other_utils
 from settings import RAW_DATASET_PATH
@@ -33,6 +34,10 @@ class BaseDialogueDatasetFormatter(ABC):
     SPEAKER_ID_COL_NAME = str()
     URL_COL_NAME = str()
     FILE_PATH_COL_NAME = str()
+
+    MISSING_INFO_COL_NAME = "missing_info"
+    NEW_CONV_ID_COL_NAME = "new_conv_id"
+    NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
 
     FILE_FORMAT = 'mp4'
 
@@ -144,6 +149,7 @@ class BaseDialogueDatasetFormatter(ABC):
     # Empathetic part
 
     @classmethod
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def filter_two_party(cls, data: pd.DataFrame) -> pd.DataFrame:
         """
         filter two part conversation based on class attribute
@@ -169,12 +175,59 @@ class BaseDialogueDatasetFormatter(ABC):
                                                      utter_id_key_name=cls.UTTER_ID_COL_NAME,
                                                      conv_id_key_name=cls.CONV_ID_COL_NAME)
 
-    def filter_empathy_exist_conv(self, data):
-        # todo: EmpathyFunctions.filter_empathetic_conversations
-        pass
+    @classmethod
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
+    def filter_empathy_exist_conv(cls, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        filter the empathetic conversation
+        :param data: metadata with dataframe format
+        :return:
+        """
+        return EmpathyFunctions.filter_empathetic_conversations(data=data,
+                                                                based_on='both',
+                                                                utter_key_name=cls.UTTER_COL_NAME,
+                                                                utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                                conv_id_key_name=cls.CONV_ID_COL_NAME)
 
+    @classmethod
     @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=True)
-    def empathetic_segmentation(self):
+    def empathetic_segmentation(cls, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        segment conversations to ge empathetic parts and adding missing info col for new conversations
+        :param data: metadata with dataframe format
+        :return:
+        """
+        data = EmpathyFunctions.segment_empathy_dialogue(data=data,
+                                                         conv_id_key_name=cls.CONV_ID_COL_NAME,
+                                                         utter_key_name=cls.UTTER_COL_NAME,
+                                                         new_conv_id_key_name=cls.NEW_CONV_ID_COL_NAME,
+                                                         new_utterance_id_key_name=cls.NEW_UTTERANCE_IDX_NAME)
+
+        # add missing information col for check conversations manually
+        data[cls.MISSING_INFO_COL_NAME] = 0
+        return data
+
+    @classmethod
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
+    def filter_missing_info(cls, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        filter missing_info == 1
+        :param data: metadata with dataframe format
+        :return: metadata without missing_info
+        """
+        warnings.warn(f"******************************************************************************\n"
+                      f"WARNiNG: you must change {cls.MISSING_INFO_COL_NAME} column in "
+                      f"{WriterLoaderHandler.get_path(dataset_name=cls.DATASET_NAME, func_name='empathetic_segmentation', is_cache=False)}"
+                      f" manually to get correct result\n"
+                      f"******************************************************************************")
+        data[cls.MISSING_INFO_COL_NAME] = data[cls.MISSING_INFO_COL_NAME].apply(int)
+        return data[data[cls.MISSING_INFO_COL_NAME] == 1]
+
+    def _last_stage_saving(self):
+        """
+        move audio file and save metadata on new dir
+        :return:
+        """
         pass
 
     def running_process(self, start_stage: str = None, stop_stage: str = None):

@@ -49,6 +49,26 @@ class DialogueFunctions:
 
         return data[data[num_parties_key_name] == 2]
 
+    @classmethod
+    def make_utter_id_seq(cls,
+                          data: pd.DataFrame,
+                          conv_id_key_name='conv_id',
+                          utter_key_name='utterance',
+                          result_key_name='utterance_idx'):
+        """
+        make a sequence number for utterance idx
+        :param data:
+        :param conv_id_key_name: name of conv_id column
+        :param utter_key_name: name of utterance column
+        :param result_key_name: name of utterance_idx column
+        :return:
+        """
+        conv_df = data[[conv_id_key_name, utter_key_name]].groupby([conv_id_key_name])[utter_key_name].\
+            apply(list).reset_index()
+        conv_df[result_key_name] = conv_df.apply(lambda x: [i for i, value in enumerate(x[utter_key_name])])
+        conv_df.explode([utter_key_name, result_key_name])
+        return data.merge(conv_df, on=[conv_id_key_name, utter_key_name], how='inner')
+
 
 class EmpathyFunctions:
     """
@@ -162,19 +182,41 @@ class EmpathyFunctions:
                                         data: pd.DataFrame,
                                         based_on='both',
                                         contain_empathy_key_name='contain_empathy_seq',
-                                        is_empathy_key_name='is_empathy'):
+                                        is_empathy_key_name='is_empathy',
+                                        utter_key_name='utterance',
+                                        utter_id_key_name='utterance_idx',
+                                        conv_id_key_name='conv_id',
+                                        empathy_kind_key_name='empathy_kind',
+                                        empathy_seq_key_name='empathy_kind_seq'):
         """
-
+        filter conversations based on empathy_kind sequence and empathy existence
+        :param empathy_seq_key_name:
+        :param empathy_kind_key_name:
+        :param conv_id_key_name:
+        :param utter_id_key_name:
+        :param utter_key_name:
         :param data:
         :param based_on: can be 'both', 'contain_empathy', 'is_empathy'
         :param contain_empathy_key_name:
         :param is_empathy_key_name:
         :return:
         """
+        if (based_on in ['both', 'contain_empathy']) and \
+                ((empathy_seq_key_name not in data.columns) or (contain_empathy_key_name not in data.columns)):
+            data = cls.check_empathy_kind_seq(data=data,
+                                              utter_key_name=utter_key_name,
+                                              utter_id_key_name=utter_id_key_name,
+                                              conv_id_key_name=conv_id_key_name,
+                                              empathy_kind_key_name=empathy_kind_key_name,
+                                              empathy_seq_key_name=empathy_seq_key_name,
+                                              result_key_name=contain_empathy_key_name)
+
         if based_on == 'both':
             return data[((data[contain_empathy_key_name] == 1) & (data[is_empathy_key_name] == 1))]
+
         elif based_on == 'contain_empathy':
             return data[data[contain_empathy_key_name] == 1]
+
         elif based_on == 'is_empathy':
             return data[data[is_empathy_key_name] == 1]
 
@@ -235,8 +277,10 @@ class EmpathyFunctions:
     def segment_empathy_dialogue(cls,
                                  data: pd.pandas,
                                  conv_id_key_name='conv_id',
+                                 utter_key_name='utterance',
                                  empathy_kind_key_name='empathy_kind',
-                                 new_conv_id_key_name='new_conv_id'):
+                                 new_conv_id_key_name='new_conv_id',
+                                 new_utterance_id_key_name='new_utterance_id'):
         """
             برای سگمنت دو تا چیز مهمه یکی اینکه باید بری نوع همدلی و یکی همگام کنی این دوستان عزیز رو با اشخاصی که طرف روبه رو عه
             یعنی مکالمه از طرف یکی شروع میشه که جویای همدلیه و با یه فرد مقابل اولیه تموم میشه که همدلی رو تهیه میکنه یا کلا با شخص رو به رو واکنش همدلی نشون میده
@@ -245,7 +289,9 @@ class EmpathyFunctions:
             :param data:
             :param conv_id_key_name:
             :param empathy_kind_key_name:
+            :param utter_key_name:
             :param new_conv_id_key_name:
+            :param new_utterance_id_key_name:
             :return:
         """
         conv_df = data.groupby(conv_id_key_name)[empathy_kind_key_name].apply(list).reset_index()
@@ -254,8 +300,12 @@ class EmpathyFunctions:
                                                          cov_name_prefix=x[conv_id_key_name]),
                   axis=1)
         conv_df = conv_df.explode(new_conv_id_key_name)
-        # todo filter the new conversations
-        return conv_df[[conv_id_key_name, new_conv_id_key_name]].merge(data, on=conv_id_key_name, how='inner')
+        # get new conversations
+        new_data = conv_df[[conv_id_key_name, new_conv_id_key_name]].merge(data, on=conv_id_key_name, how='inner')
+        return DialogueFunctions.make_utter_id_seq(data=new_data[new_data[new_conv_id_key_name].notnull()],
+                                                   conv_id_key_name=new_conv_id_key_name,
+                                                   utter_key_name=utter_key_name,
+                                                   result_key_name=new_utterance_id_key_name)
 
     @classmethod
     def get_new_conv_id_segments(cls,
