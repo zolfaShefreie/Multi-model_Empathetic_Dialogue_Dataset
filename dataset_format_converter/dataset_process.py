@@ -3,6 +3,7 @@ import json
 import ast
 from abc import ABC, abstractmethod
 import warnings
+import os
 
 from utils import other_utils
 from settings import RAW_DATASET_PATH
@@ -20,7 +21,8 @@ class BaseDialogueDatasetFormatter(ABC):
 
     # process configs
     DATASET_NAME = str()
-    SEQ_STAGE = []
+    SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
     # some audio or video files were uploaded on youtube
     NEED_DOWNLOAD = False
     NEED_VIDEO_TO_AUDIO = False
@@ -39,6 +41,9 @@ class BaseDialogueDatasetFormatter(ABC):
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
 
+    # if more columns change this list for dataset
+    MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME]
+
     FILE_FORMAT = 'mp4'
 
     def __int__(self, dataset_dir: str, save_dir: str):
@@ -52,6 +57,7 @@ class BaseDialogueDatasetFormatter(ABC):
         self.save_dir = save_dir
 
     @abstractmethod
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def dataset_cleaner(self):
         raise NotImplementedError
 
@@ -216,19 +222,64 @@ class BaseDialogueDatasetFormatter(ABC):
         :return: metadata without missing_info
         """
         warnings.warn(f"******************************************************************************\n"
-                      f"WARNiNG: you must change {cls.MISSING_INFO_COL_NAME} column in "
+                      f"WARNING: you must change {cls.MISSING_INFO_COL_NAME} column in "
                       f"{WriterLoaderHandler.get_path(dataset_name=cls.DATASET_NAME, func_name='empathetic_segmentation', is_cache=False)}"
                       f" manually to get correct result\n"
                       f"******************************************************************************")
         data[cls.MISSING_INFO_COL_NAME] = data[cls.MISSING_INFO_COL_NAME].apply(int)
         return data[data[cls.MISSING_INFO_COL_NAME] == 1]
 
-    def _last_stage_saving(self):
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
+    def last_stage_changes(self, data: pd.DataFrame) -> pd.DataFrame:
         """
-        move audio file and save metadata on new dir
+        delete some columns and rename some of them and save last changes
+        :param data: metadata with dataframe format
         :return:
         """
-        pass
+        if self.NEW_UTTERANCE_IDX_NAME in data.columns:
+            data = data.columns.drop(columns=[self.UTTER_ID_COL_NAME]).\
+                rename(columns={self.NEW_UTTERANCE_IDX_NAME: self.UTTER_ID_COL_NAME})
+
+        if self.NEW_CONV_ID_COL_NAME in data.columns:
+            data = data.columns.drop(columns=[self.CONV_ID_COL_NAME]).\
+                rename(columns={self.NEW_CONV_ID_COL_NAME: self.CONV_ID_COL_NAME})
+
+        data = data[self.MAIN_COLUMNS]
+
+        data = self._save_management(data=data)
+        return data
+
+    def _save_management(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        move audio file and save metadata on new dir
+        :param data: metadata with dataframe format
+        :return:
+        """
+
+        def move_file(save_dir, dataset_name, path, conv_id, utter_idx) -> str:
+            """
+            create new path and move audio file to it
+            :param save_dir:
+            :param dataset_name:
+            :param path: path of audio
+            :param conv_id: conversation id
+            :param utter_idx: utterance id
+            :return: new path
+            """
+            new_path = f"{save_dir}/{dataset_name}/audio_files/{conv_id}_{utter_idx}.{self.AUDIO_FORMAT}"
+            os.rename(path, new_path)
+            return new_path
+
+        data[self.FILE_PATH_COL_NAME] = data.apply(lambda x: move_file(path=x[self.FILE_PATH_COL_NAME],
+                                                                       save_dir=self.save_dir,
+                                                                       dataset_name=self.DATASET_NAME,
+                                                                       conv_id=x[self.CONV_ID_COL_NAME],
+                                                                       utter_idx=x[self.UTTER_ID_COL_NAME]))
+
+        metadata_path = f"{self.save_dir}/{self.DATASET_NAME}/metadata.csv"
+        data.to_csv(metadata_path)
+
+        return data
 
     def running_process(self, start_stage: str = None, stop_stage: str = None):
         pass
