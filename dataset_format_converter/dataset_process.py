@@ -58,14 +58,10 @@ class BaseDialogueDatasetFormatter(ABC):
 
     @abstractmethod
     @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
-    def dataset_cleaner(self):
+    def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
         raise NotImplementedError
 
     # Audio Processing Module Part
-
-    @abstractmethod
-    def file_path_manager(self, data):
-        raise NotImplementedError
 
     @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def audio_processing(self, data: pd.DataFrame) -> pd.DataFrame:
@@ -282,7 +278,46 @@ class BaseDialogueDatasetFormatter(ABC):
         return data
 
     def running_process(self, start_stage: str = None, stop_stage: str = None):
-        pass
+        """
+        run the set of stages between start stage and stop stage => [start_stage, stop_stage]
+        :param start_stage: running stages form this stage
+        :param stop_stage: stop running stages at this stage
+        :return:
+        """
+        self._validate_stages(start_stage=start_stage, stop_stage=stop_stage)
+
+        if not start_stage:
+            start_stage_index = WriterLoaderHandler.get_process_stage(dataset_name=self.DATASET_NAME,
+                                                                      process_seq=self.SEQ_STAGE)
+            if start_stage_index >= len(self.SEQ_STAGE):
+                return
+
+        else:
+            start_stage_index = self.SEQ_STAGE.index(start_stage)
+
+        stop_stage_index = self.SEQ_STAGE.index(stop_stage) if stop_stage else len(self.SEQ_STAGE) - 1
+
+        data = None
+        for stage in self.SEQ_STAGE[start_stage_index: stop_stage_index + 1]:
+            data = getattr(self, stage)(data=data)
+
+    def _validate_stages(self, start_stage: str = None, stop_stage: str = None):
+        """
+        check start and stop stage be in stages list and the previous stage of start_stage be in cache
+        :param start_stage: running stages form this stage
+        :param stop_stage: stop running stages at this stage
+        :return:
+        """
+        if start_stage and start_stage not in self.SEQ_STAGE:
+            raise Exception("start_stage doesn't exists in stages")
+
+        start_stage_index = WriterLoaderHandler.get_process_stage(dataset_name=self.DATASET_NAME,
+                                                                  process_seq=self.SEQ_STAGE)
+        if start_stage_index >= self.SEQ_STAGE.index(start_stage):
+            raise Exception("the previous stage doesn't run before")
+
+        if stop_stage and stop_stage not in self.SEQ_STAGE:
+            raise Exception("stop_stage doesn't exists in stages")
 
 
 class AnnoMIDatasetFormatter:
