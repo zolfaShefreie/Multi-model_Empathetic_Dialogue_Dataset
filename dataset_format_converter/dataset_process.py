@@ -46,7 +46,7 @@ class BaseDialogueDatasetFormatter(ABC):
 
     FILE_FORMAT = 'mp4'
 
-    def __int__(self, dataset_dir: str, save_dir: str):
+    def __init__(self, dataset_dir: str, save_dir: str, *args, **kwargs):
         """
         initial of class
         :param dataset_dir: path of dataset
@@ -328,22 +328,52 @@ class AnnoMIDatasetFormatter:
     pass
 
 
-class DailyTalkDatasetFormatter:
+class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
     """
     This class is written based on data on google drive of dailyTalk
     (https://drive.google.com/drive/folders/1WRt-EprWs-2rmYxoWYT9_13omlhDHcaL)
     """
-    # todo: 2. بری فایل متادیتاش رو برداری بهتره با دیکشنری جلو بری تبدیل کنی به اون فرمت دیتا فریم
-    # todo 3, فرمت فایل ها رو باید درست کنی همه تو یه پوشه فقط یه مسیر تو دیتافریم اضافه میشه که مسیر به اون گفته ست
-    # todo: 4. برای اون فانکشن‌های همدلی ببینی اینا همدلانه هست یا نه
-    # todo: 5, البته می تونی سگمت هم کنی که با یه چیز جویای همدلی شروع بشه و کجا مکالمه تموم بشه
-    # todo: 6, اگه خواستی دستی تغییر بده اینا رو
-    # todo: 7, یه فیلتر بزن و اونایی که نیاز داری رو ببر تو یه مسیر جدا و قبلی یا رو پاک کن
 
-    def __init__(self, raw_dataset_path: str):
-        self.folder = "./dailytalk/"
-        self.json_file = f"{self.folder}/metadata.json"
-        self._get_folder_raw_data(raw_dataset_path=raw_dataset_path)
+    # process configs
+    DATASET_NAME = 'dailyTalk'
+    SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+    # some audio or video files were uploaded on youtube
+    NEED_DOWNLOAD = False
+    NEED_VIDEO_TO_AUDIO = False
+    NEED_AUDIO_SEGMENTATION = False
+    AUDIO_FORMAT = 'wav'
+
+    # metadata configs if metadata doesn't have these columns, these variables would use as default column name
+    CONV_ID_COL_NAME = "dialog_idx"
+    UTTER_ID_COL_NAME = "utterance_idx"
+    UTTER_COL_NAME = "text"
+    SPEAKER_ID_COL_NAME = "speaker"
+    URL_COL_NAME = None
+    FILE_PATH_COL_NAME = "file_path"
+
+    MISSING_INFO_COL_NAME = "missing_info"
+    NEW_CONV_ID_COL_NAME = "new_conv_id"
+    NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
+
+    # if more columns change this list for dataset
+    MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
+                    'emotion', 'act']
+
+    FILE_FORMAT = 'wav'
+
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
+    def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
+        """
+        convert raw dataset the special format
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        metadata_file_path = f"{self.dataset_dir}/metadata.json"
+        data = self._convert_metadata_to_dataframe(metadata_path=metadata_file_path)
+        data = self._add_audio_file_path_col(data=data)
+        return data
 
     @staticmethod
     def _get_folder_raw_data(raw_dataset_path):
@@ -351,19 +381,40 @@ class DailyTalkDatasetFormatter:
             return other_utils.unzip(raw_dataset_path, RAW_DATASET_PATH + 'DialyDialoge_DailyTalk')
         return raw_dataset_path
 
-    def _convert_metadata_to_dataframe(self) -> pd.DataFrame:
-        with open(self.json_file) as file:
+    def _convert_metadata_to_dataframe(self, metadata_path: str) -> pd.DataFrame:
+        """
+        covert json to pd.Dataframe
+        :param metadata_path: path of metadata josn file
+        :return: metadata with dataframe format
+        """
+        with open(metadata_path) as file:
             data = ast.literal_eval(file.read())
             return pd.DataFrame([utterance_data for conversations in data.values()
                                 for utterance_data in conversations.values()])
 
-    # todo:complete
-    def _add_audio_file_path_col(self, data: pd.DataFrame):
-        pass
+    def _add_audio_file_path_col(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        add file_path col to metadata
+        :param data: metadata with dataframe format
+        :return: metadata with file_path_col
+        """
 
-    def _add_empathy_cols(self, data: pd.DataFrame):
-        return EmpathyFunctions.add_all_empathy_cols(data=data,
-                                                     utter_key_name='text',
-                                                     utter_id_key_name='utterance_idx',
-                                                     conv_id_key_name='dialog_idx')
+        def get_audio_file_path(dataset_dir, conv_id, utter_id, speaker_id):
+            """
+            get path of audio file based on this dataset
+            :param dataset_dir:
+            :param conv_id:
+            :param utter_id:
+            :param speaker_id:
+            :return:
+            """
+            path = f"{dataset_dir}/data/{conv_id}/{utter_id}_{speaker_id}_d{conv_id}.wav"
+            return path if os.path.exists(path) else None
+
+        data[self.FILE_PATH_COL_NAME] = data.apply(lambda x: get_audio_file_path(dataset_dir=self.dataset_dir,
+                                                                                 conv_id=x[self.CONV_ID_COL_NAME],
+                                                                                 utter_id=x[self.UTTER_ID_COL_NAME],
+                                                                                 speaker_id=x[self.SPEAKER_ID_COL_NAME]))
+        return data
+
 
