@@ -320,7 +320,7 @@ class BaseDialogueDatasetFormatter(ABC):
             raise Exception("stop_stage doesn't exists in stages")
 
 
-class AnnoMIDatasetFormatter:
+class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
     """
     this class is written based on csv data on AnnoMI github
     (https://github.com/uccollab/AnnoMI)
@@ -345,8 +345,8 @@ class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
     AUDIO_FORMAT = 'wav'
 
     # metadata configs if metadata doesn't have these columns, these variables would use as default column name
-    CONV_ID_COL_NAME = "dialog_idx"
-    UTTER_ID_COL_NAME = "utterance_idx"
+    CONV_ID_COL_NAME = "transcript_id"
+    UTTER_ID_COL_NAME = "utterance_id"
     UTTER_COL_NAME = "text"
     SPEAKER_ID_COL_NAME = "speaker"
     URL_COL_NAME = None
@@ -411,10 +411,63 @@ class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
             path = f"{dataset_dir}/data/{conv_id}/{utter_id}_{speaker_id}_d{conv_id}.wav"
             return path if os.path.exists(path) else None
 
-        data[self.FILE_PATH_COL_NAME] = data.apply(lambda x: get_audio_file_path(dataset_dir=self.dataset_dir,
-                                                                                 conv_id=x[self.CONV_ID_COL_NAME],
-                                                                                 utter_id=x[self.UTTER_ID_COL_NAME],
-                                                                                 speaker_id=x[self.SPEAKER_ID_COL_NAME]))
+        data[self.FILE_PATH_COL_NAME] = data.apply(
+            lambda x: get_audio_file_path(dataset_dir=self.dataset_dir,
+                                          conv_id=x[self.CONV_ID_COL_NAME],
+                                          utter_id=x[self.UTTER_ID_COL_NAME],
+                                          speaker_id=x[self.SPEAKER_ID_COL_NAME]))
         return data
 
 
+class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
+    """
+    This class is written based on data on below link
+    (https://web.eecs.umich.edu/~mihalcea/downloads/MELD.Raw.tar.gz)
+    but use the two party conversations files in github of meld instead of csv files in raw meld dir
+    (https://github.com/declare-lab/MELD/tree/master/data/MELD_Dyadic)
+    """
+    # یه مشکلی که هست این مثلا چند تا مکالمه پشت سر هم رو یه نفر میگه ولی ممکنه احساسات و ایناش متفاوت باشه که اینو یا تو سگمنت و اینا باید کنترل کنی یا اینکه اینا رو بهم جوین کنی یا فیلتر کنی این حالت ها رو
+
+    # process configs
+    DATASET_NAME = 'MELD'
+    SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+    # some audio or video files were uploaded on youtube
+    NEED_DOWNLOAD = False
+    NEED_VIDEO_TO_AUDIO = True
+    NEED_AUDIO_SEGMENTATION = False
+    AUDIO_FORMAT = 'wav'
+
+    # metadata configs if metadata doesn't have these columns, these variables would use as default column name
+    CONV_ID_COL_NAME = "Dialogue_ID"
+    UTTER_ID_COL_NAME = "Utterance_ID"
+    UTTER_COL_NAME = "Utterance"
+    SPEAKER_ID_COL_NAME = "Speaker"
+    URL_COL_NAME = None
+    FILE_PATH_COL_NAME = "file_path"
+
+    MISSING_INFO_COL_NAME = "missing_info"
+    NEW_CONV_ID_COL_NAME = "new_conv_id"
+    NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
+
+    # if more columns change this list for dataset
+    MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
+                    'Emotion', 'Sentiment']
+
+    FILE_FORMAT = 'mp4'
+
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
+    def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
+        """
+        convert raw dataset the special format
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        """
+        چه کارایی باید بکنی:
+        مرج کنی سه تا قسمتی که جدا کرده که کانو آیدی رو باید عوض کنی که تکراری نشه
+        فیلتر بزنی که یه نفر پشت سر هم حرف نزنه
+        مسیر فایل ها رو مشخص کنی فایلا رو کپی کنی و اسماشون رو عوض کنی
+        """
+        pass
