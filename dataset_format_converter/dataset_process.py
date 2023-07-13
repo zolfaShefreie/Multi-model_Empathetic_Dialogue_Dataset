@@ -325,7 +325,42 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
     this class is written based on csv data on AnnoMI github
     (https://github.com/uccollab/AnnoMI)
     """
-    pass
+    DATASET_NAME = 'AnnoMI'
+    SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+    # some audio or video files were uploaded on youtube
+    NEED_DOWNLOAD = True
+    NEED_VIDEO_TO_AUDIO = True
+    NEED_AUDIO_SEGMENTATION = True
+    AUDIO_FORMAT = 'wav'
+
+    # metadata configs if metadata doesn't have these columns, these variables would use as default column name
+    CONV_ID_COL_NAME = "dialog_idx"
+    UTTER_ID_COL_NAME = "utterance_idx"
+    UTTER_COL_NAME = "utterance_text"
+    SPEAKER_ID_COL_NAME = "interlocutor"
+    URL_COL_NAME = "video_url"
+    FILE_PATH_COL_NAME = "file_path"
+
+    MISSING_INFO_COL_NAME = "missing_info"
+    NEW_CONV_ID_COL_NAME = "new_conv_id"
+    NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
+
+    # if more columns change this list for dataset
+    MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
+                    'client_talk_type', 'main_therapist_behaviour']
+
+    FILE_FORMAT = 'wav'
+
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
+    def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
+        """
+        convert raw dataset the special format
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return pd.read_csv(f"{self.dataset_dir}/AnnoMI-full.csv")
 
 
 class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
