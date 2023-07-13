@@ -4,6 +4,7 @@ import ast
 from abc import ABC, abstractmethod
 import warnings
 import os
+import shutil
 
 from utils import other_utils
 from settings import RAW_DATASET_PATH
@@ -330,7 +331,7 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
                  'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
     # some audio or video files were uploaded on youtube
     NEED_DOWNLOAD = True
-    NEED_VIDEO_TO_AUDIO = True
+    NEED_VIDEO_TO_AUDIO = False
     NEED_AUDIO_SEGMENTATION = True
     AUDIO_FORMAT = 'wav'
 
@@ -461,7 +462,6 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
     but use the two party conversations files in github of meld instead of csv files in raw meld dir
     (https://github.com/declare-lab/MELD/tree/master/data/MELD_Dyadic)
     """
-    # یه مشکلی که هست این مثلا چند تا مکالمه پشت سر هم رو یه نفر میگه ولی ممکنه احساسات و ایناش متفاوت باشه که اینو یا تو سگمنت و اینا باید کنترل کنی یا اینکه اینا رو بهم جوین کنی یا فیلتر کنی این حالت ها رو
 
     # process configs
     DATASET_NAME = 'MELD'
@@ -485,6 +485,10 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
 
+    SPLIT_COL_NAME = 'split'
+    FILE_CONV_ID = 'Old_Dialogue_ID'
+    FILE_UTTER_ID = 'Old_Utterance_ID'
+
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
                     'Emotion', 'Sentiment']
@@ -499,10 +503,64 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
         :param kwargs:
         :return:
         """
+        # merge dataframe for each split
+        data = self._append_multi_dataframe({'dev': pd.read_csv(f"{self.dataset_dir}/dev_sent_emo_dya.csv"),
+                                            'test': pd.read_csv(f"{self.dataset_dir}/test_sent_emo_dya.csv"),
+                                             'train': pd.read_csv(f"{self.dataset_dir}/train_sent_emo_dya.csv"), })
+
+        # filter the dialogue with continuous multi turn for one party
+        data = DialogueFunctions.filter_not_multi_turn_on_one_party(data=data,
+                                                                    conv_id_key_name=self.CONV_ID_COL_NAME,
+                                                                    utter_id_key_name=self.UTTER_ID_COL_NAME,
+                                                                    speaker_id_key_name=self.SPEAKER_ID_COL_NAME)
+        # file managing
+        return self._add_file_path_col(data)
+
+    @classmethod
+    def _append_multi_dataframe(cls, data_dict: dict) -> pd.DataFrame:
         """
-        چه کارایی باید بکنی:
-        مرج کنی سه تا قسمتی که جدا کرده که کانو آیدی رو باید عوض کنی که تکراری نشه
-        فیلتر بزنی که یه نفر پشت سر هم حرف نزنه
-        مسیر فایل ها رو مشخص کنی فایلا رو کپی کنی و اسماشون رو عوض کنی
+        change the conv_id and append test, train, dev dataframe
+        :param data_dict: dict of dataframe with split name as key
+        :return: one appended dataframe
         """
-        pass
+        for key, data in data_dict.items():
+            data[cls.SPLIT_COL_NAME] = key
+
+        data_list = list(data_dict.values())
+        data = data_list[0]
+        for df in data_list[1:]:
+            df[cls.CONV_ID_COL_NAME] = data[cls.CONV_ID_COL_NAME].apply(int)
+            df[cls.CONV_ID_COL_NAME] = df[cls.CONV_ID_COL_NAME] + len(data)
+            data = data.append(df, ignore_index=True)
+        return data
+
+    def _add_file_path_col(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        copy file to new dir (different utterances have same files) and add file_path col
+        :param data: metadata with dataframe format
+        :return:
+        """
+
+        path_metadata_dict = {
+            'train': 'train/train_splits',
+            'dev': 'dev/dev_splits_complete',
+            'test': 'test/output_repeated_splits_test'
+        }
+
+        def copy_rename_file(row):
+            """
+            copy the file with new name for each utterance
+            :param row:
+            :return:
+            """
+            old_path = f"{self.dataset_dir}/{path_metadata_dict[row[self.SPLIT_COL_NAME]]}/" \
+                       f"dia{row[self.FILE_CONV_ID]}_utt{x[self.FILE_UTTER_ID]}.mp4"
+
+            new_path = f"{self.dataset_dir}/audio_files/{row[self.CONV_ID_COL_NAME]}_{row[self.UTTER_ID_COL_NAME]}.mp3"
+            shutil.copy2(src=old_path, dst=new_path)
+            return new_path
+
+        data[self.FILE_PATH_COL_NAME] = data.apply(copy_rename_file, axis=1)
+        return data
+
+        

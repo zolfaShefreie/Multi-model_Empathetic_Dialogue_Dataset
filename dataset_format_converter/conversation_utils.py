@@ -69,6 +69,46 @@ class DialogueFunctions:
         conv_df.explode([utter_key_name, result_key_name])
         return data.merge(conv_df, on=[conv_id_key_name, utter_key_name], how='inner')
 
+    @classmethod
+    def filter_not_multi_turn_on_one_party(cls,
+                                           data: pd.DataFrame,
+                                           conv_id_key_name='conv_id',
+                                           utter_id_key_name='utterance_idx',
+                                           speaker_id_key_name='speaker_idx') -> pd.DataFrame:
+        """
+        filter the conversations that one party doesn't get multi turn continuously
+        :param data:
+        :param conv_id_key_name: name of conv_id column
+        :param utter_id_key_name: name of utterance column
+        :param speaker_id_key_name: name of speaker_idx column
+        :return:
+        """
+
+        def is_multi_turn_one_party(row) -> bool:
+            """
+            check the sequence of turns it (speaker_1, speaker_2)*
+            :param row:
+            :return: a bool
+            """
+            speaker_list = row[speaker_id_key_name]
+            speaker_1, speaker_2 = speaker_list[0], speaker_list[1]
+            if speaker_1 == speaker_2:
+                return False
+
+            for index, speaker_id in enumerate(speaker_list):
+                if index % 2 == 0 and speaker_1 != speaker_id:
+                    return False
+
+                if index % 2 == 1 and speaker_2 != speaker_id:
+                    return False
+
+            return True
+
+        data = data.sort_values([conv_id_key_name, utter_id_key_name])
+        conv_df = data.groupby([conv_id_key_name])[speaker_id_key_name].apply(list).reset_index()
+        conv_df = conv_df[conv_df.apply(is_multi_turn_one_party, axis=1)]
+        return data.merge(conv_df[[conv_id_key_name]], on=[conv_id_key_name], how='inner')
+
 
 class EmpathyFunctions:
     """
