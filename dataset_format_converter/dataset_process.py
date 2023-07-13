@@ -336,8 +336,8 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
     AUDIO_FORMAT = 'wav'
 
     # metadata configs if metadata doesn't have these columns, these variables would use as default column name
-    CONV_ID_COL_NAME = "dialog_idx"
-    UTTER_ID_COL_NAME = "utterance_idx"
+    CONV_ID_COL_NAME = "transcript_id"
+    UTTER_ID_COL_NAME = "utterance_id"
     UTTER_COL_NAME = "utterance_text"
     SPEAKER_ID_COL_NAME = "interlocutor"
     URL_COL_NAME = "video_url"
@@ -381,8 +381,8 @@ class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
     AUDIO_FORMAT = 'wav'
 
     # metadata configs if metadata doesn't have these columns, these variables would use as default column name
-    CONV_ID_COL_NAME = "transcript_id"
-    UTTER_ID_COL_NAME = "utterance_id"
+    CONV_ID_COL_NAME = "dialog_idx"
+    UTTER_ID_COL_NAME = "utterance_idx"
     UTTER_COL_NAME = "text"
     SPEAKER_ID_COL_NAME = "speaker"
     URL_COL_NAME = None
