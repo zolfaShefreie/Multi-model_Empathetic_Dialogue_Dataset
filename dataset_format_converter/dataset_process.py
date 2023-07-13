@@ -554,7 +554,7 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
             :return:
             """
             old_path = f"{self.dataset_dir}/{path_metadata_dict[row[self.SPLIT_COL_NAME]]}/" \
-                       f"dia{row[self.FILE_CONV_ID]}_utt{x[self.FILE_UTTER_ID]}.mp4"
+                       f"dia{row[self.FILE_CONV_ID]}_utt{row[self.FILE_UTTER_ID]}.mp4"
 
             new_path = f"{self.dataset_dir}/audio_files/{row[self.CONV_ID_COL_NAME]}_{row[self.UTTER_ID_COL_NAME]}.mp3"
             shutil.copy2(src=old_path, dst=new_path)
@@ -563,4 +563,112 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
         data[self.FILE_PATH_COL_NAME] = data.apply(copy_rename_file, axis=1)
         return data
 
-        
+
+class MUStARDDatasetFormatter(BaseDialogueDatasetFormatter):
+    """
+       This class is written based on data on google drive of MUStARD
+       (https://drive.google.com/file/d/1i9ixalVcXskA5_BkNnbR60sqJqvGyi6E/view)
+       json file from
+       (https://github.com/soujanyaporia/MUStARD/blob/master/data/sarcasm_data.json)
+       """
+
+    # process configs
+    DATASET_NAME = 'MUStARD'
+    SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+    # some audio or video files were uploaded on youtube
+    NEED_DOWNLOAD = False
+    NEED_VIDEO_TO_AUDIO = True
+    NEED_AUDIO_SEGMENTATION = True
+    AUDIO_FORMAT = 'wav'
+
+    # metadata configs if metadata doesn't have these columns, these variables would use as default column name
+    CONV_ID_COL_NAME = "conv_id"
+    UTTER_ID_COL_NAME = "utter_id"
+    UTTER_COL_NAME = "utterance"
+    SPEAKER_ID_COL_NAME = "speaker"
+    URL_COL_NAME = None
+    FILE_PATH_COL_NAME = "file_path"
+
+    MISSING_INFO_COL_NAME = "missing_info"
+    NEW_CONV_ID_COL_NAME = "new_conv_id"
+    NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
+
+    TYPE_UTTER_COL_NAME = 'type_utter'
+    RECORD_ID_COL_NAME = 'record_id'
+
+    # if more columns change this list for dataset
+    MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
+                    'scam']
+
+    FILE_FORMAT = 'mp4'
+
+    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
+    def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
+        """
+        convert raw dataset the special format
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        data = self._convert_metadata_to_dataframe(f"{self.dataset_dir}/sarcasm_data.json")
+        return self._add_audio_file_path_col(data=data)
+
+    def _convert_metadata_to_dataframe(self, metadata_path: str) -> pd.DataFrame:
+        """
+        covert json to pd.Dataframe
+        :param metadata_path: path of metadata josn file
+        :return: metadata with dataframe format
+        """
+        with open(metadata_path) as file:
+            dict_content = ast.literal_eval(file.read())
+            data = list()
+            for conv_id, item in enumerate(dict_content.items()):
+                record_id, record = item
+                # source content
+                for utter_id in range(len(record['context'])):
+                    utter = record['context'][utter_id]
+                    speaker = record['context_speakers'][utter_id]
+                    data.append({self.CONV_ID_COL_NAME: conv_id,
+                                 self.UTTER_ID_COL_NAME: utter_id,
+                                 self.UTTER_COL_NAME: utter,
+                                 self.SPEAKER_ID_COL_NAME: speaker,
+                                 'scam': record['sarcasm'],
+                                 self.TYPE_UTTER_COL_NAME: 'context',
+                                 self.RECORD_ID_COL_NAME: record_id})
+                # target
+                data.append({self.CONV_ID_COL_NAME: conv_id,
+                             self.UTTER_ID_COL_NAME: len(record['context']),
+                             self.UTTER_COL_NAME: record['utterance'],
+                             self.SPEAKER_ID_COL_NAME: record['speaker'],
+                             'scam': record['sarcasm'],
+                             self.TYPE_UTTER_COL_NAME: 'target',
+                             self.RECORD_ID_COL_NAME: record_id})
+
+            return pd.DataFrame(data)
+
+    def _add_audio_file_path_col(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        add file_path col to metadata
+        :param data: metadata with dataframe format
+        :return: metadata with file_path_col
+        """
+
+        def get_audio_file_path(dataset_dir, record_id, type_utter):
+            """
+            get path of audio file based on this dataset
+            :param dataset_dir:
+            :param record_id:
+            :param type_utter:
+            :return:
+            """
+
+            path = f"{dataset_dir}/{'context_final' if type_utter=='context' else 'utterances_final'}" \
+                   f"/{record_id}{'_c' if type_utter=='context' else ''}.mp4"
+            return path if os.path.exists(path) else None
+
+        data[self.FILE_PATH_COL_NAME] = data.apply(
+            lambda x: get_audio_file_path(dataset_dir=self.dataset_dir,
+                                          record_id=x[self.RECORD_ID_COL_NAME],
+                                          type_utter=x[self.TYPE_UTTER_COL_NAME]))
+        return data
