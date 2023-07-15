@@ -15,4 +15,4 @@ PREFIX_MID_PROCESS_CACHE_DIR = "./.cache_stages"
 
 # use for AudioModule
 # about the model you can read here https://huggingface.co/speechbrain/asr-transformer-transformerlm-librispeech/
-ASR_MODEL_NAME = "speechbrain/asr-transformer-transformerlm-librispeech"
+ASR_MODEL_NAME = "speechbrain/asr-conformer-transformerlm-librispeech"
