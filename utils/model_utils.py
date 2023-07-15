@@ -2,6 +2,7 @@ import torch
 from abc import ABC, abstractmethod
 import lightning.pytorch as pl
 from torch.utils.data import Dataset, DataLoader
+from transformers import Trainer
 import pandas as pd
 import numpy as np
 
@@ -69,12 +70,12 @@ class BaseDeployedModel(ABC):
         self.input_dict_format = self.get_arg_index_model_input()
 
         # load model
-        self.trainer = pl.Trainer(accelerator='auto')
         self.model_class = self._get_model_class()
         self.model = self.model_class.load_from_checkpoint(self._get_checkpoint_path(),
                                                            map_location=torch.device('cuda' if torch.cuda.is_available()
                                                                                      else 'cpu'))
         self.model.eval()
+        self.trainer = Trainer(self.model)
 
     def _make_preprocess_pipeline(self, is_single=False):
         """
@@ -103,10 +104,8 @@ class BaseDeployedModel(ABC):
         :return:
         """
         dataset = BaseDataset(data, pipeline_transforms=self._make_preprocess_pipeline(is_single=False))
-        dataloader = DataLoader(dataset, batch_size=self.MAX_BATCH_SIZE)
-        y_hat = self.trainer.predict(self.model, dataloader)
-        y_hat = [output for batch in y_hat for output in batch]
-        return self._make_result_after_process_pipeline(is_single=False)(torch.stack(y_hat, dim=0))
+        y_hat = self.trainer.predict(dataset).predictions
+        return self._make_result_after_process_pipeline(is_single=False)(torch.from_numpy(y_hat))
 
     def _predict_single_data(self, data):
         """
