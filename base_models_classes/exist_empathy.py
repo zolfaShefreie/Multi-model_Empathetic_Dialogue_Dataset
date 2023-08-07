@@ -5,7 +5,7 @@ from torchmetrics import Accuracy, F1Score
 
 from utils import model_utils
 from utils import util_transforms
-from settings import PREFIX_CLASSIFIER_DIR
+from settings import EMPATHY_EXIST_MODEL_FILE_PATH
 
 from transformers import RobertaModel
 
@@ -74,7 +74,7 @@ class ExistEmpathyClassifier(model_utils.BaseDeployedModel):
         """
         :return: path of model checkpoint
         """
-        return f"{PREFIX_CLASSIFIER_DIR}/exist_empathy_classifier.ckpt"
+        return EMPATHY_EXIST_MODEL_FILE_PATH
 
     def _get_model_class(self):
         """

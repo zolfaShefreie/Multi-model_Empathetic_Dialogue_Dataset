@@ -6,7 +6,7 @@ import enum
 
 from utils import model_utils
 from utils import util_transforms
-from settings import PREFIX_CLASSIFIER_DIR
+from settings import EMPATHY_KIND_MODEL_FILE_PATH
 
 
 class EmpathyKindEnum(enum.Enum):
@@ -75,7 +75,7 @@ class EmpathyKindClassifier(model_utils.BaseDeployedModel):
         """
         :return: path of model checkpoint
         """
-        return f"{PREFIX_CLASSIFIER_DIR}/empathy_kind_classifier.ckpt"
+        return EMPATHY_KIND_MODEL_FILE_PATH
 
     def _get_model_class(self):
         """

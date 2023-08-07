@@ -7,7 +7,10 @@ environ.Env.read_env(env_path)
 
 
 RAW_DATASET_PATH = env("RAW_DATASET_PATH", default="./raw_dataset")
-PREFIX_CLASSIFIER_DIR = env("PREFIX_CLASSIFIER_DIR", default="./")
+
+# Classifier File Path
+EMPATHY_KIND_MODEL_FILE_PATH = env("EMPATHY_KIND_MODEL_FILE_PATH", default="./")
+EMPATHY_EXIST_MODEL_FILE_PATH = env("EMPATHY_EXIST_MODEL_FILE_PATH", default="./")
 
 # use for writerLoaderHandler
 PREFIX_MID_PROCESS_DIR = "./middle_pipeline_stage"
