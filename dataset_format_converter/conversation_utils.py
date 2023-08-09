@@ -65,7 +65,7 @@ class DialogueFunctions:
         """
         conv_df = data[[conv_id_key_name, utter_key_name]].groupby([conv_id_key_name])[utter_key_name].\
             apply(list).reset_index()
-        conv_df[result_key_name] = conv_df.apply(lambda x: [i for i, value in enumerate(x[utter_key_name])])
+        conv_df[result_key_name] = conv_df.apply(lambda x: [i for i, value in enumerate(x[utter_key_name])], axis=1)
         conv_df.explode([utter_key_name, result_key_name])
         return data.merge(conv_df, on=[conv_id_key_name, utter_key_name], how='inner')
 

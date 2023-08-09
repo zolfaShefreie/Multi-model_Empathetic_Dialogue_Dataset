@@ -96,7 +96,7 @@ class BaseDialogueDatasetFormatter(ABC):
             lambda x: Downloader.download(download_type='youtube',
                                           urls=[x[self.URL_COL_NAME], ],
                                           file_path=f"{self.dataset_dir}/audio_files/{x[self.CONV_ID_COL_NAME]}_{x.name}.{self.AUDIO_FORMAT}",
-                                          file_format="wav"))
+                                          file_format="wav"), axis=1)
         # merge the result with data
         return data.merge(df, on=[self.CONV_ID_COL_NAME, self.URL_COL_NAME], how='inner')
 
@@ -106,13 +106,16 @@ class BaseDialogueDatasetFormatter(ABC):
         :param data: metadata with dataframe format
         :return: metadata with audio file path
         """
+        print(data.columns)
         # get file paths of each conversation
         conv_df = data[[self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME]].drop_duplicates()
+        print(conv_df.columns)
         # create new column and save the path of audio
         # audio will be saved on video location with the same names
         conv_df[f"new_{self.FILE_PATH_COL_NAME}"] = conv_df.apply(
             lambda x: AudioModule.extract_audio_from_video(x[self.FILE_PATH_COL_NAME],
-                                                           f"{x[self.FILE_PATH_COL_NAME].strip(self.FILE_FORMAT)[0]}.{self.AUDIO_FORMAT}"))
+                                                           f"{x[self.FILE_PATH_COL_NAME].split(self.FILE_FORMAT)[0]}.{self.AUDIO_FORMAT}"),
+            axis=1)
 
         # merge result with metadata and replace new column values with default file_path column
         return data.merge(conv_df, on=[self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME], how='inner').\
@@ -141,8 +144,8 @@ class BaseDialogueDatasetFormatter(ABC):
             lambda x: AudioModule.segment_audio(file_path=x[self.FILE_PATH_COL_NAME],
                                                 utterances=x[self.UTTER_COL_NAME],
                                                 prefix_name=x[self.CONV_ID_COL_NAME],
-                                                save_dir=f"{'/'.join(x[self.FILE_PATH_COL_NAME].strip('/')[:-1])}",
-                                                first_utter_id=x['first_id']))
+                                                save_dir=f"{'/'.join(x[self.FILE_PATH_COL_NAME].split('/')[:-1])}",
+                                                first_utter_id=x['first_id']), axis=1)
         # explode the utter_ids and list of seg audio file path
         conv_df = conv_df.explode([self.UTTER_ID_COL_NAME, 'audio_files_path']).reset_index(drop=True)
         # merge result with metadata and replace new column values with default file_path column
@@ -266,7 +269,7 @@ class BaseDialogueDatasetFormatter(ABC):
                                                                        save_dir=self.save_dir,
                                                                        dataset_name=self.DATASET_NAME,
                                                                        conv_id=x[self.CONV_ID_COL_NAME],
-                                                                       utter_idx=x[self.UTTER_ID_COL_NAME]))
+                                                                       utter_idx=x[self.UTTER_ID_COL_NAME]), axis=1)
 
         metadata_path = f"{self.save_dir}/{self.DATASET_NAME}/metadata.csv"
         data.to_csv(metadata_path)
@@ -446,7 +449,7 @@ class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
             lambda x: get_audio_file_path(dataset_dir=self.dataset_dir,
                                           conv_id=x[self.CONV_ID_COL_NAME],
                                           utter_id=x[self.UTTER_ID_COL_NAME],
-                                          speaker_id=x[self.SPEAKER_ID_COL_NAME]))
+                                          speaker_id=x[self.SPEAKER_ID_COL_NAME]), axis=1)
         return data
 
 
@@ -664,5 +667,5 @@ class MUStARDDatasetFormatter(BaseDialogueDatasetFormatter):
         data[self.FILE_PATH_COL_NAME] = data.apply(
             lambda x: get_audio_file_path(dataset_dir=self.dataset_dir,
                                           record_id=x[self.RECORD_ID_COL_NAME],
-                                          type_utter=x[self.TYPE_UTTER_COL_NAME]))
+                                          type_utter=x[self.TYPE_UTTER_COL_NAME]), axis=1)
         return data
