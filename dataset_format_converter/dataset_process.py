@@ -1,5 +1,5 @@
 import pandas as pd
-import json
+import numpy as np
 import ast
 from abc import ABC, abstractmethod
 import warnings
@@ -24,6 +24,7 @@ class BaseDialogueDatasetFormatter(ABC):
     DATASET_NAME = str()
     SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
                  'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+    EDITABLE_STAGES = ['apply_empathy_classifier', 'empathetic_segmentation', ]
     # some audio or video files were uploaded on youtube
     NEED_DOWNLOAD = False
     NEED_VIDEO_TO_AUDIO = False
@@ -56,15 +57,15 @@ class BaseDialogueDatasetFormatter(ABC):
         """
         self.dataset_dir = dataset_dir
         self.save_dir = save_dir
+        WriterLoaderHandler.add_decorator_to_func(class_obj=self, dataset_name=self.DATASET_NAME,
+                                                  process_seq=self.SEQ_STAGE, editable_process=self.EDITABLE_STAGES)
 
     @abstractmethod
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
         raise NotImplementedError
 
     # Audio Processing Module Part
 
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def audio_processing(self, data: pd.DataFrame) -> pd.DataFrame:
         """
         use each audio processing method in some conditions
@@ -152,7 +153,6 @@ class BaseDialogueDatasetFormatter(ABC):
     # Empathetic part
 
     @classmethod
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def filter_two_party(cls, data: pd.DataFrame) -> pd.DataFrame:
         """
         filter two part conversation based on class attribute
@@ -166,7 +166,6 @@ class BaseDialogueDatasetFormatter(ABC):
     # Empathy Module Part
 
     @classmethod
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=True)
     def apply_empathy_classifier(cls, data: pd.DataFrame) -> pd.DataFrame:
         """
         using empathy classifiers to get empathy_kind and empathy_exist
@@ -179,7 +178,6 @@ class BaseDialogueDatasetFormatter(ABC):
                                                      conv_id_key_name=cls.CONV_ID_COL_NAME)
 
     @classmethod
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def filter_empathy_exist_conv(cls, data: pd.DataFrame) -> pd.DataFrame:
         """
         filter the empathetic conversation
@@ -193,7 +191,6 @@ class BaseDialogueDatasetFormatter(ABC):
                                                                 conv_id_key_name=cls.CONV_ID_COL_NAME)
 
     @classmethod
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=True)
     def empathetic_segmentation(cls, data: pd.DataFrame) -> pd.DataFrame:
         """
         segment conversations to ge empathetic parts and adding missing info col for new conversations
@@ -211,7 +208,6 @@ class BaseDialogueDatasetFormatter(ABC):
         return data
 
     @classmethod
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def filter_missing_info(cls, data: pd.DataFrame) -> pd.DataFrame:
         """
         filter missing_info == 1
@@ -226,7 +222,6 @@ class BaseDialogueDatasetFormatter(ABC):
         data[cls.MISSING_INFO_COL_NAME] = data[cls.MISSING_INFO_COL_NAME].apply(int)
         return data[data[cls.MISSING_INFO_COL_NAME] == 1]
 
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def last_stage_changes(self, data: pd.DataFrame) -> pd.DataFrame:
         """
         delete some columns and rename some of them and save last changes
@@ -314,7 +309,9 @@ class BaseDialogueDatasetFormatter(ABC):
 
         start_stage_index = WriterLoaderHandler.get_process_stage(dataset_name=self.DATASET_NAME,
                                                                   process_seq=self.SEQ_STAGE)
-        if start_stage_index >= self.SEQ_STAGE.index(start_stage):
+
+        # if the previous stage not be in .cache_stages
+        if start_stage_index < self.SEQ_STAGE.index(start_stage):
             raise Exception("the previous stage doesn't run before")
 
         if stop_stage and stop_stage not in self.SEQ_STAGE:
@@ -353,7 +350,6 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
 
     FILE_FORMAT = 'wav'
 
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
         """
         convert raw dataset the special format
@@ -398,7 +394,6 @@ class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
 
     FILE_FORMAT = 'wav'
 
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
         """
         convert raw dataset the special format
@@ -495,7 +490,6 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
 
     FILE_FORMAT = 'mp4'
 
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
         """
         convert raw dataset the special format
@@ -529,9 +523,9 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
         data_list = list(data_dict.values())
         data = data_list[0]
         for df in data_list[1:]:
-            df[cls.CONV_ID_COL_NAME] = data[cls.CONV_ID_COL_NAME].apply(int)
+            # df[cls.CONV_ID_COL_NAME] = data[cls.CONV_ID_COL_NAME].apply(np.int64)
             df[cls.CONV_ID_COL_NAME] = df[cls.CONV_ID_COL_NAME] + len(data)
-            data = data.append(df, ignore_index=True)
+            data = pd.concat([data, df], ignore_index=True)
         return data
 
     def _add_file_path_col(self, data: pd.DataFrame) -> pd.DataFrame:
@@ -557,6 +551,7 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
                        f"dia{row[self.FILE_CONV_ID]}_utt{row[self.FILE_UTTER_ID]}.mp4"
 
             new_path = f"{self.dataset_dir}/audio_files/{row[self.CONV_ID_COL_NAME]}_{row[self.UTTER_ID_COL_NAME]}.mp3"
+            os.makedirs(os.path.dirname(new_path), exist_ok=True)
             shutil.copy2(src=old_path, dst=new_path)
             return new_path
 
@@ -603,7 +598,6 @@ class MUStARDDatasetFormatter(BaseDialogueDatasetFormatter):
 
     FILE_FORMAT = 'mp4'
 
-    @WriterLoaderHandler.decorator(dataset_name=DATASET_NAME, process_seq=SEQ_STAGE, human_editable=False)
     def dataset_cleaner(self, *args, **kwargs) -> pd.DataFrame:
         """
         convert raw dataset the special format

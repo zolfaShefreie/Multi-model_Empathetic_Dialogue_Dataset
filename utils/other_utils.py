@@ -21,7 +21,7 @@ class WriterLoaderHandler:
     """
     PREFIX_PATH = PREFIX_MID_PROCESS_DIR
     CACHE_DIR = PREFIX_MID_PROCESS_CACHE_DIR
-    SEP = "<SEP>"
+    SEP = "[SEP]"
 
     @classmethod
     def get_process_stage(cls, dataset_name: str, process_seq: list) -> int:
@@ -39,7 +39,7 @@ class WriterLoaderHandler:
             if files:
                 # return the max of function_name_index
                 # name files are like : dataset<SEP>func.csv
-                return max([process_seq.index(file.strip('.csv')[0].strip(cls.SEP)[-1]) for file in files]) + 1
+                return max([process_seq.index(file.split('.csv')[0].split(cls.SEP)[-1]) for file in files]) + 1
         return 0
 
     @classmethod
@@ -69,6 +69,7 @@ class WriterLoaderHandler:
                                func_name=func.__name__)
                 return new_data
 
+            new_func.__name__ = func.__name__
             return new_func
 
         return pre_pass_process
@@ -85,6 +86,7 @@ class WriterLoaderHandler:
         """
         if human_editable:
             data_path = cls.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=False)
+            os.makedirs(os.path.dirname(data_path), exist_ok=True)
             data.to_csv(data_path)
             cls._log(path=data_path, is_load_process=False)
         cls._cache(data=data, dataset_name=dataset_name, func_name=func_name)
@@ -100,6 +102,7 @@ class WriterLoaderHandler:
         :return:
         """
         data_path = cls.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=True)
+        os.makedirs(os.path.dirname(data_path), exist_ok=True)
         data.to_csv(data_path)
 
     @classmethod
@@ -168,3 +171,23 @@ class WriterLoaderHandler:
             print(f"data is read from {path}")
         else:
             print(f'data is written in {path}')
+
+    @classmethod
+    def add_decorator_to_func(cls, class_obj, dataset_name: str, process_seq: list, editable_process: list,
+                              data_arg_name='data'):
+        """
+        add decorator to some functions of class
+        :param class_obj: class or object of class
+        :param dataset_name: name of dataset
+        :param process_seq: list of process that sorted by running turn
+        :param data_arg_name: name of argument of data that used in function
+        :param editable_process: list of process that edit by humans
+        :return:
+        """
+        for function in process_seq:
+            setattr(class_obj,
+                    function,
+                    WriterLoaderHandler.decorator(dataset_name=dataset_name,
+                                                  process_seq=process_seq,
+                                                  human_editable=True if function in editable_process else False,
+                                                  data_arg_name=data_arg_name)(getattr(class_obj, function)))
