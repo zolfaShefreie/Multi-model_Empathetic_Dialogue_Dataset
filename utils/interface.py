@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 
 class BaseInterface(ABC):
-    
+
     # keys are the name of arguments that it must be unique
     ARGUMENTS = {
         'argument_name': {
