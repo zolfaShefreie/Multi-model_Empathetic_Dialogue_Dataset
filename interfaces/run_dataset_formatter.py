@@ -51,6 +51,10 @@ class RunningFormatterInterface(BaseInterface):
         return value
 
     def _run_main_process(self):
+        """
+        get formatter class and make new object of it and run the formatter on specific stages
+        :return:
+        """
         formatter_class = self.FORMATTER[self.dataset_name]
         formatter_obj = formatter_class(dataset_dir=self.dataset_dir, save_dir=self.save_at_dir)
         try:

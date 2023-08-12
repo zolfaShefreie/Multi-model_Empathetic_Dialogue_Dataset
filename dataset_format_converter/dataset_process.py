@@ -320,6 +320,20 @@ class BaseDialogueDatasetFormatter(ABC):
         if stop_stage and stop_stage not in self.SEQ_STAGE:
             raise Exception("stop_stage doesn't exists in stages")
 
+    @classmethod
+    def stage_tracker(cls) -> list:
+        """
+        which stage running before
+        :return: list of run stages
+        """
+        start_stage_index = WriterLoaderHandler.get_process_stage(dataset_name=cls.DATASET_NAME,
+                                                                  process_seq=cls.SEQ_STAGE)
+        # shows any stages of this dataset has not been run
+        if start_stage_index == 0:
+            return list()
+
+        return cls.SEQ_STAGE[:start_stage_index]
+
 
 class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
     """
