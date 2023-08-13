@@ -34,7 +34,7 @@ class FormatterInfoInterface(BaseInterface):
         print(f"____________________________________\n"
               f"Stages:\n")
         for stage in stage_list:
-            print(f"Stage: {stage}\n Description: {getattr(formatter_class, stage).__doc__.strip().split(':')[0]}\n")
+            print(f"Stage: {stage}\n Description: {getattr(formatter_class, stage).__doc__.strip().split(':param')[0]}\n")
         print(f"____________________________________")
 
 
