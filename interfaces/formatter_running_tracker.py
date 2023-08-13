@@ -5,9 +5,8 @@ from utils.interface import BaseInterface
 
 
 class TrackerFormatterInterface(BaseInterface):
-    """
-    this interface show with stages have already been run
-    """
+
+    DESCRIPTION = "This interface shows which stages have already been run for specific dataset"
 
     # keys are the name of arguments that it must be unique
     ARGUMENTS = {

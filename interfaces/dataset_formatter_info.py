@@ -4,9 +4,8 @@ from utils.interface import BaseInterface
 
 
 class FormatterInfoInterface(BaseInterface):
-    """
-    this interface show with stages have already been run
-    """
+
+    DESCRIPTION = 'This interface gives you information about what is the stages of specific dataset'
 
     # keys are the name of arguments that it must be unique
     ARGUMENTS = {

@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 
 class BaseInterface(ABC):
 
+    DESCRIPTION = str()
+
     # keys are the name of arguments that it must be unique
     ARGUMENTS = {
         'argument_name': {
@@ -16,7 +18,7 @@ class BaseInterface(ABC):
         """
         initial of interface
         """
-        self.parser = argparse.ArgumentParser()
+        self.parser = argparse.ArgumentParser(description=self.DESCRIPTION)
         self.add_arguments()
 
         # define attribute based on arguments

@@ -7,6 +7,8 @@ from utils.interface import BaseInterface
 
 class RunningFormatterInterface(BaseInterface):
 
+    DESCRIPTION = "This interface runs the formatter stages for specific dataset"
+
     # keys are the name of arguments that it must be unique
     ARGUMENTS = {
         'dataset_name': {
