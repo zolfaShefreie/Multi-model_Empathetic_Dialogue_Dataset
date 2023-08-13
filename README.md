@@ -19,16 +19,16 @@ Three scripts is implemented to reformat datasets, including:
 1. dataset_formatter_info.py</br>
    This script gives you information about what is the stages of specific dataset.
    ```
-   python interfaces/dataset_formatter_info.py --dataset_name {dataset_name}
+   python dataset_formatter_info.py --dataset_name {dataset_name}
    ```
 2. formatter_running_tracker.py</br>
    This script shows what are run stages for specific dataset.
    ```
-   python interfaces/formatter_running_tracker.py --dataset_name {dataset_name}
+   python formatter_running_tracker.py --dataset_name {dataset_name}
    ```
 5. run_dataset_formatter.py</br>
    This script run the formatter stages for specific dataset.
    ```
-   python interfaces/run_dataset_formatter.py --dataset_name {dataset_name} --dataset_dir {dir of dataset} --save_at_dir {save at dir} --start_stage {start_stage} --stop_stage {stop_stage}
+   python run_dataset_formatter.py --dataset_name {dataset_name} --dataset_dir {dir of dataset} --save_at_dir {save at dir} --start_stage {start_stage} --stop_stage {stop_stage}
    ```
 ## Stages

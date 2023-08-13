@@ -1,12 +1,11 @@
-import os
 
 from dataset_format_converter import dataset_process
 from utils.interface import BaseInterface
 
 
-class TrackerFormatterInterface(BaseInterface):
+class FormatterInfoInterface(BaseInterface):
 
-    DESCRIPTION = "This interface shows which stages have already been run for specific dataset"
+    DESCRIPTION = 'This interface gives you information about what is the stages of specific dataset'
 
     # keys are the name of arguments that it must be unique
     ARGUMENTS = {
@@ -30,16 +29,14 @@ class TrackerFormatterInterface(BaseInterface):
         :return:
         """
         formatter_class = self.FORMATTER[self.dataset_name]
-        stage_list = formatter_class.stage_tracker()
-        if not stage_list:
-            print(f"____________________________________\n"
-                  f"Any stages of {self.dataset_name} dataset has not been run\n"
-                  f"____________________________________")
-        else:
-            print(f"____________________________________\n"
-                  f"Run Stages: {stage_list}"
-                  f"____________________________________")
+        stage_list = formatter_class.SEQ_STAGE
+        print(f"____________________________________\n"
+              f"Stages:\n")
+        for stage in stage_list:
+            print(f"\tStage: {stage}\n"
+                  f"\tDescription: {getattr(formatter_class, stage).__doc__.strip().split(':param')[0]}")
+        print(f"____________________________________")
 
 
 if __name__ == "__main__":
-    TrackerFormatterInterface().run()
+    FormatterInfoInterface().run()
