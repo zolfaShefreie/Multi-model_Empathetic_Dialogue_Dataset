@@ -17,7 +17,7 @@ Make an envierment and run below command to install all required packages
 ```
 pip install -r requirements.txt
 ```
-<b>Make sure you complete env and prepare empathy model checkpoints</b>
+<b>Make sure you complete ".env" file and prepare empathy model checkpoints</b>
 ### Commands
 Three scripts is implemented to reformat datasets, including:
 1. dataset_formatter_info.py</br>
