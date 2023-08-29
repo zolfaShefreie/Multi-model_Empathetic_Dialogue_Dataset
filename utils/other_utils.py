@@ -142,10 +142,9 @@ class WriterLoaderHandler:
                 if os.path.exists(data_path):
                     data = pd.read_csv(data_path)
                     return data
-        
-        else:
-            # if it is first stage or file doesn't exists
-            return kwargs[data_arg_name]
+
+        # if it is first stage or file doesn't exists
+        return kwargs[data_arg_name]
 
     @classmethod
     def get_path(cls, dataset_name: str, func_name: str, is_cache: bool = True) -> str:
