@@ -25,7 +25,7 @@ class RunningFormatterInterface(BaseInterface):
         },
         'save_at_dir': {
             'help': "the directory that you want to save formatted data on it",
-            'request': True
+            'required': True
         },
 
         'start_stage': {

@@ -435,7 +435,7 @@ class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
         :param metadata_path: path of metadata josn file
         :return: metadata with dataframe format
         """
-        with open(metadata_path) as file:
+        with open(metadata_path, encoding="utf8") as file:
             data = ast.literal_eval(file.read())
             return pd.DataFrame([utterance_data for conversations in data.values()
                                 for utterance_data in conversations.values()])
@@ -631,7 +631,7 @@ class MUStARDDatasetFormatter(BaseDialogueDatasetFormatter):
         :param metadata_path: path of metadata josn file
         :return: metadata with dataframe format
         """
-        with open(metadata_path) as file:
+        with open(metadata_path, encoding="utf8") as file:
             dict_content = ast.literal_eval(file.read())
             data = list()
             for conv_id, item in enumerate(dict_content.items()):
