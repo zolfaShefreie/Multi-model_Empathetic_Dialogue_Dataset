@@ -1,3 +1,4 @@
+import enum
 from zipfile import ZipFile
 import pandas as pd
 import os
@@ -190,3 +191,48 @@ class WriterLoaderHandler:
                                                   process_seq=process_seq,
                                                   human_editable=True if function in editable_process else False,
                                                   data_arg_name=data_arg_name)(getattr(class_obj, function)))
+
+
+class LLMsCompletionService:
+
+    class Tools(enum.Enum):
+        TOGETHER = 0
+        OPENAI = 1
+        FARAROOM = 2
+
+    class CompletionKinds(enum.Enum):
+        TEXT = 0
+        CHAT = 1
+
+    DEFAULT_CONFIG = {
+        'temperature': 0.7,
+        'top_p': 0.95,
+        'top_k': 50,
+        'max_tokens': 512,
+    }
+
+    @classmethod
+    def completion(cls,
+                   model: str,
+                   prompt: str = None,
+                   messages: list = None,
+                   tool: int = Tools.FARAROOM,
+                   completion_kind: int = CompletionKinds.TEXT,
+                   number_of_choices: int = 1,
+                   config: dict = None,
+                   request_sleep: int = 100):
+        """
+        interface for using tools for completion task
+        :param request_sleep: time of sleep between two requests
+        :param model: name of model
+        :param prompt: for text completion task
+        :param messages: for completion chat task
+        :param tool: which tool do you want to use for completion task?
+        :param completion_kind: which kind of completion do you want to use?
+        :param number_of_choices: number of return result for completion task
+        :param config: a dict for setting some configs of completion task like top_k
+        :return:
+        """
+
+        pass
+
