@@ -19,3 +19,9 @@ PREFIX_MID_PROCESS_CACHE_DIR = "./.cache_stages"
 # use for AudioModule
 # about the model you can read here https://huggingface.co/speechbrain/asr-transformer-transformerlm-librispeech/
 ASR_MODEL_NAME = "speechbrain/asr-conformer-transformerlm-librispeech"
+
+# tools for LLMs
+# API key or token configs
+FARAROOM_TOKEN = env("FARAROOM_TOKEN", default=None)
+OPENAI_API_KEY = env("OPENAI_API_KEY", default=None)
+TOGETHER_API_KEY = env("TOGETHER_API_KEY", default=None)
