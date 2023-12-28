@@ -1,7 +1,9 @@
 import enum
+import json
 from zipfile import ZipFile
 import pandas as pd
 import os
+import requests
 
 from settings import PREFIX_MID_PROCESS_DIR, PREFIX_MID_PROCESS_CACHE_DIR
 
@@ -213,6 +215,7 @@ class LLMsCompletionService:
 
     @classmethod
     def completion(cls,
+                   tool_auth_info,
                    model: str,
                    prompt: str = None,
                    messages: list = None,
@@ -223,6 +226,7 @@ class LLMsCompletionService:
                    request_sleep: int = 100):
         """
         interface for using tools for completion task
+        :param tool_auth_info: API_KEY or dict of info for using one of tools that you are using for this request
         :param request_sleep: time of sleep between two requests
         :param model: name of model
         :param prompt: for text completion task
@@ -236,3 +240,37 @@ class LLMsCompletionService:
 
         pass
 
+    @classmethod
+    def _completion_text_together(cls):
+        pass
+
+    @classmethod
+    def _completion_text_fararoom(cls,
+                                  tool_auth_info: dict,
+                                  prompt: str):
+
+        url = "https://api.fararoom.ir/dotask/"
+
+        payload = json.dumps({
+            "task_name": tool_auth_info['FARAROOM_TASK_NAME'],
+            "source": tool_auth_info['FARAROOM_SOURCE'],
+            "meta": tool_auth_info['FARAROOM_META'],
+            "content": prompt,
+        })
+
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Token {tool_auth_info["FARAROOM_TOKEN"]}'
+        }
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        return response.text
+
+    @classmethod
+    def _completion_text_openai(cls):
+        pass
+
+    @classmethod
+    def _completion_chat_openai(cls):
+        pass
