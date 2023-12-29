@@ -227,7 +227,7 @@ class LLMsCompletionService:
                    request_sleep: int = 100):
         """
         interface for using tools for completion task
-        :param tool_auth_info: API_KEY or dict of info for using one of tools that you are using for this request
+        :param tool_auth_info: API_KEY or dict of info or a client for using one of tools that you are using for this request
         :param request_sleep: time of sleep between two requests
         :param model: name of model
         :param prompt: for text completion task
@@ -242,14 +242,18 @@ class LLMsCompletionService:
         pass
 
     @classmethod
-    def _completion_text_together(cls, tool_auth_info: str, model: str, prompt: str, config: dict):
+    def _completion_text_together(cls,
+                                  tool_auth_info: str,
+                                  model: str,
+                                  prompt: str,
+                                  config: dict) -> list:
         """
 
         :param tool_auth_info: API_KEY of together.ai account
         :param model: name of model
-        :param prompt:or text completion task
+        :param prompt: for text completion task
         :param config: a dict for setting some configs of completion task like top_k
-        :return:
+        :return: a list of responses
         """
         together.api_key = tool_auth_info
 
@@ -261,12 +265,12 @@ class LLMsCompletionService:
     @classmethod
     def _completion_text_fararoom(cls,
                                   tool_auth_info: dict,
-                                  prompt: str):
+                                  prompt: str) -> list:
         """
 
         :param tool_auth_info: a dictionary of auth info
-        :param prompt: or text completion task
-        :return:
+        :param prompt: for text completion task
+        :return: a list of responses
         """
 
         url = "https://api.fararoom.ir/dotask/"
@@ -285,12 +289,44 @@ class LLMsCompletionService:
 
         response = requests.request("POST", url, headers=headers, data=payload)
 
-        return response.text
+        return [response.text]
 
     @classmethod
-    def _completion_text_openai(cls):
-        pass
+    def _completion_text_openai(cls,
+                                tool_auth_info,
+                                prompt: str,
+                                model: str,
+                                config: dict) -> :
+        """
+
+        :param tool_auth_info: client of openai
+        :param prompt: for text completion task
+        :param model: name of model
+        :param config: a dict for setting some configs of completion task like top_k
+        :return: a list of responses
+        """
+
+        response = tool_auth_info.completions.create(model=model,
+                                                     prompt=prompt,
+                                                     **config)
+        return response.choices
 
     @classmethod
-    def _completion_chat_openai(cls):
-        pass
+    def _completion_chat_openai(cls,
+                                tool_auth_info,
+                                prompt: str,
+                                model: str,
+                                config: dict) -> list:
+        """
+
+        :param tool_auth_info: client of openai
+        :param prompt: for text completion task
+        :param model: name of model
+        :param config: a dict for setting some configs of completion task like top_k
+        :return: a list of responses
+        """
+
+        response = tool_auth_info.chat.completions.create(model=model,
+                                                          prompt=prompt,
+                                                          **config)
+        return response.choices
