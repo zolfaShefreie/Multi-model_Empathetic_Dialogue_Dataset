@@ -4,6 +4,7 @@ from zipfile import ZipFile
 import pandas as pd
 import os
 import requests
+import together
 
 from settings import PREFIX_MID_PROCESS_DIR, PREFIX_MID_PROCESS_CACHE_DIR
 
@@ -241,13 +242,32 @@ class LLMsCompletionService:
         pass
 
     @classmethod
-    def _completion_text_together(cls):
-        pass
+    def _completion_text_together(cls, tool_auth_info: str, model: str, prompt: str, config: dict):
+        """
+
+        :param tool_auth_info: API_KEY of together.ai account
+        :param model: name of model
+        :param prompt:or text completion task
+        :param config: a dict for setting some configs of completion task like top_k
+        :return:
+        """
+        together.api_key = tool_auth_info
+
+        response = together.Complete.create(model=model,
+                                            prompt=prompt,
+                                            **config)
+        return response['output']['choices']
 
     @classmethod
     def _completion_text_fararoom(cls,
                                   tool_auth_info: dict,
                                   prompt: str):
+        """
+
+        :param tool_auth_info: a dictionary of auth info
+        :param prompt: or text completion task
+        :return:
+        """
 
         url = "https://api.fararoom.ir/dotask/"
 
