@@ -5,6 +5,7 @@ import pandas as pd
 import os
 import requests
 import together
+import openai
 
 from settings import PREFIX_MID_PROCESS_DIR, PREFIX_MID_PROCESS_CACHE_DIR
 
@@ -199,13 +200,13 @@ class WriterLoaderHandler:
 class LLMsCompletionService:
 
     class Tools(enum.Enum):
-        TOGETHER = 0
-        OPENAI = 1
-        FARAROOM = 2
+        TOGETHER = 'together'
+        OPENAI = 'openai'
+        FARAROOM = 'fararoom'
 
     class CompletionKinds(enum.Enum):
-        TEXT = 0
-        CHAT = 1
+        TEXT = 'text'
+        CHAT = 'chat'
 
     DEFAULT_CONFIG = {
         'temperature': 0.7,
@@ -217,14 +218,14 @@ class LLMsCompletionService:
     @classmethod
     def completion(cls,
                    tool_auth_info,
-                   model: str,
+                   model: str = None,
                    prompt: str = None,
                    messages: list = None,
-                   tool: int = Tools.FARAROOM,
-                   completion_kind: int = CompletionKinds.TEXT,
+                   tool: enum.Enum = Tools.FARAROOM,
+                   completion_kind: enum.Enum = CompletionKinds.TEXT,
                    number_of_choices: int = 1,
                    config: dict = None,
-                   request_sleep: int = 100):
+                   request_sleep: int = 100) -> list:
         """
         interface for using tools for completion task
         :param tool_auth_info: API_KEY or dict of info or a client for using one of tools that you are using for this request
@@ -239,14 +240,25 @@ class LLMsCompletionService:
         :return:
         """
 
-        pass
+        config = config if config is not None else cls.DEFAULT_CONFIG
+        kwargs = {'config': config if config is not None else cls.DEFAULT_CONFIG,
+                  'tool_auth_info': tool_auth_info,
+                  'model': model,
+                  'prompt': prompt,
+                  'messages': messages,
+                  'number_of_choices': number_of_choices}
+
+        # todo validate function
+
+        return getattr(cls, f"_completion_{completion_kind.value}_{tool.value}")(**kwargs)
 
     @classmethod
     def _completion_text_together(cls,
                                   tool_auth_info: str,
                                   model: str,
                                   prompt: str,
-                                  config: dict) -> list:
+                                  config: dict,
+                                  **kwargs) -> list:
         """
 
         :param tool_auth_info: API_KEY of together.ai account
@@ -265,7 +277,8 @@ class LLMsCompletionService:
     @classmethod
     def _completion_text_fararoom(cls,
                                   tool_auth_info: dict,
-                                  prompt: str) -> list:
+                                  prompt: str,
+                                  **kwargs) -> list:
         """
 
         :param tool_auth_info: a dictionary of auth info
@@ -296,7 +309,8 @@ class LLMsCompletionService:
                                 tool_auth_info,
                                 prompt: str,
                                 model: str,
-                                config: dict) -> :
+                                config: dict,
+                                **kwargs) -> list:
         """
 
         :param tool_auth_info: client of openai
@@ -314,19 +328,20 @@ class LLMsCompletionService:
     @classmethod
     def _completion_chat_openai(cls,
                                 tool_auth_info,
-                                prompt: str,
+                                messages: list,
                                 model: str,
-                                config: dict) -> list:
+                                config: dict,
+                                **kwargs) -> list:
         """
 
         :param tool_auth_info: client of openai
-        :param prompt: for text completion task
+        :param messages: for completion chat task
         :param model: name of model
         :param config: a dict for setting some configs of completion task like top_k
         :return: a list of responses
         """
 
         response = tool_auth_info.chat.completions.create(model=model,
-                                                          prompt=prompt,
+                                                          messages=messages,
                                                           **config)
         return response.choices
