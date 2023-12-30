@@ -6,6 +6,7 @@ import os
 import requests
 import together
 import openai
+import time
 
 from settings import PREFIX_MID_PROCESS_DIR, PREFIX_MID_PROCESS_CACHE_DIR
 
@@ -233,7 +234,7 @@ class LLMsCompletionService:
         """
         interface for using tools for completion task
         :param tool_auth_info: API_KEY or dict of info or a client for using one of tools that you are using for this request
-        :param request_sleep: time of sleep between two requests
+        :param request_sleep: time of sleep in milliseconds between two requests
         :param model: name of model
         :param prompt: for text completion task
         :param messages: for completion chat task
@@ -292,6 +293,8 @@ class LLMsCompletionService:
                                   model: str,
                                   prompt: str,
                                   config: dict,
+                                  number_of_choices: int = 1,
+                                  request_sleep: int = 100,
                                   **kwargs) -> list:
         """
         get response of model using together.ai
@@ -299,25 +302,37 @@ class LLMsCompletionService:
         :param model: name of model
         :param prompt: for text completion task
         :param config: a dict for setting some configs of completion task like top_k
+        :param number_of_choices: number of return result for completion task
+        :param request_sleep: time of sleep in milliseconds between two requests
         :return: a list of responses
         """
         together.api_key = tool_auth_info
+        responses = list()
 
-        response = together.Complete.create(model=model,
-                                            prompt=prompt,
-                                            **config)
-        return cls._response_reformatting(responses=response, tool=cls.Tools.TOGETHER,
+        for i in range(number_of_choices):
+
+            response = together.Complete.create(model=model,
+                                                prompt=prompt,
+                                                **config)
+            responses.append(response)
+            time.sleep(request_sleep * 0.001)
+
+        return cls._response_reformatting(responses=responses, tool=cls.Tools.TOGETHER,
                                           task=cls.CompletionKinds.TEXT)
 
     @classmethod
     def _completion_text_fararoom(cls,
                                   tool_auth_info: dict,
                                   prompt: str,
+                                  number_of_choices: int = 1,
+                                  request_sleep: int = 100,
                                   **kwargs) -> list:
         """
         get the response of gpt-3.5 using fararoom tool
         :param tool_auth_info: a dictionary of auth info
         :param prompt: for text completion task
+        :param number_of_choices: number of return result for completion task
+        :param request_sleep: time of sleep in milliseconds between two requests
         :return: a list of responses
         """
 
@@ -335,9 +350,14 @@ class LLMsCompletionService:
             'Authorization': f'Token {tool_auth_info["FARAROOM_TOKEN"]}'
         }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
+        responses = list()
 
-        return cls._response_reformatting(responses=response, tool=cls.Tools.FARAROOM,
+        for i in range(number_of_choices):
+            response = requests.request("POST", url, headers=headers, data=payload)
+            responses.append(response)
+            time.sleep(request_sleep * 0.001)
+
+        return cls._response_reformatting(responses=responses, tool=cls.Tools.FARAROOM,
                                           task=cls.CompletionKinds.TEXT)
 
     @classmethod
@@ -346,6 +366,7 @@ class LLMsCompletionService:
                                 prompt: str,
                                 model: str,
                                 config: dict,
+                                number_of_choices: int = 1,
                                 **kwargs) -> list:
         """
         get the response of model using openai tool and text completion task
@@ -353,11 +374,13 @@ class LLMsCompletionService:
         :param prompt: for text completion task
         :param model: name of model
         :param config: a dict for setting some configs of completion task like top_k
+        :param number_of_choices: number of return result for completion task
         :return: a list of responses
         """
 
         response = tool_auth_info.completions.create(model=model,
                                                      prompt=prompt,
+                                                     n=number_of_choices,
                                                      **config)
         return cls._response_reformatting(responses=response, tool=cls.Tools.OPENAI,
                                           task=cls.CompletionKinds.TEXT)
@@ -368,6 +391,7 @@ class LLMsCompletionService:
                                 messages: list,
                                 model: str,
                                 config: dict,
+                                number_of_choices: int = 1,
                                 **kwargs) -> list:
         """
         get the model response using openai tool and chat completion task
@@ -375,11 +399,13 @@ class LLMsCompletionService:
         :param messages: for completion chat task
         :param model: name of model
         :param config: a dict for setting some configs of completion task like top_k
+        :param number_of_choices: number of return result for completion task
         :return: a list of responses
         """
 
         response = tool_auth_info.chat.completions.create(model=model,
                                                           messages=messages,
+                                                          n=number_of_choices,
                                                           **config)
         return cls._response_reformatting(responses=response, tool=cls.Tools.OPENAI,
                                           task=cls.CompletionKinds.CHAT)
