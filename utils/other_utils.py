@@ -199,6 +199,10 @@ class WriterLoaderHandler:
 
 class LLMsCompletionService:
 
+    class Response:
+        def __init__(self, text):
+            self.text = text
+
     class Tools(enum.Enum):
         TOGETHER = 'together'
         OPENAI = 'openai'
@@ -290,7 +294,7 @@ class LLMsCompletionService:
                                   config: dict,
                                   **kwargs) -> list:
         """
-
+        get response of model using together.ai
         :param tool_auth_info: API_KEY of together.ai account
         :param model: name of model
         :param prompt: for text completion task
@@ -302,7 +306,8 @@ class LLMsCompletionService:
         response = together.Complete.create(model=model,
                                             prompt=prompt,
                                             **config)
-        return response['output']['choices']
+        return cls._response_reformatting(responses=response, tool=cls.Tools.TOGETHER,
+                                          task=cls.CompletionKinds.TEXT)
 
     @classmethod
     def _completion_text_fararoom(cls,
@@ -310,7 +315,7 @@ class LLMsCompletionService:
                                   prompt: str,
                                   **kwargs) -> list:
         """
-
+        get the response of gpt-3.5 using fararoom tool
         :param tool_auth_info: a dictionary of auth info
         :param prompt: for text completion task
         :return: a list of responses
@@ -332,7 +337,8 @@ class LLMsCompletionService:
 
         response = requests.request("POST", url, headers=headers, data=payload)
 
-        return [response.text]
+        return cls._response_reformatting(responses=response, tool=cls.Tools.FARAROOM,
+                                          task=cls.CompletionKinds.TEXT)
 
     @classmethod
     def _completion_text_openai(cls,
@@ -342,7 +348,7 @@ class LLMsCompletionService:
                                 config: dict,
                                 **kwargs) -> list:
         """
-
+        get the response of model using openai tool and text completion task
         :param tool_auth_info: client of openai
         :param prompt: for text completion task
         :param model: name of model
@@ -353,7 +359,8 @@ class LLMsCompletionService:
         response = tool_auth_info.completions.create(model=model,
                                                      prompt=prompt,
                                                      **config)
-        return response.choices
+        return cls._response_reformatting(responses=response, tool=cls.Tools.OPENAI,
+                                          task=cls.CompletionKinds.TEXT)
 
     @classmethod
     def _completion_chat_openai(cls,
@@ -363,7 +370,7 @@ class LLMsCompletionService:
                                 config: dict,
                                 **kwargs) -> list:
         """
-
+        get the model response using openai tool and chat completion task
         :param tool_auth_info: client of openai
         :param messages: for completion chat task
         :param model: name of model
@@ -374,4 +381,42 @@ class LLMsCompletionService:
         response = tool_auth_info.chat.completions.create(model=model,
                                                           messages=messages,
                                                           **config)
-        return response.choices
+        return cls._response_reformatting(responses=response, tool=cls.Tools.OPENAI,
+                                          task=cls.CompletionKinds.CHAT)
+
+    @classmethod
+    def _response_reformatting(cls,
+                               responses,
+                               tool: enum.Enum,
+                               task: enum.Enum = CompletionKinds.TEXT) -> list:
+        """
+        get te responses of tools and convert it to new format
+        :param responses: the responses of LLMs
+        :param tool: which tool did you used? choices = Tools enum class
+        :param task: which task did you used? choices = CompletionKinds enum class
+        :return: a list of response
+        """
+        new_format_responses = list()
+
+        if tool == cls.Tools.FARAROOM:
+            for result in responses:
+                new_format_responses.append(cls.Response(text=result.text))
+            return new_format_responses
+
+        elif tool == cls.Tools.OPENAI:
+
+            if task == cls.CompletionKinds.TEXT:
+                for result in responses.choices:
+                    new_format_responses.append(cls.Response(text=result.text))
+                return new_format_responses
+
+            else:
+                for result in responses.choices:
+                    new_format_responses.append(cls.Response(text=result.message.content))
+                return new_format_responses
+
+        else:
+            # together
+            for result in responses:
+                new_format_responses.append(cls.Response(text=result['output']['choices'][0]['text']))
+            return new_format_responses
