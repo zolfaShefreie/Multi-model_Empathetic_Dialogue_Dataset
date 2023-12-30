@@ -237,8 +237,10 @@ class LLMsCompletionService:
         :param completion_kind: which kind of completion do you want to use?
         :param number_of_choices: number of return result for completion task
         :param config: a dict for setting some configs of completion task like top_k
-        :return:
+        :return: a list of response
         """
+
+        cls._validate_entry(model=model, prompt=prompt, messages=messages, tool=tool, completion_kind=completion_kind)
 
         config = config if config is not None else cls.DEFAULT_CONFIG
         kwargs = {'config': config if config is not None else cls.DEFAULT_CONFIG,
@@ -248,9 +250,37 @@ class LLMsCompletionService:
                   'messages': messages,
                   'number_of_choices': number_of_choices}
 
-        # todo validate function
-
         return getattr(cls, f"_completion_{completion_kind.value}_{tool.value}")(**kwargs)
+
+    @classmethod
+    def _validate_entry(cls,
+                        model: str = None,
+                        prompt: str = None,
+                        messages: list = None,
+                        tool: enum.Enum = Tools.FARAROOM,
+                        completion_kind: enum.Enum = CompletionKinds.TEXT):
+        """
+        validate the entry of cls.completion function
+        :param model: name of model
+        :param prompt: for text completion task
+        :param messages: for completion chat task
+        :param tool: which tool do you want to use for completion task?
+        :param completion_kind: which kind of completion do you want to use?
+        :return:
+        """
+        # check prompt and messages to make sure they aren't empty based on task
+        if (prompt is None or len(prompt) == 0) and completion_kind == cls.CompletionKinds.TEXT:
+            raise Exception("prompt is Empty and the task is text completion so you must enter prompt as an input")
+        if (messages is None or len(messages) == 0) and completion_kind == cls.CompletionKinds.CHAT:
+            raise Exception("messages is Empty and the task is chat completion so you must enter messages as an input")
+
+        # check model_name isn't empty for openai and together
+        if (model is None or len(model) == 0) and tool != cls.Tools.FARAROOM:
+            raise Exception(f"you must specify model for {cls.Tools.OPENAI.value} and {cls.Tools.TOGETHER.value}")
+
+        # check task and tool
+        if getattr(cls, f"_completion_{completion_kind.value}_{tool.value}", None) is None:
+            raise Exception(f"{tool.name} doesn't support {completion_kind.name} completion")
 
     @classmethod
     def _completion_text_together(cls,
