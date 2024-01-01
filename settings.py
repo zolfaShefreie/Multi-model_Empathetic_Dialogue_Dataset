@@ -31,4 +31,7 @@ FARAROOM_AUTH_CONFIG = {
 }
 
 OPENAI_API_KEY = env("OPENAI_API_KEY", default=None)
+OPENAI_MODEL = 'gpt-3.5-turbo-1106'
+
 TOGETHER_API_KEY = env("TOGETHER_API_KEY", default=None)
+TOGETHER_MODEL = "togethercomputer/CodeLlama-34b-Instruct"

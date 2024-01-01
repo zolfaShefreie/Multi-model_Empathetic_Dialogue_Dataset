@@ -4,10 +4,13 @@ import lightning.pytorch as pl
 import torchmetrics
 import enum
 import re
+from openai import OpenAI
 
 from utils import model_utils
 from utils import util_transforms
-from settings import EMPATHY_KIND_MODEL_FILE_PATH
+from utils.other_utils import LLMsCompletionService
+from settings import EMPATHY_KIND_MODEL_FILE_PATH, FARAROOM_AUTH_CONFIG, OPENAI_API_KEY, OPENAI_MODEL, \
+    TOGETHER_API_KEY, TOGETHER_MODEL
 
 
 class EmpathyKindEnum(enum.Enum):
@@ -154,6 +157,8 @@ class EmpathyKindClassifierLLMs:
 
     REASON_KEY_NAME = "Reason"
     LABEL_KEY_NAME = "Label"
+    NUMBER_RESULT = 40
+    REQUEST_SLEEP = 1000
 
     @classmethod
     def get_conversation_prompt(cls, conv_str, chat_form=False):
@@ -185,15 +190,51 @@ class EmpathyKindClassifierLLMs:
 
         for each_match in match_result:
             # based on regex each_match[6] and each_match[12] can contain string of reason + label
-            # each_match[x] = x'th group of regex
-            # if reason + label be in each_match[6] then each_match[12] is empty
+            # each_match[x] means x'th group of regex
+            # if reason + label are in each_match[6] then each_match[12] is empty
             # and if label + reason  are in each_match[12] then each_match[6] is empty
             # in each_mach[6] => reason + label and reason is each_match[8] and label is each_match[11]
-            # in each_mach[12] => label + reason and label is each_match 14 and reason is each_match[17]
+            # in each_mach[12] => label + reason and label is each_match[14] and reason is each_match[17]
             if each_match[6] or each_match[12]:
                 reasons.append(each_match[8] if each_match[6] else each_match[17])
                 labels.append(each_match[11] if each_match[6] else each_match[14])
 
         return labels, reasons
 
+    @classmethod
+    def get_response(cls, conv_str, tool: enum.Enum = LLMsCompletionService.Tools.FARAROOM) -> list:
+        """
+        get response of LLMs
+        :param conv_str: str of conv
+        :param tool: which tool do you want to use for completion task?
+        :return:
+        """
+        if tool != LLMsCompletionService.Tools.OPENAI:
+            model = None if tool == LLMsCompletionService.Tools.FARAROOM else TOGETHER_MODEL
+            tool_auth_info = FARAROOM_AUTH_CONFIG if tool == LLMsCompletionService.Tools.FARAROOM else TOGETHER_API_KEY
+            prompt = cls.get_conversation_prompt(conv_str=conv_str, chat_form=False)
+
+            return LLMsCompletionService.completion(tool_auth_info=tool_auth_info,
+                                                    prompt=prompt,
+                                                    model=model,
+                                                    number_of_choices=cls.NUMBER_RESULT,
+                                                    request_sleep=cls.REQUEST_SLEEP,
+                                                    completion_kind=LLMsCompletionService.CompletionKinds.TEXT,
+                                                    tool=tool)
+        else:
+            messages = cls.get_conversation_prompt(conv_str=conv_str, chat_form=True)
+            return LLMsCompletionService.completion(tool_auth_info=OpenAI(api_key=OPENAI_API_KEY),
+                                                    messages=messages,
+                                                    model=OPENAI_MODEL,
+                                                    number_of_choices=cls.NUMBER_RESULT,
+                                                    completion_kind=LLMsCompletionService.CompletionKinds.CHAT,
+                                                    tool=tool)
+
+    @classmethod
+    def aggregate_responses(cls, responses: list):
+        pass
+
+    @classmethod
+    def __call__(cls):
+        pass
 
