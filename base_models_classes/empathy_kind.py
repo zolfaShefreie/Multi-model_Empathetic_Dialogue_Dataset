@@ -231,8 +231,57 @@ class EmpathyKindClassifierLLMs:
                                                     tool=tool)
 
     @classmethod
-    def aggregate_responses(cls, responses: list):
-        pass
+    def aggregate_responses(cls, responses: list, number_of_utter: int) -> list:
+        """
+        aggregate responses and get label, reasons and percent of each label for each conversation
+        :param number_of_utter: number of utterances in conversation
+        :param responses: list of conversations
+        :return: label
+        """
+        def key_of_label(label: str):
+            """
+            get the key based on extracted label
+            :param label: extracted label
+            :return: name of the key
+            """
+            for key in [EmpathyKindEnum.SEEKING.name, EmpathyKindEnum.PROVIDING.name, EmpathyKindEnum.NONE.name]:
+                if key.lower() in label.lower():
+                    return key
+
+        def get_max_label_reason(data: dict,
+                                 empathy_key_name: str = 'Empathy',
+                                 reasons_key_name: str = 'empathy_reasons',
+                                 percent_key_name: str = 'empathy_percents') -> dict:
+            """
+            find the maximum label and return with its reason and all percents
+            :param percent_key_name: the key name of percents. use for result
+            :param reasons_key_name: the key name of reasons. use for result
+            :param empathy_key_name: the key name of empathy_label. use for result
+            :param data: info for each item of label_utter_info => data of each utter
+            :return: max_value, it's reason and percents
+            """
+            avg_label = {EmpathyKindEnum[empathy_key].value: label_info['number']/len(data.keys())
+                         for empathy_key, label_info in data.items()}
+            max_key_number = max(avg_label, key=avg_label.get)
+            return {empathy_key_name: EmpathyKindEnum[max_key_number].value,
+                    reasons_key_name: data[max_key_number]['reasons'],
+                    percent_key_name: avg_label}
+
+        # init of
+        label_utter_info = {i: {EmpathyKindEnum.SEEKING.name: {'number': 0, 'reasons': list()},
+                                EmpathyKindEnum.PROVIDING.name: {'number': 0, 'reasons': list()},
+                                EmpathyKindEnum.NONE.name: {'number': 0, 'reasons': list()}}
+                            for i in range(number_of_utter)}
+
+        for index, response in enumerate(responses):
+            labels, reasons = cls.extract_llms_response_info(response=response)
+            for extracted_label, reason in zip(labels, reasons):
+                empathy_kind = key_of_label(extracted_label)
+                label_utter_info[index][empathy_kind]['number'] = label_utter_info[index][empathy_kind]['number'] + 1
+                label_utter_info[index][empathy_kind]['reason'] = label_utter_info[index][empathy_kind]['reason'] + \
+                                                                  [reason]
+        # todo change the argument to set at dataset process
+        return [get_max_label_reason(utter) for utter in label_utter_info]
 
     @classmethod
     def __call__(cls):
