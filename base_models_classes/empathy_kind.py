@@ -202,9 +202,11 @@ class EmpathyKindClassifierLLMs:
         return labels, reasons
 
     @classmethod
-    def get_response(cls, conv_str, tool: enum.Enum = LLMsCompletionService.Tools.FARAROOM) -> list:
+    def get_response(cls, conv_str: str, tool: enum.Enum = LLMsCompletionService.Tools.FARAROOM,
+                     num_requests: int = NUMBER_RESULT) -> list:
         """
         get response of LLMs
+        :param num_requests: number of requests for each conversation
         :param conv_str: str of conv
         :param tool: which tool do you want to use for completion task?
         :return:
@@ -218,7 +220,7 @@ class EmpathyKindClassifierLLMs:
                                                     prompt=prompt,
                                                     model=model,
                                                     number_of_choices=cls.NUMBER_RESULT,
-                                                    request_sleep=cls.REQUEST_SLEEP,
+                                                    request_sleep=num_requests,
                                                     completion_kind=LLMsCompletionService.CompletionKinds.TEXT,
                                                     tool=tool)
         else:
@@ -232,7 +234,8 @@ class EmpathyKindClassifierLLMs:
 
     @classmethod
     def aggregate_responses(cls,
-                            responses: list,
+                            all_req_labels: list,
+                            all_req_reasons: list,
                             number_of_utter: int,
                             empathy_key_name: str = 'Empathy',
                             reasons_key_name: str = 'empathy_reasons',
@@ -240,7 +243,8 @@ class EmpathyKindClassifierLLMs:
         """
         aggregate responses and get label, reasons and percent of each label for each conversation
         :param number_of_utter: number of utterances in conversation
-        :param responses: list of conversations
+        :param all_req_labels: list of labels(contains label of each utterance)
+        :param all_req_reasons: list of reasons(contains reason of label assignment of each utterance)
         :param percent_key_name: the key name of percents. use for result
         :param reasons_key_name: the key name of reasons. use for result
         :param empathy_key_name: the key name of empathy_label. use for result
@@ -282,18 +286,70 @@ class EmpathyKindClassifierLLMs:
                             for i in range(number_of_utter)}
 
         # update data for each response and each utterance
-        for index, response in enumerate(responses):
-            labels, reasons = cls.extract_llms_response_info(response=response)
+        for index, labels, reasons in enumerate(zip(all_req_labels, all_req_reasons)):
             for extracted_label, reason in zip(labels, reasons):
                 empathy_kind = key_of_label(extracted_label)
                 label_utter_info[index][empathy_kind]['number'] = label_utter_info[index][empathy_kind]['number'] + 1
                 label_utter_info[index][empathy_kind]['reason'] = label_utter_info[index][empathy_kind]['reason'] + \
                                                                   [reason]
-        
+
         return [get_max_label_reason(data=utter, empathy_key_name=empathy_key_name,
                                      reasons_key_name=reasons_key_name, percent_key_name=percent_key_name)
                 for utter in label_utter_info]
 
     @classmethod
-    def __call__(cls):
-        pass
+    def is_complete(cls, labels: list, number_of_utter: int) -> bool:
+        """
+        :param labels: extracted labels of a request)
+        :param number_of_utter: number of utterances in conversation
+        :return:
+        """
+        if len(labels) != number_of_utter:
+            return False
+        return True
+
+    @classmethod
+    def __call__(cls,
+                 conv_str: str,
+                 number_of_utter: int,
+                 number_request: int = NUMBER_RESULT,
+                 tool: enum.Enum = LLMsCompletionService.Tools.FARAROOM,
+                 empathy_key_name: str = 'Empathy',
+                 reasons_key_name: str = 'empathy_reasons',
+                 percent_key_name: str = 'empathy_percents'):
+        """
+        this function plays as management of whole process:
+            1. send request to get llms responses for conv_str
+            2. extracted info from each response
+            3. check if the response is incomplete or empthy to send request and extract again
+            4. aggregate the result
+            5. return all result
+
+        :param conv_str: str of conversation
+        :param number_of_utter: number of utterances in conversation
+        :param number_request: number of requests for each conversation
+        :param tool: which tool do you want to use for completion task?
+        :param empathy_key_name: the key name of empathy_label. use for result
+        :param reasons_key_name: the key name of reasons. use for result
+        :param percent_key_name: the key name of percents. use for result
+        :return:
+        """
+        all_labels, all_reasons = list(), list()
+        incomplete_count = 0
+
+        while len(all_labels) == number_request:
+            responses = cls.get_response(conv_str=conv_str, tool=tool,
+                                         num_requests=number_request if incomplete_count == 0 else incomplete_count)
+            incomplete_count = 0
+            for response in responses:
+                labels, reasons = cls.extract_llms_response_info(response)
+                if cls.is_complete(labels=labels, number_of_utter=number_of_utter):
+                    all_labels.append(labels)
+                    all_reasons.append(reasons)
+                else:
+                    incomplete_count += 1
+
+        return cls.aggregate_responses(all_req_labels=all_labels, all_req_reasons=all_reasons,
+                                       number_of_utter=number_of_utter, empathy_key_name=empathy_key_name,
+                                       percent_key_name=percent_key_name, reasons_key_name=reasons_key_name)
+
