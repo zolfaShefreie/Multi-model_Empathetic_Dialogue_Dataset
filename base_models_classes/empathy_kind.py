@@ -231,11 +231,19 @@ class EmpathyKindClassifierLLMs:
                                                     tool=tool)
 
     @classmethod
-    def aggregate_responses(cls, responses: list, number_of_utter: int) -> list:
+    def aggregate_responses(cls,
+                            responses: list,
+                            number_of_utter: int,
+                            empathy_key_name: str = 'Empathy',
+                            reasons_key_name: str = 'empathy_reasons',
+                            percent_key_name: str = 'empathy_percents') -> list:
         """
         aggregate responses and get label, reasons and percent of each label for each conversation
         :param number_of_utter: number of utterances in conversation
         :param responses: list of conversations
+        :param percent_key_name: the key name of percents. use for result
+        :param reasons_key_name: the key name of reasons. use for result
+        :param empathy_key_name: the key name of empathy_label. use for result
         :return: label
         """
         def key_of_label(label: str):
@@ -267,12 +275,13 @@ class EmpathyKindClassifierLLMs:
                     reasons_key_name: data[max_key_number]['reasons'],
                     percent_key_name: avg_label}
 
-        # init of
+        # init of info for each utterance
         label_utter_info = {i: {EmpathyKindEnum.SEEKING.name: {'number': 0, 'reasons': list()},
                                 EmpathyKindEnum.PROVIDING.name: {'number': 0, 'reasons': list()},
                                 EmpathyKindEnum.NONE.name: {'number': 0, 'reasons': list()}}
                             for i in range(number_of_utter)}
 
+        # update data for each response and each utterance
         for index, response in enumerate(responses):
             labels, reasons = cls.extract_llms_response_info(response=response)
             for extracted_label, reason in zip(labels, reasons):
@@ -280,10 +289,11 @@ class EmpathyKindClassifierLLMs:
                 label_utter_info[index][empathy_kind]['number'] = label_utter_info[index][empathy_kind]['number'] + 1
                 label_utter_info[index][empathy_kind]['reason'] = label_utter_info[index][empathy_kind]['reason'] + \
                                                                   [reason]
-        # todo change the argument to set at dataset process
-        return [get_max_label_reason(utter) for utter in label_utter_info]
+        
+        return [get_max_label_reason(data=utter, empathy_key_name=empathy_key_name,
+                                     reasons_key_name=reasons_key_name, percent_key_name=percent_key_name)
+                for utter in label_utter_info]
 
     @classmethod
     def __call__(cls):
         pass
-
