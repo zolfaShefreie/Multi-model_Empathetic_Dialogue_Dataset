@@ -12,6 +12,7 @@ from dataset_format_converter.conversation_utils import EmpathyFunctions, Dialog
 from utils.decorators import WriterLoaderHandler, ChunkHandler
 from utils.audio_utils import AudioModule
 from utils.downloader import Downloader
+from utils import other_utils
 
 
 class BaseDialogueDatasetFormatter(ABC):
@@ -335,6 +336,16 @@ class BaseDialogueDatasetFormatter(ABC):
         # shows any stages of this dataset has not been run
         if start_stage_index == 0:
             return list()
+
+        stages = cls.SEQ_STAGE[:start_stage_index]
+        stages_info = [{'stage name': stages[0]}]
+        for i in range(len(stages)-1):
+            uncompleted, total = ChunkHandler.unprocessed_record_number(dataset_name=cls.DATASET_NAME,
+                                                                        func_name=stages[i+1],
+                                                                        pre_func_name=stages[i])
+            stages_info.append({'stage name': stages[i+1],
+                                'uncompleted records': {uncompleted},
+                                'total records': total})
 
         return cls.SEQ_STAGE[:start_stage_index]
 

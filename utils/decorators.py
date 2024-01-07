@@ -277,6 +277,25 @@ class ChunkHandler:
         return data
 
     @classmethod
+    def unprocessed_record_number(cls, dataset_name: str, func_name: str, pre_func_name: str) -> tuple:
+        """
+        count the unprocessed record
+        :param dataset_name: name of dataset
+        :param func_name: name of current function
+        :param pre_func_name: name of previous function
+        :return: return number of unprocessed record if there is no data in previous stage return -1
+        """
+        pre_stage_file_name = WriterLoaderHandler.get_path(dataset_name=dataset_name, func_name=pre_func_name,
+                                                           is_cache=True)
+        if os.path.exists(pre_stage_file_name):
+            data = pd.read_csv(pre_stage_file_name)
+            return len(cls._get_unprocessed_data(data=data, dataset_name=dataset_name, func_name=func_name,
+                                                 group_by_keys=list(data.columns))), len(data)
+
+        else:
+            return -1, -1
+
+    @classmethod
     def _prepare_result(cls, data: pd.DataFrame, dataset_name: str, func_name: str) -> pd.DataFrame:
         """
         merge processed data with previous data on file
