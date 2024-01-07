@@ -188,9 +188,9 @@ class WriterLoaderHandler:
 class ChunkHandler:
     """
     this class control chunks based on columns for applying process
+    this class using based on WriterLoaderHandler
+    The supported format for data is pandas.DataFrame
     """
-    PREFIX_PATH = PREFIX_MID_PROCESS_DIR
-    CACHE_DIR = PREFIX_MID_PROCESS_CACHE_DIR
     """
     استیج قبلی رو میگیری چانک میزنی اگر تو استیج درخواستی چیزی بود بدون اونا حساب میشه یعنی رو اونا نباید اعمال کنی
     بعد اینایی که الان انجام شده و اینایی که قبلا انجام شده رو به هم وصل میکنی و سیو میشه
@@ -265,4 +265,19 @@ class ChunkHandler:
 
     @classmethod
     def _prepare_result(cls, data: pd.DataFrame, dataset_name: str, func_name: str) -> pd.DataFrame:
-        pass
+        """
+        merge processed data with previous data on file
+        :param data: new data that function was processed
+        :param dataset_name: name of dataset
+        :param func_name: name of current function
+        :return: merged data
+        """
+        file_path = WriterLoaderHandler.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=False)
+        if not os.path.exists(file_path):
+            file_path = WriterLoaderHandler.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=True)
+            if not os.path.exists(file_path):
+                return data
+
+        old_data = pd.read_csv(file_path)
+        return pd.concat([old_data, data], ignore_index=True, sort=False)
+
