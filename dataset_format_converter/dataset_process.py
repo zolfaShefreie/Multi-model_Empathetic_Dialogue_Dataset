@@ -6,10 +6,10 @@ import warnings
 import os
 import shutil
 
-from utils import other_utils
+from utils import decorators
 from settings import RAW_DATASET_PATH
 from dataset_format_converter.conversation_utils import EmpathyFunctions, DialogueFunctions
-from utils.other_utils import WriterLoaderHandler
+from utils.decorators import WriterLoaderHandler
 from utils.audio_utils import AudioModule
 from utils.downloader import Downloader
 
