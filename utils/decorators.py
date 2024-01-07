@@ -190,12 +190,9 @@ class ChunkHandler:
     this class control chunks based on columns for applying process
     this class using based on WriterLoaderHandler
     The supported format for data is pandas.DataFrame
+    Warning:
+        decorate before WriterLoaderHandler decoders
     """
-    """
-    استیج قبلی رو میگیری چانک میزنی اگر تو استیج درخواستی چیزی بود بدون اونا حساب میشه یعنی رو اونا نباید اعمال کنی
-    بعد اینایی که الان انجام شده و اینایی که قبلا انجام شده رو به هم وصل میکنی و سیو میشه
-    باید اینم اعلام کنی که چند تاریکورد انجام نشده
-     واحد هم ازش میگیری یا مکالمه یا utterance"""
 
     @classmethod
     def decorator(cls,
@@ -280,4 +277,29 @@ class ChunkHandler:
 
         old_data = pd.read_csv(file_path)
         return pd.concat([old_data, data], ignore_index=True, sort=False)
+
+    @classmethod
+    def add_decorator_to_func(cls, class_obj,
+                              dataset_name: str,
+                              process_seq: list,
+                              group_by_keys: list,
+                              chunk_length: int = None,
+                              data_arg_name='data'):
+        """
+        add decorator to some functions of class
+        :param class_obj: class or object of class
+        :param dataset_name: name of dataset
+        :param process_seq: list of process that sorted by running turn
+        :param group_by_keys: list of column names that we want slice data with same value in
+        :param data_arg_name: name of argument of data that used in function
+        :param chunk_length: length of chunk
+        :return:
+        """
+        for function in process_seq:
+            setattr(class_obj,
+                    function,
+                    ChunkHandler.decorator(dataset_name=dataset_name,
+                                           data_arg_name=data_arg_name,
+                                           chunk_len=chunk_length,
+                                           group_by_keys=group_by_keys)(getattr(class_obj, function)))
 
