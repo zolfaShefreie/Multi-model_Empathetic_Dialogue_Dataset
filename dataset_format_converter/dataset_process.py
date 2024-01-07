@@ -9,7 +9,7 @@ import shutil
 from utils import decorators
 from settings import RAW_DATASET_PATH
 from dataset_format_converter.conversation_utils import EmpathyFunctions, DialogueFunctions
-from utils.decorators import WriterLoaderHandler
+from utils.decorators import WriterLoaderHandler, ChunkHandler
 from utils.audio_utils import AudioModule
 from utils.downloader import Downloader
 
@@ -48,15 +48,19 @@ class BaseDialogueDatasetFormatter(ABC):
 
     FILE_FORMAT = 'mp4'
 
-    def __init__(self, dataset_dir: str, save_dir: str, *args, **kwargs):
+    def __init__(self, dataset_dir: str, save_dir: str, chunk_length: int = None, *args, **kwargs):
         """
         initial of class
         :param dataset_dir: path of dataset
         :param save_dir: path for saving data after reformatting
+        :param chunk_length: how many conversation do you want to run process for?
         :return:
         """
         self.dataset_dir = dataset_dir
         self.save_dir = save_dir
+        ChunkHandler.add_decorator_to_func(class_obj=self, dataset_name=self.DATASET_NAME,
+                                           process_seq=self.SEQ_STAGE, group_by_keys=[self.CONV_ID_COL_NAME],
+                                           chunk_length=chunk_length, data_arg_name='data')
         WriterLoaderHandler.add_decorator_to_func(class_obj=self, dataset_name=self.DATASET_NAME,
                                                   process_seq=self.SEQ_STAGE, editable_process=self.EDITABLE_STAGES)
 

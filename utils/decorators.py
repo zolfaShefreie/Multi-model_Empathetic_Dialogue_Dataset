@@ -248,17 +248,33 @@ class ChunkHandler:
         group_by_keys = data.columns if not group_by_keys else group_by_keys
 
         # get processed data to get unprocessed data
-        file_path = WriterLoaderHandler.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=True)
-        if os.path.exists(file_path):
-            processed_data = pd.read_csv(file_path)
-            # get unprocessed data
-            data = pd.merge(data, processed_data, on=group_by_keys, how='left', indicator=True, suffixes=('', '_y')).\
-                query("_merge == 'left_only'").reset_index(drop=True)[data.columns]
+        data = cls._get_unprocessed_data(data=data, group_by_keys=group_by_keys, dataset_name=dataset_name,
+                                         func_name=func_name)
 
         # chunk based on group_by_keys (data with same value in specific columns)
         group_data = data.groupby(group_by_keys).count().reset_index()[group_by_keys]
         group_data = group_data.iloc[:chunk_length, :]
         return pd.merge(data, group_data, on=group_by_keys, how='inner')
+
+    @classmethod
+    def _get_unprocessed_data(cls, data: pd.DataFrame, group_by_keys: list, dataset_name: str,
+                              func_name: str) -> pd.DataFrame:
+        """
+        load processed data on exclude them from data
+        :param data: entry data
+        :param group_by_keys: list of column names that we want slice data with same value in
+        :param dataset_name: name of dataset
+        :param func_name: name of current function
+        :return:
+        """
+        # get processed data to get unprocessed data
+        file_path = WriterLoaderHandler.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=True)
+        if os.path.exists(file_path):
+            processed_data = pd.read_csv(file_path)
+            # get unprocessed data
+            return pd.merge(data, processed_data, on=group_by_keys, how='left', indicator=True, suffixes=('', '_y')). \
+                query("_merge == 'left_only'").reset_index(drop=True)[data.columns]
+        return data
 
     @classmethod
     def _prepare_result(cls, data: pd.DataFrame, dataset_name: str, func_name: str) -> pd.DataFrame:
