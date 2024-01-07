@@ -198,6 +198,60 @@ class WriterLoaderHandler:
                                                   data_arg_name=data_arg_name)(getattr(class_obj, function)))
 
 
+class ChunkHandler:
+    """
+    this class control chunks based on columns for applying process
+    """
+    PREFIX_PATH = PREFIX_MID_PROCESS_DIR
+    CACHE_DIR = PREFIX_MID_PROCESS_CACHE_DIR
+    """
+    استیج قبلی رو میگیری چانک میزنی اگر تو استیج درخواستی چیزی بود بدون اونا حساب میشه یعنی رو اونا نباید اعمال کنی
+    بعد اینایی که الان انجام شده و اینایی که قبلا انجام شده رو به هم وصل میکنی و سیو میشه
+    باید اینم اعلام کنی که چند تاریکورد انجام نشده
+     واحد هم ازش میگیری یا مکالمه یا utterance"""
+
+    @classmethod
+    def decorator(cls,
+                  dataset_name: str,
+                  chunk_len: int = None,
+                  data_arg_name='data',
+                  human_editable: bool = False):
+        """
+
+        :param dataset_name:
+        :param chunk_len:
+        :param data_arg_name:
+        :param human_editable:
+        :return:
+        """
+        def pre_pass_process(func):
+            def new_func(*args, **kwargs):
+                # get data form loading or arguments
+                data = cls._prepare_chunk(dataset_name=dataset_name, chunk_length=chunk_len,
+                                          data_arg_name=data_arg_name, func_name=func.__name__, **kwargs)
+                kwargs[data_arg_name] = data
+                # run function
+                new_data = func(*args, **kwargs)
+
+                # save result in file
+                cls._prepare_result(data=new_data, dataset_name=dataset_name, func_name=func.__name__)
+                return new_data
+
+            new_func.__name__ = func.__name__
+            return new_func
+
+        return pre_pass_process
+
+    @classmethod
+    def _prepare_chunk(cls, dataset_name: str, func_name: str, data_arg_name: str = 'data',
+                       chunk_length: int = None, **kwargs) -> pd.DataFrame:
+        pass
+
+    @classmethod
+    def _prepare_result(cls, data: pd.DataFrame, dataset_name: str, func_name: str) -> pd.DataFrame:
+        pass
+
+
 class LLMsCompletionService:
 
     class Response:
