@@ -200,20 +200,24 @@ class ChunkHandler:
     @classmethod
     def decorator(cls,
                   dataset_name: str,
+                  group_by_keys: list,
                   chunk_len: int = None,
                   data_arg_name='data'):
         """
-
-        :param dataset_name:
-        :param chunk_len:
-        :param data_arg_name:
-        :return:
+        create new decorator to handle slice and chunk data for apply process on it
+        WARNING: USE KEYWORDS ARGUMENTS iN RECALL FUNC
+        :param dataset_name: name of dataset
+        :param group_by_keys: list of column names that we want slice data with same value in
+        :param chunk_len: length of chunk
+        :param data_arg_name: name of argument of data that used in function
+        :return: decoreator function
         """
         def pre_pass_process(func):
             def new_func(*args, **kwargs):
                 # get data form loading or arguments
-                data = cls._prepare_chunk(dataset_name=dataset_name, chunk_length=chunk_len,
-                                          data_arg_name=data_arg_name, func_name=func.__name__, **kwargs)
+                data = cls._prepare_chunk(dataset_name=dataset_name, group_by_keys=group_by_keys,
+                                          chunk_length=chunk_len, data_arg_name=data_arg_name,
+                                          func_name=func.__name__, **kwargs)
                 kwargs[data_arg_name] = data
                 # run function
                 new_data = func(*args, **kwargs)
@@ -228,9 +232,36 @@ class ChunkHandler:
         return pre_pass_process
 
     @classmethod
-    def _prepare_chunk(cls, dataset_name: str, func_name: str, data_arg_name: str = 'data',
+    def _prepare_chunk(cls, dataset_name: str, group_by_keys: list, func_name: str, data_arg_name: str = 'data',
                        chunk_length: int = None, **kwargs) -> pd.DataFrame:
-        pass
+        """
+        slice unprocessed data based on chunk length
+        :param dataset_name: name of dataset
+        :param group_by_keys: list of column names that we want slice data with same value in
+        :param func_name: name of current function
+        :param data_arg_name: name of argument of data that used in function
+        :param chunk_length: length of chunk
+        :param kwargs: arguments of function with their value
+        :return: return a slice of data
+        """
+        data = kwargs[data_arg_name]
+        if data is None or chunk_length is None:
+            return data
+
+        group_by_keys = data.columns if not group_by_keys else group_by_keys
+
+        # get processed data to get unprocessed data
+        file_path = WriterLoaderHandler.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=True)
+        if os.path.exists(file_path):
+            processed_data = pd.read_csv(file_path)
+            # get unprocessed data
+            data = pd.merge(data, processed_data, on=group_by_keys, how='left', indicator=True, suffixes=('', '_y')).\
+                query("_merge == 'left_only'").reset_index(drop=True)[data.columns]
+
+        # chunk based on group_by_keys (data with same value in specific columns)
+        group_data = data.groupby(group_by_keys).count().reset_index()[group_by_keys]
+        group_data = group_data.iloc[:chunk_length, :]
+        return pd.merge(data, group_data, on=group_by_keys, how='inner')
 
     @classmethod
     def _prepare_result(cls, data: pd.DataFrame, dataset_name: str, func_name: str) -> pd.DataFrame:
