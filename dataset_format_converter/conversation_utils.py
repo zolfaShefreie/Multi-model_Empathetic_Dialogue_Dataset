@@ -211,7 +211,7 @@ class EmpathyFunctions:
                                   utter_key_name='utterance',
                                   utter_id_key_name='utterance_idx',
                                   conv_id_key_name='conv_id',
-                                  empathy_key_name: str = 'Empathy',
+                                  empathy_key_name: str = 'empathy_kind',
                                   reasons_key_name: str = 'empathy_reasons',
                                   percent_key_name: str = 'empathy_percents') -> pd.DataFrame:
 

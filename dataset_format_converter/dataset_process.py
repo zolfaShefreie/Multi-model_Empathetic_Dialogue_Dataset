@@ -13,6 +13,7 @@ from utils.decorators import WriterLoaderHandler, ChunkHandler
 from utils.audio_utils import AudioModule
 from utils.downloader import Downloader
 from utils import other_utils
+from utils.llms_utils import LLMsCompletionService
 
 
 class BaseDialogueDatasetFormatter(ABC):
@@ -43,6 +44,11 @@ class BaseDialogueDatasetFormatter(ABC):
     MISSING_INFO_COL_NAME = "missing_info"
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
+
+    # Empathy Classifier using LLMs Configs
+    USING_EMPATHY_CLASSIFIER_LLM = True
+    EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.FARAROOM
+    REQUEST_EACH_DATA_NUMBER = 40
 
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME]
@@ -180,10 +186,18 @@ class BaseDialogueDatasetFormatter(ABC):
         :param data: metadata with dataframe format
         :return:
         """
-        return EmpathyFunctions.add_all_empathy_cols(data=data,
-                                                     utter_key_name=cls.UTTER_COL_NAME,
-                                                     utter_id_key_name=cls.UTTER_ID_COL_NAME,
-                                                     conv_id_key_name=cls.CONV_ID_COL_NAME)
+        if not cls.USING_EMPATHY_CLASSIFIER_LLM:
+            return EmpathyFunctions.add_all_empathy_cols(data=data,
+                                                         utter_key_name=cls.UTTER_COL_NAME,
+                                                         utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                         conv_id_key_name=cls.CONV_ID_COL_NAME)
+        else:
+            return EmpathyFunctions.empathy_labels_using_llms(data=data,
+                                                              utter_key_name=cls.UTTER_COL_NAME,
+                                                              utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                              conv_id_key_name=cls.CONV_ID_COL_NAME,
+                                                              tool=cls.EMPATHY_LLM_TOOL,
+                                                              number_request=cls.REQUEST_EACH_DATA_NUMBER)
 
     @classmethod
     def filter_empathy_exist_conv(cls, data: pd.DataFrame) -> pd.DataFrame:
@@ -192,11 +206,19 @@ class BaseDialogueDatasetFormatter(ABC):
         :param data: metadata with dataframe format
         :return:
         """
-        return EmpathyFunctions.filter_empathetic_conversations(data=data,
-                                                                based_on='both',
-                                                                utter_key_name=cls.UTTER_COL_NAME,
-                                                                utter_id_key_name=cls.UTTER_ID_COL_NAME,
-                                                                conv_id_key_name=cls.CONV_ID_COL_NAME)
+        if not cls.USING_EMPATHY_CLASSIFIER_LLM:
+            return EmpathyFunctions.filter_empathetic_conversations(data=data,
+                                                                    based_on='both',
+                                                                    utter_key_name=cls.UTTER_COL_NAME,
+                                                                    utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                                    conv_id_key_name=cls.CONV_ID_COL_NAME)
+
+        else:
+            return EmpathyFunctions.filter_empathetic_conversations(data=data,
+                                                                    based_on='contain_empathy',
+                                                                    utter_key_name=cls.UTTER_COL_NAME,
+                                                                    utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                                    conv_id_key_name=cls.CONV_ID_COL_NAME)
 
     @classmethod
     def empathetic_segmentation(cls, data: pd.DataFrame) -> pd.DataFrame:
