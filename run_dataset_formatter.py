@@ -38,7 +38,14 @@ class RunningFormatterInterface(BaseInterface):
             'help': 'stop running stages at this stage',
             'required': False,
             'default': None
-        }
+        },
+
+        'chunk_len': {
+            'help': 'how many conversation do you want to run process for? if you want the '
+                    'whole data do not put any value',
+            'required': False,
+            'default': None
+        },
     }
 
     FORMATTER = {
@@ -58,7 +65,8 @@ class RunningFormatterInterface(BaseInterface):
         :return:
         """
         formatter_class = self.FORMATTER[self.dataset_name]
-        formatter_obj = formatter_class(dataset_dir=self.dataset_dir, save_dir=self.save_at_dir)
+        formatter_obj = formatter_class(dataset_dir=self.dataset_dir, save_dir=self.save_at_dir,
+                                        chunk_length=self.chunk_len)
         try:
             formatter_obj.running_process(start_stage=self.start_stage, stop_stage=self.stop_stage)
         except Exception as e:

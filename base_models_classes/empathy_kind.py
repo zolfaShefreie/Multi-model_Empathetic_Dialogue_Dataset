@@ -8,7 +8,7 @@ from openai import OpenAI
 
 from utils import model_utils
 from utils import util_transforms
-from utils.other_utils import LLMsCompletionService
+from utils.decorators import LLMsCompletionService
 from settings import EMPATHY_KIND_MODEL_FILE_PATH, FARAROOM_AUTH_CONFIG, OPENAI_API_KEY, OPENAI_MODEL, \
     TOGETHER_API_KEY, TOGETHER_MODEL
 

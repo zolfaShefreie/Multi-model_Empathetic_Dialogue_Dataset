@@ -6,12 +6,13 @@ import warnings
 import os
 import shutil
 
-from utils import other_utils
+from utils import decorators
 from settings import RAW_DATASET_PATH
 from dataset_format_converter.conversation_utils import EmpathyFunctions, DialogueFunctions
-from utils.other_utils import WriterLoaderHandler
+from utils.decorators import WriterLoaderHandler, ChunkHandler
 from utils.audio_utils import AudioModule
 from utils.downloader import Downloader
+from utils import other_utils
 
 
 class BaseDialogueDatasetFormatter(ABC):
@@ -48,15 +49,19 @@ class BaseDialogueDatasetFormatter(ABC):
 
     FILE_FORMAT = 'mp4'
 
-    def __init__(self, dataset_dir: str, save_dir: str, *args, **kwargs):
+    def __init__(self, dataset_dir: str, save_dir: str, chunk_length: int = None, *args, **kwargs):
         """
         initial of class
         :param dataset_dir: path of dataset
         :param save_dir: path for saving data after reformatting
+        :param chunk_length: how many conversation do you want to run process for?
         :return:
         """
         self.dataset_dir = dataset_dir
         self.save_dir = save_dir
+        ChunkHandler.add_decorator_to_func(class_obj=self, dataset_name=self.DATASET_NAME,
+                                           process_seq=self.SEQ_STAGE, group_by_keys=[self.CONV_ID_COL_NAME],
+                                           chunk_length=chunk_length, data_arg_name='data')
         WriterLoaderHandler.add_decorator_to_func(class_obj=self, dataset_name=self.DATASET_NAME,
                                                   process_seq=self.SEQ_STAGE, editable_process=self.EDITABLE_STAGES)
 
@@ -331,6 +336,16 @@ class BaseDialogueDatasetFormatter(ABC):
         # shows any stages of this dataset has not been run
         if start_stage_index == 0:
             return list()
+
+        stages = cls.SEQ_STAGE[:start_stage_index]
+        stages_info = [{'stage name': stages[0]}]
+        for i in range(len(stages)-1):
+            uncompleted, total = ChunkHandler.unprocessed_record_number(dataset_name=cls.DATASET_NAME,
+                                                                        func_name=stages[i+1],
+                                                                        pre_func_name=stages[i])
+            stages_info.append({'stage name': stages[i+1],
+                                'uncompleted records': {uncompleted},
+                                'total records': total})
 
         return cls.SEQ_STAGE[:start_stage_index]
 
