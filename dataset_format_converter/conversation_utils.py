@@ -2,8 +2,9 @@ import pandas as pd
 from torch.utils.data import DataLoader
 import numpy as np
 import re
+import enum
 
-from base_models_classes.empathy_kind import EmpathyKindClassifier, EmpathyKindEnum
+from base_models_classes.empathy_kind import EmpathyKindClassifier, EmpathyKindEnum, EmpathyKindClassifierLLMs
 from base_models_classes.exist_empathy import ExistEmpathyClassifier
 
 
@@ -109,6 +110,18 @@ class DialogueFunctions:
         conv_df = conv_df[conv_df.apply(is_multi_turn_one_party, axis=1)]
         return data.merge(conv_df[[conv_id_key_name]], on=[conv_id_key_name], how='inner')
 
+    @classmethod
+    def str_conv_prompt_format(cls, utterances: list) -> str:
+        """
+        return str of conversation based on empathy prompt format
+        :param utterances: sorted utterances based on turn
+        :return: str of conversation
+        """
+        conv_str = str()
+        for i, utter in enumerate(utterances):
+            conv_str += f"{i + 1}. {utter}\n"
+        return conv_str
+
 
 class EmpathyFunctions:
     """
@@ -189,6 +202,84 @@ class EmpathyFunctions:
         return conv_df[[conv_id_key_name, empathy_seq_key_name, result_key_name]].merge(data,
                                                                                         on=conv_id_key_name,
                                                                                         how='inner')
+
+    @classmethod
+    def empathy_labels_using_llms(cls,
+                                  data: pd.DataFrame,
+                                  number_request: int,
+                                  tool: enum.Enum,
+                                  utter_key_name='utterance',
+                                  utter_id_key_name='utterance_idx',
+                                  conv_id_key_name='conv_id',
+                                  empathy_key_name: str = 'Empathy',
+                                  reasons_key_name: str = 'empathy_reasons',
+                                  percent_key_name: str = 'empathy_percents') -> pd.DataFrame:
+
+        """
+        management of whole dataframe to get label results from LLMs
+        :param data: dataframe of conversations
+        :param number_request: number of requests for each conversation
+        :param tool: which tool do you want to use for completion task?
+        :param utter_key_name: name of col that have utterance values
+        :param utter_id_key_name: name of col that have utterance_idx values
+        :param conv_id_key_name: name of col that have conv_id values
+        :param empathy_key_name: the key name of empathy_label. use for result
+        :param reasons_key_name: the key name of reasons. use for result
+        :param percent_key_name: the key name of percents. use for result
+        :return:
+        """
+
+        def get_labels(utterances: list,
+                       number_request: int,
+                       tool: enum.Enum,
+                       empathy_key_name: str = 'Empathy',
+                       reasons_key_name: str = 'empathy_reasons',
+                       percent_key_name: str = 'empathy_percents') -> list:
+            """
+            get the string of conversation and get the label and other info for each utterance using LLMs
+            :param utterances: list of utterance
+            :param number_request: number of requests for each conversation
+            :param tool: which tool do you want to use for completion task?
+            :param empathy_key_name: the key name of empathy_label. use for result
+            :param reasons_key_name: the key name of reasons. use for result
+            :param percent_key_name: the key name of percents. use for result
+            :return:
+            """
+
+            conv_str = DialogueFunctions.str_conv_prompt_format(utterances=utterances)
+            result = EmpathyKindClassifierLLMs.run_process(conv_str=conv_str,
+                                                           number_of_utter=len(utterances),
+                                                           number_request=number_request,
+                                                           tool=tool,
+                                                           empathy_key_name=empathy_key_name,
+                                                           reasons_key_name=reasons_key_name,
+                                                           percent_key_name=percent_key_name)
+            return result
+
+        # sort based on utterance turn
+        data = data.sort_values(by=[conv_id_key_name, utter_id_key_name])
+        # group by conv and make list of utterances and their ids
+        conv_df = data[[conv_id_key_name, utter_key_name]].groupby([conv_id_key_name])[utter_key_name].apply(list)\
+            .reset_index()
+        conv_df = conv_df.merge(data[[conv_id_key_name, utter_id_key_name]].groupby([conv_id_key_name])[utter_id_key_name]
+                                .apply(list).reset_index(), how='inner', on=[conv_id_key_name])
+
+        # get the result
+        conv_df['em_llm_result'] = conv_df.apply(lambda x: get_labels(utterances=x[utter_key_name],
+                                                                      number_request=number_request,
+                                                                      tool=tool,
+                                                                      empathy_key_name=empathy_key_name,
+                                                                      reasons_key_name=reasons_key_name,
+                                                                      percent_key_name=percent_key_name))
+
+        # explode to get info for each utterance in dataframe as a row
+        conv_df = conv_df.explode([utter_id_key_name, utter_key_name, 'em_llm_result']).reset_index(drop=True)
+        # make new columns for result of LLMs
+        conv_df = conv_df.merge(conv_df['em_llm_result'].apply(pd.Series), left_index=True, right_index=True)
+        # merge to original data
+        return data.merge(conv_df[[conv_id_key_name, utter_id_key_name, empathy_key_name,
+                                   reasons_key_name, percent_key_name]],
+                          on=[conv_id_key_name, utter_id_key_name], how='inner')
 
     @classmethod
     def add_all_empathy_cols(cls,

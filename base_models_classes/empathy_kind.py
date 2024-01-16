@@ -309,14 +309,14 @@ class EmpathyKindClassifierLLMs:
         return True
 
     @classmethod
-    def __call__(cls,
-                 conv_str: str,
-                 number_of_utter: int,
-                 number_request: int = NUMBER_RESULT,
-                 tool: enum.Enum = LLMsCompletionService.Tools.FARAROOM,
-                 empathy_key_name: str = 'Empathy',
-                 reasons_key_name: str = 'empathy_reasons',
-                 percent_key_name: str = 'empathy_percents'):
+    def run_process(cls,
+                    conv_str: str,
+                    number_of_utter: int,
+                    number_request: int = NUMBER_RESULT,
+                    tool: enum.Enum = LLMsCompletionService.Tools.FARAROOM,
+                    empathy_key_name: str = 'Empathy',
+                    reasons_key_name: str = 'empathy_reasons',
+                    percent_key_name: str = 'empathy_percents'):
         """
         this function plays as management of whole process:
             1. send request to get llms responses for conv_str
