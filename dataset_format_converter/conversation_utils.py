@@ -270,7 +270,7 @@ class EmpathyFunctions:
                                                                       tool=tool,
                                                                       empathy_key_name=empathy_key_name,
                                                                       reasons_key_name=reasons_key_name,
-                                                                      percent_key_name=percent_key_name))
+                                                                      percent_key_name=percent_key_name), axis=1)
 
         # explode to get info for each utterance in dataframe as a row
         conv_df = conv_df.explode([utter_id_key_name, utter_key_name, 'em_llm_result']).reset_index(drop=True)

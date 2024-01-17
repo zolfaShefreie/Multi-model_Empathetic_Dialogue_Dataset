@@ -8,7 +8,7 @@ from openai import OpenAI
 
 from utils import model_utils
 from utils import util_transforms
-from utils.decorators import LLMsCompletionService
+from utils.llms_utils import LLMsCompletionService
 from settings import EMPATHY_KIND_MODEL_FILE_PATH, FARAROOM_AUTH_CONFIG, OPENAI_API_KEY, OPENAI_MODEL, \
     TOGETHER_API_KEY, TOGETHER_MODEL
 
@@ -185,7 +185,6 @@ class EmpathyKindClassifierLLMs:
         :return: label list, reason list
         """
         labels, reasons = list(), list()
-
         match_result = re.findall(cls.REGEX, response)
 
         for each_match in match_result:
@@ -219,8 +218,8 @@ class EmpathyKindClassifierLLMs:
             return LLMsCompletionService.completion(tool_auth_info=tool_auth_info,
                                                     prompt=prompt,
                                                     model=model,
-                                                    number_of_choices=cls.NUMBER_RESULT,
-                                                    request_sleep=num_requests,
+                                                    number_of_choices=num_requests,
+                                                    request_sleep=cls.REQUEST_SLEEP,
                                                     completion_kind=LLMsCompletionService.CompletionKinds.TEXT,
                                                     tool=tool)
         else:
@@ -272,7 +271,9 @@ class EmpathyKindClassifierLLMs:
             :param data: info for each item of label_utter_info => data of each utter
             :return: max_value, it's reason and percents
             """
-            avg_label = {EmpathyKindEnum[empathy_key].value: label_info['number']/len(data.keys())
+            print(data)
+            sum_request = sum([label_info['number'] for label_info in data.values()])
+            avg_label = {EmpathyKindEnum[empathy_key].name: label_info['number']/sum_request
                          for empathy_key, label_info in data.items()}
             max_key_number = max(avg_label, key=avg_label.get)
             return {empathy_key_name: EmpathyKindEnum[max_key_number].value,
@@ -295,7 +296,7 @@ class EmpathyKindClassifierLLMs:
 
         return [get_max_label_reason(data=utter, empathy_key_name=empathy_key_name,
                                      reasons_key_name=reasons_key_name, percent_key_name=percent_key_name)
-                for utter in label_utter_info]
+                for utter in label_utter_info.values()]
 
     @classmethod
     def is_complete(cls, labels: list, number_of_utter: int) -> bool:
@@ -336,18 +337,24 @@ class EmpathyKindClassifierLLMs:
         """
         all_labels, all_reasons = list(), list()
         incomplete_count = 0
-
-        while len(all_labels) == number_request:
+        print(number_request if incomplete_count == 0 else incomplete_count)
+        while len(all_labels) < number_request:
+            print('________________here')
             responses = cls.get_response(conv_str=conv_str, tool=tool,
                                          num_requests=number_request if incomplete_count == 0 else incomplete_count)
+            print([response.text for response in responses])
+            print(len(responses))
+            print('______________response out')
             incomplete_count = 0
             for response in responses:
-                labels, reasons = cls.extract_llms_response_info(response)
+                labels, reasons = cls.extract_llms_response_info(response.text)
                 if cls.is_complete(labels=labels, number_of_utter=number_of_utter):
                     all_labels.append(labels)
                     all_reasons.append(reasons)
                 else:
                     incomplete_count += 1
+            print(incomplete_count)
+
 
         return cls.aggregate_responses(all_req_labels=all_labels, all_req_reasons=all_reasons,
                                        number_of_utter=number_of_utter, empathy_key_name=empathy_key_name,
