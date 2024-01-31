@@ -150,10 +150,7 @@ class EmpathyKindClassifierLLMs:
                  'answer following this template:\n[index]: \nReason: [reason] \nLabel: [label] :\n' \
                  "{conversation}\nAnswer: Let's think step by step to reach the right conclusion"
 
-    REGEX = r"(index:)?(\d+|\[\d+\])(\.|:)( |\n)?.*( |\n)?(((Reason|\[Reason\]): (.+)( |\n)?(Label|\[Label\]): " \
-            r"(None|none|Empathy_seeker|empathy_provider|Empathy_provider|empathy_seeker)\.?)|((Label|\[Label\]): " \
-            r"(None|none|Empathy_seeker|empathy_provider|Empathy_provider|empathy_seeker)\.?( |\n)?(Reason|\[Reason\]" \
-            r"): (.+)))"
+    REGEX = r"(index:)?(\d+|\[\d+\])(\.|:)( |\n)?.*( |\n)?(((Reason|\[Reason\]): (.+)( |\n)?(Label|\[Label\]): (None|none|Empathy_seeker|empathy_provider|Empathy_provider|empathy_seeker)\.?)|((Label|\[Label\]): (None|none|Empathy_seeker|empathy_provider|Empathy_provider|empathy_seeker)\.?( |\n)?(Reason|\[Reason\]): (.+)))"
 
     REASON_KEY_NAME = "Reason"
     LABEL_KEY_NAME = "Label"
@@ -255,9 +252,13 @@ class EmpathyKindClassifierLLMs:
             :param label: extracted label
             :return: name of the key
             """
-            for key in [EmpathyKindEnum.SEEKING.name, EmpathyKindEnum.PROVIDING.name, EmpathyKindEnum.NONE.name]:
-                if key.lower() in label.lower():
-                    return key
+            label_keys = {('seek', 'seeker', 'seeking'): EmpathyKindEnum.SEEKING.name,
+                          ('provide', 'provider', 'providing'): EmpathyKindEnum.PROVIDING.name,
+                          ('none', ): EmpathyKindEnum.NONE.name}
+            for keys, value in label_keys.items():
+                for key in keys:
+                    if key.lower() in label.lower():
+                        return value
 
         def get_max_label_reason(data: dict,
                                  empathy_key_name: str = 'Empathy',
@@ -271,7 +272,6 @@ class EmpathyKindClassifierLLMs:
             :param data: info for each item of label_utter_info => data of each utter
             :return: max_value, it's reason and percents
             """
-            print(data)
             sum_request = sum([label_info['number'] for label_info in data.values()])
             avg_label = {EmpathyKindEnum[empathy_key].name: label_info['number']/sum_request
                          for empathy_key, label_info in data.items()}
@@ -287,11 +287,11 @@ class EmpathyKindClassifierLLMs:
                             for i in range(number_of_utter)}
 
         # update data for each response and each utterance
-        for index, labels, reasons in enumerate(zip(all_req_labels, all_req_reasons)):
-            for extracted_label, reason in zip(labels, reasons):
+        for labels, reasons in zip(all_req_labels, all_req_reasons):
+            for index, (extracted_label, reason) in enumerate(zip(labels, reasons)):
                 empathy_kind = key_of_label(extracted_label)
                 label_utter_info[index][empathy_kind]['number'] = label_utter_info[index][empathy_kind]['number'] + 1
-                label_utter_info[index][empathy_kind]['reason'] = label_utter_info[index][empathy_kind]['reason'] + \
+                label_utter_info[index][empathy_kind]['reasons'] = label_utter_info[index][empathy_kind]['reasons'] + \
                                                                   [reason]
 
         return [get_max_label_reason(data=utter, empathy_key_name=empathy_key_name,
@@ -337,14 +337,10 @@ class EmpathyKindClassifierLLMs:
         """
         all_labels, all_reasons = list(), list()
         incomplete_count = 0
-        print(number_request if incomplete_count == 0 else incomplete_count)
+
         while len(all_labels) < number_request:
-            print('________________here')
             responses = cls.get_response(conv_str=conv_str, tool=tool,
                                          num_requests=number_request if incomplete_count == 0 else incomplete_count)
-            print([response.text for response in responses])
-            print(len(responses))
-            print('______________response out')
             incomplete_count = 0
             for response in responses:
                 labels, reasons = cls.extract_llms_response_info(response.text)
@@ -353,10 +349,7 @@ class EmpathyKindClassifierLLMs:
                     all_reasons.append(reasons)
                 else:
                     incomplete_count += 1
-            print(incomplete_count)
-
 
         return cls.aggregate_responses(all_req_labels=all_labels, all_req_reasons=all_reasons,
                                        number_of_utter=number_of_utter, empathy_key_name=empathy_key_name,
                                        percent_key_name=percent_key_name, reasons_key_name=reasons_key_name)
-
