@@ -27,6 +27,8 @@ class LLMsCompletionService:
         'max_tokens': 512,
     }
 
+    ERROR_SLEEP = 1000
+
     @classmethod
     def completion(cls,
                    tool_auth_info,
@@ -60,9 +62,16 @@ class LLMsCompletionService:
                   'model': model,
                   'prompt': prompt,
                   'messages': messages,
-                  'number_of_choices': number_of_choices}
-
-        return getattr(cls, f"_completion_{completion_kind.value}_{tool.value}")(**kwargs)
+                  'number_of_choices': number_of_choices,
+                  'request_sleep': request_sleep}
+        try:
+            return getattr(cls, f"_completion_{completion_kind.value}_{tool.value}")(**kwargs)
+        except Exception as e:
+            print('request failed', e)
+            time.sleep(cls.ERROR_SLEEP * 0.001)
+            return cls.completion(tool_auth_info=tool_auth_info, model=model, prompt=prompt, messages=messages,
+                                  tool=tool, completion_kind=completion_kind, number_of_choices=number_of_choices,
+                                  config=config, request_sleep=request_sleep)
 
     @classmethod
     def _validate_entry(cls,
