@@ -224,7 +224,7 @@ class EmpathyKindClassifierLLMs:
             return LLMsCompletionService.completion(tool_auth_info=OpenAI(api_key=OPENAI_API_KEY),
                                                     messages=messages,
                                                     model=OPENAI_MODEL,
-                                                    number_of_choices=cls.NUMBER_RESULT,
+                                                    number_of_choices=num_requests,
                                                     completion_kind=LLMsCompletionService.CompletionKinds.CHAT,
                                                     tool=tool)
 
@@ -337,7 +337,6 @@ class EmpathyKindClassifierLLMs:
         """
         all_labels, all_reasons = list(), list()
         incomplete_count = 0
-
         while len(all_labels) < number_request:
             responses = cls.get_response(conv_str=conv_str, tool=tool,
                                          num_requests=number_request if incomplete_count == 0 else incomplete_count)
