@@ -80,7 +80,8 @@ class WriterLoaderHandler:
         if human_editable:
             data_path = cls.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=False)
             os.makedirs(os.path.dirname(data_path), exist_ok=True)
-            data.to_csv(data_path)
+            columns = [col_name for col_name in data.columns if 'Unnamed' not in col_name]
+            data[columns].to_csv(data_path, index=False)
             cls._log(path=data_path, is_load_process=False)
         cls._cache(data=data, dataset_name=dataset_name, func_name=func_name)
 
@@ -96,7 +97,8 @@ class WriterLoaderHandler:
         """
         data_path = cls.get_path(dataset_name=dataset_name, func_name=func_name, is_cache=True)
         os.makedirs(os.path.dirname(data_path), exist_ok=True)
-        data.to_csv(data_path)
+        columns = [col_name for col_name in data.columns if 'Unnamed' not in col_name]
+        data[columns].to_csv(data_path, index=False)
 
     @classmethod
     def _get_entry_data(cls, dataset_name: str, process_seq: list, func_name: str, data_arg_name: str,
@@ -220,7 +222,7 @@ class ChunkHandler:
                 new_data = func(*args, **kwargs)
 
                 # save result in file
-                cls._prepare_result(data=new_data, dataset_name=dataset_name, func_name=func.__name__)
+                new_data = cls._prepare_result(data=new_data, dataset_name=dataset_name, func_name=func.__name__)
                 return new_data
 
             new_func.__name__ = func.__name__
