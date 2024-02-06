@@ -6,12 +6,14 @@ import warnings
 import os
 import shutil
 
-from utils import other_utils
+from utils import decorators
 from settings import RAW_DATASET_PATH
 from dataset_format_converter.conversation_utils import EmpathyFunctions, DialogueFunctions
-from utils.other_utils import WriterLoaderHandler
+from utils.decorators import WriterLoaderHandler, ChunkHandler
 from utils.audio_utils import AudioModule
 from utils.downloader import Downloader
+from utils import other_utils
+from utils.llms_utils import LLMsCompletionService
 
 
 class BaseDialogueDatasetFormatter(ABC):
@@ -47,21 +49,25 @@ class BaseDialogueDatasetFormatter(ABC):
     USING_EMPATHY_CLASSIFIER_LLM = True
     EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
     REQUEST_EACH_DATA_NUMBER = 20
-
+    
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME]
 
     FILE_FORMAT = 'mp4'
 
-    def __init__(self, dataset_dir: str, save_dir: str, *args, **kwargs):
+    def __init__(self, dataset_dir: str, save_dir: str, chunk_length: int = None, *args, **kwargs):
         """
         initial of class
         :param dataset_dir: path of dataset
         :param save_dir: path for saving data after reformatting
+        :param chunk_length: how many conversation do you want to run process for?
         :return:
         """
         self.dataset_dir = dataset_dir
         self.save_dir = save_dir
+        ChunkHandler.add_decorator_to_func(class_obj=self, dataset_name=self.DATASET_NAME,
+                                           process_seq=self.SEQ_STAGE, group_by_keys=[self.CONV_ID_COL_NAME],
+                                           chunk_length=chunk_length, data_arg_name='data')
         WriterLoaderHandler.add_decorator_to_func(class_obj=self, dataset_name=self.DATASET_NAME,
                                                   process_seq=self.SEQ_STAGE, editable_process=self.EDITABLE_STAGES)
 
@@ -180,10 +186,18 @@ class BaseDialogueDatasetFormatter(ABC):
         :param data: metadata with dataframe format
         :return:
         """
-        return EmpathyFunctions.add_all_empathy_cols(data=data,
-                                                     utter_key_name=cls.UTTER_COL_NAME,
-                                                     utter_id_key_name=cls.UTTER_ID_COL_NAME,
-                                                     conv_id_key_name=cls.CONV_ID_COL_NAME)
+        if not cls.USING_EMPATHY_CLASSIFIER_LLM:
+            return EmpathyFunctions.add_all_empathy_cols(data=data,
+                                                         utter_key_name=cls.UTTER_COL_NAME,
+                                                         utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                         conv_id_key_name=cls.CONV_ID_COL_NAME)
+        else:
+            return EmpathyFunctions.empathy_labels_using_llms(data=data,
+                                                              utter_key_name=cls.UTTER_COL_NAME,
+                                                              utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                              conv_id_key_name=cls.CONV_ID_COL_NAME,
+                                                              tool=cls.EMPATHY_LLM_TOOL,
+                                                              number_request=cls.REQUEST_EACH_DATA_NUMBER)
 
     @classmethod
     def filter_empathy_exist_conv(cls, data: pd.DataFrame) -> pd.DataFrame:
@@ -192,11 +206,19 @@ class BaseDialogueDatasetFormatter(ABC):
         :param data: metadata with dataframe format
         :return:
         """
-        return EmpathyFunctions.filter_empathetic_conversations(data=data,
-                                                                based_on='both',
-                                                                utter_key_name=cls.UTTER_COL_NAME,
-                                                                utter_id_key_name=cls.UTTER_ID_COL_NAME,
-                                                                conv_id_key_name=cls.CONV_ID_COL_NAME)
+        if not cls.USING_EMPATHY_CLASSIFIER_LLM:
+            return EmpathyFunctions.filter_empathetic_conversations(data=data,
+                                                                    based_on='both',
+                                                                    utter_key_name=cls.UTTER_COL_NAME,
+                                                                    utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                                    conv_id_key_name=cls.CONV_ID_COL_NAME)
+
+        else:
+            return EmpathyFunctions.filter_empathetic_conversations(data=data,
+                                                                    based_on='contain_empathy',
+                                                                    utter_key_name=cls.UTTER_COL_NAME,
+                                                                    utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                                    conv_id_key_name=cls.CONV_ID_COL_NAME)
 
     @classmethod
     def empathetic_segmentation(cls, data: pd.DataFrame) -> pd.DataFrame:
@@ -336,6 +358,16 @@ class BaseDialogueDatasetFormatter(ABC):
         # shows any stages of this dataset has not been run
         if start_stage_index == 0:
             return list()
+
+        stages = cls.SEQ_STAGE[:start_stage_index]
+        stages_info = [{'stage name': stages[0]}]
+        for i in range(len(stages)-1):
+            uncompleted, total = ChunkHandler.unprocessed_record_number(dataset_name=cls.DATASET_NAME,
+                                                                        func_name=stages[i+1],
+                                                                        pre_func_name=stages[i])
+            stages_info.append({'stage name': stages[i+1],
+                                'uncompleted records': {uncompleted},
+                                'total records': total})
 
         return cls.SEQ_STAGE[:start_stage_index]
 
