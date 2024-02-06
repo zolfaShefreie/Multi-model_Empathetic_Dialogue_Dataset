@@ -43,6 +43,11 @@ class BaseDialogueDatasetFormatter(ABC):
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
 
+    # Empathy Classifier using LLMs Configs
+    USING_EMPATHY_CLASSIFIER_LLM = True
+    EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    REQUEST_EACH_DATA_NUMBER = 20
+
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME]
 
