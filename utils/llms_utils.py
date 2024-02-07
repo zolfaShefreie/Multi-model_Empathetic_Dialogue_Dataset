@@ -11,6 +11,11 @@ class LLMsCompletionService:
     class Response:
         def __init__(self, text):
             self.text = text
+            self._correct_some_char()
+
+        def _correct_some_char(self):
+            self.text = self.text.replace('\\n', '\n')
+            self.text = self.text.replace('\\t', '\t')
 
     class Tools(enum.Enum):
         TOGETHER = 'together'
