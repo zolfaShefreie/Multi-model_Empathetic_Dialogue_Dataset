@@ -156,6 +156,7 @@ class EmpathyKindClassifierLLMs:
     LABEL_KEY_NAME = "Label"
     NUMBER_RESULT = 40
     REQUEST_SLEEP = 1000
+    COMPLETE_RATE = 0.4
 
     @classmethod
     def get_conversation_prompt(cls, conv_str, chat_form=False):
@@ -310,6 +311,19 @@ class EmpathyKindClassifierLLMs:
         return True
 
     @classmethod
+    def continue_send_requests(cls, complete_count: int, number_request: int) -> bool:
+        """
+        is ot enough completed response or request again?
+        if the some response are incomplete but the number of complete request is more than specific number,
+        it will be enough else it won't be
+        :param complete_count: number of complete request is done in right condition
+        :param number_request: number of requests for each conversation
+        :return: ture or false (continue => true => run the loop)
+        """
+        complete_fix_number = max(3, int(number_request * cls.COMPLETE_RATE))
+        return True if complete_count < complete_fix_number else False
+
+    @classmethod
     def run_process(cls,
                     conv_str: str,
                     number_of_utter: int,
@@ -337,7 +351,7 @@ class EmpathyKindClassifierLLMs:
         """
         all_labels, all_reasons = list(), list()
         incomplete_count = 0
-        while len(all_labels) < number_request:
+        while cls.continue_send_requests(complete_count=len(all_labels), number_request=number_request):
             responses = cls.get_response(conv_str=conv_str, tool=tool,
                                          num_requests=number_request if incomplete_count == 0 else incomplete_count)
             incomplete_count = 0
@@ -348,6 +362,7 @@ class EmpathyKindClassifierLLMs:
                     all_reasons.append(reasons)
                 else:
                     incomplete_count += 1
+            print('incomplete responses', incomplete_count)
 
         return cls.aggregate_responses(all_req_labels=all_labels, all_req_reasons=all_reasons,
                                        number_of_utter=number_of_utter, empathy_key_name=empathy_key_name,

@@ -48,8 +48,8 @@ class BaseDialogueDatasetFormatter(ABC):
     # Empathy Classifier using LLMs Configs
     USING_EMPATHY_CLASSIFIER_LLM = True
     EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
-    REQUEST_EACH_DATA_NUMBER = 20
-    
+    REQUEST_EACH_DATA_NUMBER = 10
+
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME]
 

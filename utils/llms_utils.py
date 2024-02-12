@@ -28,7 +28,7 @@ class LLMsCompletionService:
 
     DEFAULT_CONFIG = {
         'temperature': 0.7,
-        'top_p': 0.95,
+        # 'top_p': 0.95,
         'max_tokens': 512,
     }
 
