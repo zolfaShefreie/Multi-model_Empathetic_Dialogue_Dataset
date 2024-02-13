@@ -13,9 +13,15 @@ class CompleteCheckerClassifierLLMs:
         complete = 1
         incomplete = 0
 
-    SYS_PROMPT = ""
+    SYS_PROMPT = "You are an AI expert in human communications such as conversation. " \
+                 "You are tasked to check carefully that a conversation is complete or incomplete."
 
-    USER_QUERY = ""
+    USER_QUERY = "i give you a conversation and you will tell me it is complete or incomplete conversation based on " \
+                 "its context and explain reason behind it. consider a complete conversation is a conversation which " \
+                 "there is no information gap and the topic of conversation is understandable and clear. you have to " \
+                 "answer following this template: Reason: [reason] \nThe final answer is: [complete or incomplete]" \
+                 "\nconversation:\n{conversation}\n" \
+                 "Answer: let's think step by step to reach the right conclusion."
 
     REGEX = r"(Reason|\[Reason\]|reason): (.+)( |\n)*((T|t)he final answer is):? (complete|incomplete|Complete|Incomplete)"
 
