@@ -6,6 +6,7 @@ import enum
 
 from base_models_classes.empathy_kind import EmpathyKindClassifier, EmpathyKindEnum, EmpathyKindClassifierLLMs
 from base_models_classes.exist_empathy import ExistEmpathyClassifier
+from base_models_classes.complete_checker import CompleteCheckerClassifierLLMs
 
 
 class DialogueFunctions:
@@ -69,6 +70,76 @@ class DialogueFunctions:
         conv_df[result_key_name] = conv_df.apply(lambda x: [i for i, value in enumerate(x[utter_key_name])], axis=1)
         conv_df.explode([utter_key_name, result_key_name])
         return data.merge(conv_df, on=[conv_id_key_name, utter_key_name], how='inner')
+
+    @classmethod
+    def check_conv_is_complete_llms(cls,
+                                    data: pd.DataFrame,
+                                    number_request: int,
+                                    tool: enum.Enum,
+                                    utter_key_name='utterance',
+                                    conv_id_key_name='conv_id',
+                                    utter_id_key_name='utterance_idx',
+                                    complete_key_name: str = 'is_completed',
+                                    reasons_key_name: str = 'complete_check_reasons',
+                                    percent_key_name: str = 'complete_check_percent'):
+        """
+        management of whole dataframe to get label results from LLMs
+        :param data: dataframe of conversations
+        :param number_request: number of requests for each conversation
+        :param tool: which tool do you want to use for completion task?
+        :param utter_key_name: name of col that have utterance values
+        :param utter_id_key_name: name of col that have utterance_idx values
+        :param conv_id_key_name: name of col that have conv_id values
+        :param complete_key_name: the key name of complete_check_label. use for result
+        :param reasons_key_name: the key name of reasons. use for result
+        :param percent_key_name: the key name of percents. use for result
+        :return:
+        """
+
+        def get_labels(utterances: list,
+                       number_request: int,
+                       tool: enum.Enum,
+                       complete_key_name: str = 'is_completed',
+                       reasons_key_name: str = 'complete_check_reasons',
+                       percent_key_name: str = 'complete_check_percent') -> list:
+            """
+            get the string of conversation and get the label and other info for each utterance using LLMs
+            :param utterances: list of utterance
+            :param number_request: number of requests for each conversation
+            :param tool: which tool do you want to use for completion task?
+            :param complete_key_name: the key name of complete_check_label. use for result
+            :param reasons_key_name: the key name of reasons. use for result
+            :param percent_key_name: the key name of percents. use for result
+            :return:
+            """
+
+            conv_str = cls.str_conv_prompt_format(utterances=utterances)
+            result = CompleteCheckerClassifierLLMs.run_process(conv_str=conv_str,
+                                                               number_request=number_request,
+                                                               tool=tool,
+                                                               complete_key_name=complete_key_name,
+                                                               reasons_key_name=reasons_key_name,
+                                                               percent_key_name=percent_key_name)
+            return result
+
+        # sort based on utterance turn
+        data = data.sort_values(by=[conv_id_key_name, utter_id_key_name])
+        conv_df = data[[conv_id_key_name, utter_key_name]].groupby([conv_id_key_name])[utter_key_name].apply(list) \
+            .reset_index()
+
+        # get the result
+        conv_df['llm_result'] = conv_df.apply(lambda x: get_labels(utterances=x[utter_key_name],
+                                                                   number_request=number_request,
+                                                                   tool=tool,
+                                                                   complete_key_name=complete_key_name,
+                                                                   reasons_key_name=reasons_key_name,
+                                                                   percent_key_name=percent_key_name), axis=1)
+        # make new columns for result of LLMs
+        conv_df = conv_df.merge(conv_df['llm_result'].apply(pd.Series), left_index=True, right_index=True)
+        # merge to original data
+        return data.merge(conv_df[[conv_id_key_name, complete_key_name,
+                                   reasons_key_name, percent_key_name]],
+                          on=[conv_id_key_name, utter_id_key_name], how='inner')
 
     @classmethod
     def filter_not_multi_turn_on_one_party(cls,
