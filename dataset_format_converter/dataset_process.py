@@ -25,8 +25,9 @@ class BaseDialogueDatasetFormatter(ABC):
     # process configs
     DATASET_NAME = str()
     SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
-                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
-    EDITABLE_STAGES = ['apply_empathy_classifier', 'empathetic_segmentation', ]
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'conversation_completion_checking',
+                 'filter_missing_info', 'last_stage_changes']
+    EDITABLE_STAGES = ['apply_empathy_classifier', 'conversation_completion_checking', ]
     # some audio or video files were uploaded on youtube
     NEED_DOWNLOAD = False
     NEED_VIDEO_TO_AUDIO = False
@@ -41,7 +42,6 @@ class BaseDialogueDatasetFormatter(ABC):
     URL_COL_NAME = str()
     FILE_PATH_COL_NAME = str()
 
-    MISSING_INFO_COL_NAME = "missing_info"
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
 
@@ -49,6 +49,12 @@ class BaseDialogueDatasetFormatter(ABC):
     USING_EMPATHY_CLASSIFIER_LLM = True
     EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
     REQUEST_EACH_DATA_NUMBER = 10
+
+    # Classifier for check completion of conversation using LLMs Configs
+    USING_COMPLETE_CLASSIFIER_LLM = True
+    COMPLETE_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    COMPLETE_REQUEST_EACH_DATA_NUMBER = 5
+    IS_COMPLETE_COL_NAME = "is_complete"
 
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME]
@@ -233,9 +239,28 @@ class BaseDialogueDatasetFormatter(ABC):
                                                          new_conv_id_key_name=cls.NEW_CONV_ID_COL_NAME,
                                                          new_utterance_id_key_name=cls.NEW_UTTERANCE_IDX_NAME)
 
-        # add missing information col for check conversations manually
-        data[cls.MISSING_INFO_COL_NAME] = 0
         return data
+
+    @classmethod
+    def conversation_completion_checking(cls, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        check each conversation that is complete or incomplete
+        if you set it in configs to do it manually this function would add a new column
+        :param data: metadata with dataframe format
+        :return: data with new
+        """
+        if cls.USING_COMPLETE_CLASSIFIER_LLM:
+            return DialogueFunctions.check_conv_is_complete_llms(data=data,
+                                                                 utter_key_name=cls.UTTER_COL_NAME,
+                                                                 utter_id_key_name=cls.UTTER_ID_COL_NAME,
+                                                                 conv_id_key_name=cls.CONV_ID_COL_NAME,
+                                                                 tool=cls.COMPLETE_LLM_TOOL,
+                                                                 number_request=cls.COMPLETE_REQUEST_EACH_DATA_NUMBER,
+                                                                 complete_key_name=cls.IS_COMPLETE_COL_NAME)
+        else:
+            # add missing information col for check conversations manually
+            data[cls.IS_COMPLETE_COL_NAME] = 0
+            return data
 
     @classmethod
     def filter_missing_info(cls, data: pd.DataFrame) -> pd.DataFrame:
@@ -245,12 +270,12 @@ class BaseDialogueDatasetFormatter(ABC):
         :return: metadata without missing_info
         """
         warnings.warn(f"******************************************************************************\n"
-                      f"WARNING: you must change {cls.MISSING_INFO_COL_NAME} column in "
+                      f"WARNING: you must change {cls.IS_COMPLETE_COL_NAME} column in "
                       f"{WriterLoaderHandler.get_path(dataset_name=cls.DATASET_NAME, func_name='empathetic_segmentation', is_cache=False)}"
-                      f" manually to get correct result\n"
+                      f" manually if you avoid using LLMs in previous stage to get correct result\n"
                       f"******************************************************************************")
-        data[cls.MISSING_INFO_COL_NAME] = data[cls.MISSING_INFO_COL_NAME].apply(int)
-        return data[data[cls.MISSING_INFO_COL_NAME] == 1]
+        data[cls.IS_COMPLETE_COL_NAME] = data[cls.IS_COMPLETE_COL_NAME].apply(int)
+        return data[data[cls.IS_COMPLETE_COL_NAME] == 1]
 
     def last_stage_changes(self, data: pd.DataFrame) -> pd.DataFrame:
         """
@@ -394,9 +419,19 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
     URL_COL_NAME = "video_url"
     FILE_PATH_COL_NAME = "file_path"
 
-    MISSING_INFO_COL_NAME = "missing_info"
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
+
+    # Empathy Classifier using LLMs Configs
+    USING_EMPATHY_CLASSIFIER_LLM = True
+    EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    REQUEST_EACH_DATA_NUMBER = 10
+
+    # Classifier for check completion of conversation using LLMs Configs
+    USING_COMPLETE_CLASSIFIER_LLM = True
+    COMPLETE_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    COMPLETE_REQUEST_EACH_DATA_NUMBER = 5
+    IS_COMPLETE_COL_NAME = "is_complete"
 
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
@@ -438,9 +473,19 @@ class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
     URL_COL_NAME = None
     FILE_PATH_COL_NAME = "file_path"
 
-    MISSING_INFO_COL_NAME = "missing_info"
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
+
+    # Empathy Classifier using LLMs Configs
+    USING_EMPATHY_CLASSIFIER_LLM = True
+    EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    REQUEST_EACH_DATA_NUMBER = 10
+
+    # Classifier for check completion of conversation using LLMs Configs
+    USING_COMPLETE_CLASSIFIER_LLM = True
+    COMPLETE_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    COMPLETE_REQUEST_EACH_DATA_NUMBER = 5
+    IS_COMPLETE_COL_NAME = "is_complete"
 
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
@@ -530,13 +575,23 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
     URL_COL_NAME = None
     FILE_PATH_COL_NAME = "file_path"
 
-    MISSING_INFO_COL_NAME = "missing_info"
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
 
     SPLIT_COL_NAME = 'split'
     FILE_CONV_ID = 'Old_Dialogue_ID'
     FILE_UTTER_ID = 'Old_Utterance_ID'
+
+    # Empathy Classifier using LLMs Configs
+    USING_EMPATHY_CLASSIFIER_LLM = True
+    EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    REQUEST_EACH_DATA_NUMBER = 10
+
+    # Classifier for check completion of conversation using LLMs Configs
+    USING_COMPLETE_CLASSIFIER_LLM = True
+    COMPLETE_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    COMPLETE_REQUEST_EACH_DATA_NUMBER = 5
+    IS_COMPLETE_COL_NAME = "is_complete"
 
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
@@ -639,12 +694,22 @@ class MUStARDDatasetFormatter(BaseDialogueDatasetFormatter):
     URL_COL_NAME = None
     FILE_PATH_COL_NAME = "file_path"
 
-    MISSING_INFO_COL_NAME = "missing_info"
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
 
     TYPE_UTTER_COL_NAME = 'type_utter'
     RECORD_ID_COL_NAME = 'record_id'
+
+    # Empathy Classifier using LLMs Configs
+    USING_EMPATHY_CLASSIFIER_LLM = True
+    EMPATHY_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    REQUEST_EACH_DATA_NUMBER = 10
+
+    # Classifier for check completion of conversation using LLMs Configs
+    USING_COMPLETE_CLASSIFIER_LLM = True
+    COMPLETE_LLM_TOOL = LLMsCompletionService.Tools.OPENAI
+    COMPLETE_REQUEST_EACH_DATA_NUMBER = 5
+    IS_COMPLETE_COL_NAME = "is_complete"
 
     # if more columns change this list for dataset
     MAIN_COLUMNS = [CONV_ID_COL_NAME, UTTER_ID_COL_NAME, UTTER_COL_NAME, SPEAKER_ID_COL_NAME, FILE_PATH_COL_NAME,
