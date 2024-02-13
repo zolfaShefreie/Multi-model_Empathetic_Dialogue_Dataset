@@ -55,8 +55,8 @@ class CompleteCheckerClassifierLLMs:
         :param response: response of LLMs
         :return: label, reason
         """
-        match_result = re.match(cls.REGEX, response.replace("\n", " "))
-        if match_result:
+        match_result = re.search(cls.REGEX, response.replace("\n", " "))
+        if match_result is not None:
             # based on regex the 6th group is label and 2nd group is reason
             return match_result.group(6), match_result.group(2)
         return None, None
@@ -165,7 +165,7 @@ class CompleteCheckerClassifierLLMs:
         :param number_request: number of requests for each conversation
         :return: ture or false (continue => true => run the loop)
         """
-        complete_fix_number = max(3, int(number_request * cls.COMPLETE_RATE))
+        complete_fix_number = max(1, int(number_request * cls.COMPLETE_RATE))
         return True if complete_count < complete_fix_number else False
 
     @classmethod
