@@ -234,6 +234,7 @@ class BaseDialogueDatasetFormatter(ABC):
         :return:
         """
         data = EmpathyFunctions.segment_empathy_dialogue(data=data,
+                                                         utter_id_key_name=cls.UTTER_ID_COL_NAME,
                                                          conv_id_key_name=cls.CONV_ID_COL_NAME,
                                                          utter_key_name=cls.UTTER_COL_NAME,
                                                          new_conv_id_key_name=cls.NEW_CONV_ID_COL_NAME,

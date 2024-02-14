@@ -68,7 +68,7 @@ class DialogueFunctions:
         conv_df = data[[conv_id_key_name, utter_key_name]].groupby([conv_id_key_name])[utter_key_name].\
             apply(list).reset_index()
         conv_df[result_key_name] = conv_df.apply(lambda x: [i for i, value in enumerate(x[utter_key_name])], axis=1)
-        conv_df.explode([utter_key_name, result_key_name])
+        conv_df = conv_df.explode([utter_key_name, result_key_name])
         return data.merge(conv_df, on=[conv_id_key_name, utter_key_name], how='inner')
 
     @classmethod
@@ -480,14 +480,13 @@ class EmpathyFunctions:
                                  data: pd.pandas,
                                  conv_id_key_name='conv_id',
                                  utter_key_name='utterance',
+                                 utter_id_key_name='utterance_idx',
                                  empathy_kind_key_name='empathy_kind',
                                  new_conv_id_key_name='new_conv_id',
                                  new_utterance_id_key_name='new_utterance_id'):
         """
-            برای سگمنت دو تا چیز مهمه یکی اینکه باید بری نوع همدلی و یکی همگام کنی این دوستان عزیز رو با اشخاصی که طرف روبه رو عه
-            یعنی مکالمه از طرف یکی شروع میشه که جویای همدلیه و با یه فرد مقابل اولیه تموم میشه که همدلی رو تهیه میکنه یا کلا با شخص رو به رو واکنش همدلی نشون میده
-            اینو به این مدلی که همدلی وجود داره یا نه هم باید بدی که ببینی همدلی وجود داره یا نه چون ممکنه نسبت به فرد مقابل و داده هاش همدلی نشون نده
-            بعد یه تگ جدیدی میسازی که ببینی برای آیدی مکالمه جدید و ترتیب انجام گفتگو
+        management of segmentation
+            :param utter_id_key_name:
             :param data:
             :param conv_id_key_name:
             :param empathy_kind_key_name:
@@ -496,14 +495,22 @@ class EmpathyFunctions:
             :param new_utterance_id_key_name:
             :return:
         """
-        conv_df = data.groupby(conv_id_key_name)[empathy_kind_key_name].apply(list).reset_index()
+        # group by conv and make list of utterances_ids and their empathy_kind
+        conv_df = data[[conv_id_key_name, utter_id_key_name]].groupby([conv_id_key_name])[utter_id_key_name].apply(list) \
+            .reset_index()
+        conv_df = conv_df.merge(
+            data[[conv_id_key_name, empathy_kind_key_name]].groupby([conv_id_key_name])[empathy_kind_key_name]
+            .apply(list).reset_index(), how='inner', on=[conv_id_key_name])
+        # get new conv_id for each segment
         conv_df[new_conv_id_key_name] = conv_df.\
             apply(lambda x: cls.get_new_conv_id_segments(empathy_kind_seq=x[empathy_kind_key_name],
                                                          cov_name_prefix=x[conv_id_key_name]),
                   axis=1)
-        conv_df = conv_df.explode(new_conv_id_key_name)
+        # explode two column list
+        conv_df = conv_df.explode([utter_id_key_name, new_conv_id_key_name])
         # get new conversations
-        new_data = conv_df[[conv_id_key_name, new_conv_id_key_name]].merge(data, on=conv_id_key_name, how='inner')
+        new_data = conv_df[[conv_id_key_name, new_conv_id_key_name, utter_id_key_name]].\
+            merge(data, on=[conv_id_key_name, utter_id_key_name], how='inner')
         return DialogueFunctions.make_utter_id_seq(data=new_data[new_data[new_conv_id_key_name].notnull()],
                                                    conv_id_key_name=new_conv_id_key_name,
                                                    utter_key_name=utter_key_name,
@@ -524,9 +531,9 @@ class EmpathyFunctions:
             :return: list of new conv_ids
         """
         conv_id_positions = dict()
-        empathy_kind_seq = "".join(empathy_kind_seq)
+        # convert list of empathy_kind to one string
+        empathy_kind_seq = "".join([str(em_kind) for em_kind in empathy_kind_seq])
         for index, match_exp in enumerate(cls.EMPATHY_KIND_SEGMENT_CONDITION.finditer(empathy_kind_seq)):
             conv_id_positions.update({pos: f"{cov_name_prefix}_{index}" for pos in range(match_exp.start(),
                                                                                          match_exp.end())})
         return [conv_id_positions.get(i, default_conv_id) for i in range(len(empathy_kind_seq))]
-
