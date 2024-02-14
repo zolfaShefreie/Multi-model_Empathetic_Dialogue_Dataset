@@ -253,8 +253,8 @@ class BaseDialogueDatasetFormatter(ABC):
         if cls.USING_COMPLETE_CLASSIFIER_LLM:
             return DialogueFunctions.check_conv_is_complete_llms(data=data,
                                                                  utter_key_name=cls.UTTER_COL_NAME,
-                                                                 utter_id_key_name=cls.UTTER_ID_COL_NAME,
-                                                                 conv_id_key_name=cls.CONV_ID_COL_NAME,
+                                                                 utter_id_key_name=cls.NEW_UTTERANCE_IDX_NAME,
+                                                                 conv_id_key_name=cls.NEW_CONV_ID_COL_NAME,
                                                                  tool=cls.COMPLETE_LLM_TOOL,
                                                                  number_request=cls.COMPLETE_REQUEST_EACH_DATA_NUMBER,
                                                                  complete_key_name=cls.IS_COMPLETE_COL_NAME)
@@ -405,7 +405,9 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
     """
     DATASET_NAME = 'AnnoMI'
     SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
-                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'conversation_completion_checking',
+                 'filter_missing_info', 'last_stage_changes']
+    EDITABLE_STAGES = ['apply_empathy_classifier', 'conversation_completion_checking', ]
     # some audio or video files were uploaded on youtube
     NEED_DOWNLOAD = True
     NEED_VIDEO_TO_AUDIO = False
@@ -459,7 +461,9 @@ class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
     # process configs
     DATASET_NAME = 'dailyTalk'
     SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
-                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'conversation_completion_checking',
+                 'filter_missing_info', 'last_stage_changes']
+    EDITABLE_STAGES = ['apply_empathy_classifier', 'conversation_completion_checking', ]
     # some audio or video files were uploaded on youtube
     NEED_DOWNLOAD = False
     NEED_VIDEO_TO_AUDIO = False
@@ -561,7 +565,9 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
     # process configs
     DATASET_NAME = 'MELD'
     SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
-                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'conversation_completion_checking',
+                 'filter_missing_info', 'last_stage_changes']
+    EDITABLE_STAGES = ['apply_empathy_classifier', 'conversation_completion_checking', ]
     # some audio or video files were uploaded on youtube
     NEED_DOWNLOAD = False
     NEED_VIDEO_TO_AUDIO = True
@@ -680,7 +686,9 @@ class MUStARDDatasetFormatter(BaseDialogueDatasetFormatter):
     # process configs
     DATASET_NAME = 'MUStARD'
     SEQ_STAGE = ['dataset_cleaner', 'audio_processing', 'filter_two_party', 'apply_empathy_classifier',
-                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'filter_missing_info', 'last_stage_changes']
+                 'filter_empathy_exist_conv', 'empathetic_segmentation', 'conversation_completion_checking',
+                 'filter_missing_info', 'last_stage_changes']
+    EDITABLE_STAGES = ['apply_empathy_classifier', 'conversation_completion_checking', ]
     # some audio or video files were uploaded on youtube
     NEED_DOWNLOAD = False
     NEED_VIDEO_TO_AUDIO = True

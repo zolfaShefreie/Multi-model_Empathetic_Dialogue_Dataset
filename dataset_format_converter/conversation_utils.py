@@ -139,7 +139,7 @@ class DialogueFunctions:
         # merge to original data
         return data.merge(conv_df[[conv_id_key_name, complete_key_name,
                                    reasons_key_name, percent_key_name]],
-                          on=[conv_id_key_name, utter_id_key_name], how='inner')
+                          on=[conv_id_key_name], how='inner')
 
     @classmethod
     def filter_not_multi_turn_on_one_party(cls,
