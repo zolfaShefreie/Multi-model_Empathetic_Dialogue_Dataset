@@ -201,7 +201,7 @@ class EmpathyFunctions:
     EMPATHY_KIND_MODULE = EmpathyKindClassifier()
     EMPATHY_EXIST_MODULE = ExistEmpathyClassifier()
     EMPATHY_KIND_SEQUENCE = f".*(({EmpathyKindEnum.SEEKING.value}, )(({EmpathyKindEnum.NONE.value}, )\1)*({EmpathyKindEnum.PROVIDING.value}(, )?))+.*"
-    EMPATHY_KIND_SEGMENT_CONDITION = re.compile(f"(({EmpathyKindEnum.SEEKING.value})({EmpathyKindEnum.PROVIDING.value}))+")
+    EMPATHY_KIND_SEGMENT_CONDITION = re.compile(f"(({EmpathyKindEnum.SEEKING.value})(({EmpathyKindEnum.PROVIDING.value}{EmpathyKindEnum.PROVIDING.value})*{EmpathyKindEnum.PROVIDING.value}))+")
 
     @classmethod
     def get_empathy_kind(cls,
