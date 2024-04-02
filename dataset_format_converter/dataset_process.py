@@ -619,7 +619,7 @@ class MELDDatasetFormatter(BaseDialogueDatasetFormatter):
                                              'train': pd.read_csv(f"{self.dataset_dir}/train_sent_emo_dya.csv"), })
 
         # filter the dialogue with continuous multi turn for one party
-        data = DialogueFunctions.filter_not_multi_turn_on_one_party(data=data,
+        data = DialogueFunctions.filter_not_multi_step_on_one_party(data=data,
                                                                     conv_id_key_name=self.CONV_ID_COL_NAME,
                                                                     utter_id_key_name=self.UTTER_ID_COL_NAME,
                                                                     speaker_id_key_name=self.SPEAKER_ID_COL_NAME)

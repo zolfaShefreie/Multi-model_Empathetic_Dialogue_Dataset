@@ -142,13 +142,13 @@ class DialogueFunctions:
                           on=[conv_id_key_name], how='inner')
 
     @classmethod
-    def filter_not_multi_turn_on_one_party(cls,
+    def filter_not_multi_step_on_one_party(cls,
                                            data: pd.DataFrame,
                                            conv_id_key_name='conv_id',
                                            utter_id_key_name='utterance_idx',
                                            speaker_id_key_name='speaker_idx') -> pd.DataFrame:
         """
-        filter the conversations that one party doesn't get multi turn continuously
+        filter the conversations that one party doesn't get multi step continuously
         :param data:
         :param conv_id_key_name: name of conv_id column
         :param utter_id_key_name: name of utterance column
