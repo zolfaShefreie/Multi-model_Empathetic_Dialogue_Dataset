@@ -17,8 +17,10 @@ class CompleteCheckerClassifierLLMs:
                  "You are tasked to check carefully that a conversation is complete or incomplete."
 
     USER_QUERY = "i give you a conversation and you will tell me it is complete or incomplete conversation based on " \
-                 "its context and explain reason behind it. consider a complete conversation is a conversation which " \
-                 "there is no information gap and the topic of conversation is understandable and clear. you have to " \
+                 "its context and explain reason behind it. consider a complete conversation is a conversation in " \
+                 "which there is no information gap, and there is no room for ambiguity, and the necessary " \
+                 "information to understand the topic is explicitly or implicitly provided, with logical coherence" \
+                 " between the utterances of both parties. you have to " \
                  "answer following this template: Reason: [reason] \nThe final answer is: [complete or incomplete]" \
                  "\nconversation:\n{conversation}\n" \
                  "Answer: let's think step by step to reach the right conclusion."
