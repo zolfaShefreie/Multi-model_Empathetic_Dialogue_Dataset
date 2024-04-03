@@ -30,6 +30,7 @@ class CompleteCheckerClassifierLLMs:
     REASON_KEY_NAME = "Reason"
     LABEL_KEY_NAME = "Label"
     NUMBER_RESULT = 40
+    NUMBER_LOOP_WITHOUT_RESULT = 6
     REQUEST_SLEEP = 1000
     COMPLETE_RATE = 0.4
 
@@ -137,7 +138,7 @@ class CompleteCheckerClassifierLLMs:
             :return: max_value, it's reason and percents
             """
             sum_request = sum([label_info['number'] for label_info in data.values()])
-            avg_label = {cls.CompleteEnum[key].name: label_info['number']/sum_request
+            avg_label = {cls.CompleteEnum[key].name: 0 if sum_request == 0 else label_info['number']/sum_request
                          for key, label_info in data.items()}
             max_key_number = max(avg_label, key=avg_label.get)
             return {complete_key_name: cls.CompleteEnum[max_key_number].value,
@@ -196,9 +197,14 @@ class CompleteCheckerClassifierLLMs:
         """
         all_labels, all_reasons = list(), list()
         incomplete_count = 0
+        loop_without_result = 0
         while cls.continue_send_requests(complete_count=len(all_labels), number_request=number_request):
             responses = cls.get_response(conv_str=conv_str, tool=tool,
                                          num_requests=number_request if incomplete_count == 0 else incomplete_count)
+
+            # save incomplete count at previous loop. if there is no pre_loop set -1
+            pre_incomplete_count = incomplete_count if incomplete_count != 0 else -1
+            # reset incomplete_count for the current running loop
             incomplete_count = 0
             for response in responses:
                 label, reason = cls.extract_llms_response_info(response.text)
@@ -208,6 +214,18 @@ class CompleteCheckerClassifierLLMs:
                 else:
                     incomplete_count += 1
             print('incomplete responses', incomplete_count)
+
+            # check if this loop has no new result. add to a counter
+            # else reset the counter
+            # if the counter gets max number, loop will stop
+            if pre_incomplete_count == incomplete_count:
+                loop_without_result += 1
+            else:
+                loop_without_result = 0
+
+            if loop_without_result >= cls.NUMBER_LOOP_WITHOUT_RESULT:
+                print("break the loop")
+                break
 
         return cls.aggregate_responses(all_req_labels=all_labels, all_req_reasons=all_reasons,
                                        complete_key_name=complete_key_name,
