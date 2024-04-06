@@ -409,7 +409,7 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
                  'filter_missing_info', 'last_stage_changes']
     EDITABLE_STAGES = ['apply_empathy_classifier', 'conversation_completion_checking', ]
     # some audio or video files were uploaded on youtube
-    NEED_DOWNLOAD = True
+    NEED_DOWNLOAD = False
     NEED_VIDEO_TO_AUDIO = False
     NEED_AUDIO_SEGMENTATION = True
     AUDIO_FORMAT = 'wav'
@@ -449,7 +449,57 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
         :param kwargs:
         :return:
         """
-        return pd.read_csv(f"{self.dataset_dir}/AnnoMI-full.csv")
+        data = pd.read_csv(f"{self.dataset_dir}/AnnoMI-full.csv")
+        data = self._handle_multi_annotation(data)
+        if not self.NEED_DOWNLOAD:
+            data = self._add_audio_file_path_col(data)
+        return data
+
+    def _handle_multi_annotation(self, data:pd.DataFrame) -> pd.DataFrame:
+        """
+        get modes from multi annotation
+        :param data:
+        :return:
+        """
+
+        def get_mode(x: pd.Series):
+            """
+            get first mode of column values with try catch
+            :param x: 
+            :return: 
+            """
+            try:
+                return x.mode()[0]
+            except Exception as e:
+                return None
+
+        groupby_cols = [self.CONV_ID_COL_NAME, self.UTTER_ID_COL_NAME, self.UTTER_COL_NAME]
+        columns_funcs = [col_name for col_name in data.columns if col_name not in groupby_cols]
+        return data.groupby(groupby_cols, as_index=False).agg({col_name: lambda x: get_mode(x)
+                                                               for col_name in columns_funcs})
+    
+    def _add_audio_file_path_col(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        add file_path col to metadata
+        :param data: metadata with dataframe format
+        :return: metadata with file_path_col
+        """
+
+        def get_audio_file_path(dataset_dir: str, youtube_url: str):
+            """
+            get path of audio file based on this dataset
+            :param dataset_dir:
+            :param youtube_url:
+            :return:
+            """
+            file_name = youtube_url.split(sep="/")[-1].split("/")[-1].split(sep="watch?v=")[-1].split(sep="&")[0]
+            path = f"{dataset_dir}/audio_files/{file_name}.wav"
+            return path if os.path.exists(path) else None
+
+        data[self.FILE_PATH_COL_NAME] = data.apply(
+            lambda x: get_audio_file_path(dataset_dir=self.dataset_dir,
+                                          youtube_url=x[self.URL_COL_NAME]), axis=1)
+        return data[data[self.FILE_PATH_COL_NAME].notna()]
 
 
 class DailyTalkDatasetFormatter(BaseDialogueDatasetFormatter):
