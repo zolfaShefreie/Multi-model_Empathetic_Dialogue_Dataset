@@ -5,6 +5,8 @@ from abc import ABC, abstractmethod
 import warnings
 import os
 import shutil
+import datetime
+import time
 
 from utils import decorators
 from settings import RAW_DATASET_PATH
@@ -41,6 +43,7 @@ class BaseDialogueDatasetFormatter(ABC):
     SPEAKER_ID_COL_NAME = str()
     URL_COL_NAME = str()
     FILE_PATH_COL_NAME = str()
+    TIMESTAMPS_COL_NAME = None
 
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
@@ -145,29 +148,43 @@ class BaseDialogueDatasetFormatter(ABC):
         :param data: metadata with dataframe format
         :return: metadata with audio file path for each utterance
         """
+        data[self.UTTER_ID_COL_NAME] = data[self.UTTER_ID_COL_NAME].apply(int)
         # get unique path of audio of each conversation and the minimum turns
-        conv_df = data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_ID_COL_NAME].apply(
-            int).min().reset_index().rename(columns={self.UTTER_ID_COL_NAME: 'first_id'})
+        conv_df = data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_ID_COL_NAME].min()\
+            .reset_index().rename(columns={self.UTTER_ID_COL_NAME: 'first_id'})
         # get list of utterance of each audio and merge to conv_df
         conv_df = conv_df.merge(
-            data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_COL_NAME]).\
-            apply(list).reset_index()
+            data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_COL_NAME].apply(list).reset_index(),
+            on=[self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])
         # get list of utterance_ids
         conv_df = conv_df.merge(
-            data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_ID_COL_NAME]).\
-            apply(list).reset_index()
+            data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.UTTER_ID_COL_NAME].\
+            apply(list).reset_index(), on=[self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])
+
+        # get list of timestamps
+        if self.TIMESTAMPS_COL_NAME is not None:
+            conv_df = conv_df.merge(
+                data.groupby([self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])[self.TIMESTAMPS_COL_NAME]. \
+                    apply(list).reset_index(), on=[self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME])
         # segment audio file
         conv_df['audio_files_path'] = conv_df.apply(
             lambda x: AudioModule.segment_audio(file_path=x[self.FILE_PATH_COL_NAME],
                                                 utterances=x[self.UTTER_COL_NAME],
                                                 prefix_name=x[self.CONV_ID_COL_NAME],
                                                 save_dir=f"{'/'.join(x[self.FILE_PATH_COL_NAME].split('/')[:-1])}",
-                                                first_utter_id=x['first_id']), axis=1)
+                                                first_utter_id=x['first_id'],
+                                                timestamps_list=None if self.TIMESTAMPS_COL_NAME is None else x[self.TIMESTAMPS_COL_NAME]),
+            axis=1)
         # explode the utter_ids and list of seg audio file path
         conv_df = conv_df.explode([self.UTTER_ID_COL_NAME, 'audio_files_path']).reset_index(drop=True)
+
+        # remove previous file_path col and extras
+        conv_df = conv_df.drop(columns=[self.FILE_PATH_COL_NAME, self.UTTER_COL_NAME, 'first_id',
+                                        self.TIMESTAMPS_COL_NAME])
+        data = data.drop(columns=[self.FILE_PATH_COL_NAME])
+
         # merge result with metadata and replace new column values with default file_path column
         return data.merge(conv_df, on=[self.CONV_ID_COL_NAME, self.UTTER_ID_COL_NAME], how="inner").\
-            drop(columns=[self.FILE_PATH_COL_NAME]).\
             rename(columns={'audio_files_path': self.FILE_PATH_COL_NAME})
 
     # Empathetic part
@@ -421,6 +438,7 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
     SPEAKER_ID_COL_NAME = "interlocutor"
     URL_COL_NAME = "video_url"
     FILE_PATH_COL_NAME = "file_path"
+    TIMESTAMPS_COL_NAME = "timestamp"
 
     NEW_CONV_ID_COL_NAME = "new_conv_id"
     NEW_UTTERANCE_IDX_NAME = "new_utter_idx"
@@ -450,9 +468,25 @@ class AnnoMIDatasetFormatter(BaseDialogueDatasetFormatter):
         :return:
         """
         data = pd.read_csv(f"{self.dataset_dir}/AnnoMI-full.csv")
+        data = self._change_timestamps_format(data)
         data = self._handle_multi_annotation(data)
         if not self.NEED_DOWNLOAD:
             data = self._add_audio_file_path_col(data)
+        return data
+
+    def _change_timestamps_format(self, data: pd.DataFrame) -> pd.DataFrame:
+        """
+        change format of timestamp to seconds
+        :param data:
+        :return:
+        """
+
+        def time_to_sec(x_time):
+            time_obj = time.strptime(x_time, '%H:%M:%S')
+            return datetime.timedelta(hours=time_obj.tm_hour, minutes=time_obj.tm_min,
+                                      seconds=time_obj.tm_sec).total_seconds()
+
+        data[self.TIMESTAMPS_COL_NAME] = data[self.TIMESTAMPS_COL_NAME].apply(lambda x: time_to_sec(x))
         return data
 
     def _handle_multi_annotation(self, data:pd.DataFrame) -> pd.DataFrame:

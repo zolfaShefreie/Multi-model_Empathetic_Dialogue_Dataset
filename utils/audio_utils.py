@@ -36,7 +36,7 @@ class AudioModule:
 
     @classmethod
     def segment_audio(cls, file_path: str, utterances: list, prefix_name: str, save_dir: str,
-                      first_utter_id: int = 0) -> list:
+                      first_utter_id: int = 0, timestamps_list: list = None) -> list:
         """
         split audio to get audio of each utterance and save it with wav format
         :param file_path: path of audio file
@@ -44,11 +44,18 @@ class AudioModule:
         :param prefix_name: prefix name of sub audios
         :param save_dir: dir that audios gonna be saved
         :param first_utter_id: the index of the first element of utterances(param) in the complete conversation
+        :param timestamps_list: list of first timestamps
         :return: a list of sub audio path
         """
         if len(utterances) > 1:
-            timestamps = cls.get_timestamp(file_path=file_path, utterances=utterances)
-            audio = AudioSegment.from_wav(file_path)
+            audio = AudioSegment.from_file(file_path)
+
+            if timestamps_list is None:
+                timestamps = cls.get_timestamp(file_path=file_path, utterances=utterances)
+            else:
+                # it was the list of start time of utterance we convert to (start_time, end_time) format
+                timestamps = [(timestamps_list[i], timestamps_list[i+1]) for i in range(len(timestamps_list)-1)] + \
+                             [(timestamps_list[-1], audio.duration_seconds)]
 
             segments_path = list()
 
