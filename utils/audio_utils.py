@@ -69,7 +69,7 @@ class AudioModule:
 
             return segments_path
 
-        elif utterances == 1:
+        elif len(utterances) == 1:
             return [file_path]
 
         else:

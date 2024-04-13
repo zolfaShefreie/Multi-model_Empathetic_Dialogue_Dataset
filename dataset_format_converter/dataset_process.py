@@ -1,3 +1,5 @@
+import json
+
 import pandas as pd
 import numpy as np
 import ast
@@ -126,10 +128,8 @@ class BaseDialogueDatasetFormatter(ABC):
         :param data: metadata with dataframe format
         :return: metadata with audio file path
         """
-        print(data.columns)
         # get file paths of each conversation
         conv_df = data[[self.CONV_ID_COL_NAME, self.FILE_PATH_COL_NAME]].drop_duplicates()
-        print(conv_df.columns)
         # create new column and save the path of audio
         # audio will be saved on video location with the same names
         conv_df[f"new_{self.FILE_PATH_COL_NAME}"] = conv_df.apply(
@@ -179,8 +179,10 @@ class BaseDialogueDatasetFormatter(ABC):
         conv_df = conv_df.explode([self.UTTER_ID_COL_NAME, 'audio_files_path']).reset_index(drop=True)
 
         # remove previous file_path col and extras
-        conv_df = conv_df.drop(columns=[self.FILE_PATH_COL_NAME, self.UTTER_COL_NAME, 'first_id',
-                                        self.TIMESTAMPS_COL_NAME])
+        conv_df = conv_df.drop(columns=[self.FILE_PATH_COL_NAME, self.UTTER_COL_NAME, 'first_id'])
+        if self.TIMESTAMPS_COL_NAME is not None:
+            conv_df = conv_df.drop(columns=[self.TIMESTAMPS_COL_NAME])
+
         data = data.drop(columns=[self.FILE_PATH_COL_NAME])
 
         # merge result with metadata and replace new column values with default file_path column
@@ -827,7 +829,7 @@ class MUStARDDatasetFormatter(BaseDialogueDatasetFormatter):
         :return: metadata with dataframe format
         """
         with open(metadata_path, encoding="utf8") as file:
-            dict_content = ast.literal_eval(file.read())
+            dict_content = ast.literal_eval(str(json.load(file)))
             data = list()
             for conv_id, item in enumerate(dict_content.items()):
                 record_id, record = item

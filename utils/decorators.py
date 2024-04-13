@@ -32,7 +32,9 @@ class WriterLoaderHandler:
             if files:
                 # return the max of function_name_index
                 # name files are like : dataset<SEP>func.csv
-                return max([process_seq.index(file.split('.csv')[0].split(cls.SEP)[-1]) for file in files]) + 1
+                processed_stages = [file.split('.csv')[0].split(cls.SEP)[-1] for file in files
+                                    if file.split('.csv')[0].split(cls.SEP)[-1] in process_seq]
+                return max([process_seq.index(p_stage_name) for p_stage_name in processed_stages]) + 1
         return 0
 
     @classmethod
