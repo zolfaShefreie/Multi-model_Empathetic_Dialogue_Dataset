@@ -820,6 +820,10 @@ class MUStARDDatasetFormatter(BaseDialogueDatasetFormatter):
         :return:
         """
         data = self._convert_metadata_to_dataframe(f"{self.dataset_dir}/sarcasm_data.json")
+        data = DialogueFunctions.filter_not_multi_step_on_one_party(data,
+                                                                    conv_id_key_name=self.CONV_ID_COL_NAME,
+                                                                    utter_id_key_name=self.UTTER_ID_COL_NAME,
+                                                                    speaker_id_key_name=self.SPEAKER_ID_COL_NAME)
         return self._add_audio_file_path_col(data=data)
 
     def _convert_metadata_to_dataframe(self, metadata_path: str) -> pd.DataFrame:
