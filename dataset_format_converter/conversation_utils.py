@@ -65,11 +65,13 @@ class DialogueFunctions:
         :param result_key_name: name of utterance_idx column
         :return:
         """
-        conv_df = data[[conv_id_key_name, utter_key_name]].groupby([conv_id_key_name])[utter_key_name].\
-            apply(list).reset_index()
-        conv_df[result_key_name] = conv_df.apply(lambda x: [i for i, value in enumerate(x[utter_key_name])], axis=1)
-        conv_df = conv_df.explode([utter_key_name, result_key_name])
-        return data.merge(conv_df, on=[conv_id_key_name, utter_key_name], how='inner')
+        # conv_df = data[[conv_id_key_name, utter_key_name]].groupby([conv_id_key_name])[utter_key_name].\
+        #     apply(list).reset_index()
+        # conv_df[result_key_name] = conv_df.apply(lambda x: [i for i, value in enumerate(x[utter_key_name])], axis=1)
+        # conv_df = conv_df.explode([utter_key_name, result_key_name])
+        # return data.merge(conv_df, on=[conv_id_key_name, utter_key_name], how='inner')
+        data[result_key_name] = data.groupby([conv_id_key_name]).cumcount()
+        return data
 
     @classmethod
     def check_conv_is_complete_llms(cls,
