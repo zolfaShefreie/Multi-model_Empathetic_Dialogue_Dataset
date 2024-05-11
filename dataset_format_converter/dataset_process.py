@@ -304,11 +304,11 @@ class BaseDialogueDatasetFormatter(ABC):
         :return:
         """
         if self.NEW_UTTERANCE_IDX_NAME in data.columns:
-            data = data.columns.drop(columns=[self.UTTER_ID_COL_NAME]).\
+            data = data.drop(columns=[self.UTTER_ID_COL_NAME]).\
                 rename(columns={self.NEW_UTTERANCE_IDX_NAME: self.UTTER_ID_COL_NAME})
 
         if self.NEW_CONV_ID_COL_NAME in data.columns:
-            data = data.columns.drop(columns=[self.CONV_ID_COL_NAME]).\
+            data = data.drop(columns=[self.CONV_ID_COL_NAME]).\
                 rename(columns={self.NEW_CONV_ID_COL_NAME: self.CONV_ID_COL_NAME})
 
         data = data[self.MAIN_COLUMNS]
@@ -334,7 +334,9 @@ class BaseDialogueDatasetFormatter(ABC):
             :return: new path
             """
             new_path = f"{save_dir}/{dataset_name}/audio_files/{conv_id}_{utter_idx}.{self.AUDIO_FORMAT}"
-            os.rename(path, new_path)
+            if not os.path.exists(f"{save_dir}/{dataset_name}/audio_files/"):
+                os.makedirs(f"{save_dir}/{dataset_name}/audio_files/")
+            shutil.copy(path, new_path)
             return new_path
 
         data[self.FILE_PATH_COL_NAME] = data.apply(lambda x: move_file(path=x[self.FILE_PATH_COL_NAME],
