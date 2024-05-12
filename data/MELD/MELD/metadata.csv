@@ -1,0 +1,693 @@
+,Dialogue_ID,Utterance_ID,Utterance,Speaker,file_path,Emotion,Sentiment
+0,0_0,0,"Oh my God, heâs lost it. Heâs totally lost it.",Phoebe,./data/MELD/MELD/audio_files/0_0_0.wav,sadness,negative
+1,0_0,1,What?,Monica,./data/MELD/MELD/audio_files/0_0_1.wav,surprise,negative
+2,105_0,0,"Oh, no-no-no-no-no-no!!",Chandler,./data/MELD/MELD/audio_files/105_0_0.wav,fear,negative
+3,105_0,1,Whatâs going on?,Joey,./data/MELD/MELD/audio_files/105_0_1.wav,neutral,neutral
+4,109_0,0,"You guys, Joey just saw Janice kissing her ex-husband.",Monica,./data/MELD/MELD/audio_files/109_0_0.wav,surprise,negative
+5,109_0,1,"What?  So what are you going to do? I mean how, how are you going to tell Chandler?",Ross,./data/MELD/MELD/audio_files/109_0_1.wav,surprise,negative
+6,111_0,0,Heâs sleeping.,Carol,./data/MELD/MELD/audio_files/111_0_0.wav,neutral,neutral
+7,111_0,1,"Ahh.  Ooh, is this a ah, is this a bad time?",Ross,./data/MELD/MELD/audio_files/111_0_1.wav,surprise,positive
+8,111_0,2,"Umm, yeah, actually, Susanâs gonna be home any minute, itâs kinda an anniversary.",Carol,./data/MELD/MELD/audio_files/111_0_2.wav,joy,positive
+9,111_0,3,"Oh! I thought you guys got married in uh, January?",Ross,./data/MELD/MELD/audio_files/111_0_3.wav,surprise,negative
+10,111_0,4,Itâs not that kind of anniversary.,Carol,./data/MELD/MELD/audio_files/111_0_4.wav,neutral,neutral
+11,111_0,5,Ah!  Oh.,Ross,./data/MELD/MELD/audio_files/111_0_5.wav,surprise,negative
+12,120_0,0,"Oh, did I not mention? Carl is a guy I hired to be my identical twin for a medical research project.",Joey,./data/MELD/MELD/audio_files/120_0_0.wav,neutral,neutral
+13,120_0,1,"Yâknow sometimes the good ideas are just right in front of you, arenât they?",Chandler,./data/MELD/MELD/audio_files/120_0_1.wav,joy,positive
+14,124_0,0,"Really? In the moment, I really wanted to kiss you too. In the moment.",Joey,./data/MELD/MELD/audio_files/124_0_0.wav,joy,positive
+15,124_0,1,"In the moment, yeah.",Janine,./data/MELD/MELD/audio_files/124_0_1.wav,neutral,neutral
+16,124_0,2,But only in the moment. So do ya wanna kiss again?,Joey,./data/MELD/MELD/audio_files/124_0_2.wav,joy,positive
+17,124_0,3,"Sure, New Yearâs Eve is only two weeks away. Can you wait?",Janine,./data/MELD/MELD/audio_files/124_0_3.wav,neutral,neutral
+18,132_0,0,"Hey, if Little Joey's dead, then I got no reason to live!",Joey,./data/MELD/MELD/audio_files/132_0_0.wav,sadness,negative
+19,132_0,1,"Joey, uh-",Ross,./data/MELD/MELD/audio_files/132_0_1.wav,surprise,positive
+20,1466_0,0,It kicked! I think the baby kicked!,Phoebe,./data/MELD/MELD/audio_files/1466_0_0.wav,surprise,positive
+21,1466_0,1,Oh my God!,Monica,./data/MELD/MELD/audio_files/1466_0_1.wav,surprise,positive
+22,1472_0,0,I donât know exactly. Itâs-itâs sorta like wrestling.,Monica,./data/MELD/MELD/audio_files/1472_0_0.wav,neutral,neutral
+23,1472_0,1,Oh?!,Phoebe,./data/MELD/MELD/audio_files/1472_0_1.wav,surprise,negative
+24,147_0,0,"Hey, guess what Iâm doing tonight.",Monica,./data/MELD/MELD/audio_files/147_0_0.wav,neutral,neutral
+25,147_0,1,What?,Phoebe,./data/MELD/MELD/audio_files/147_0_1.wav,neutral,neutral
+26,147_0,2,Iâm checking out the restaurant with Pete.,Monica,./data/MELD/MELD/audio_files/147_0_2.wav,neutral,neutral
+27,147_0,3,"Ohh, Monica, I am so excited for you.",Phoebe,./data/MELD/MELD/audio_files/147_0_3.wav,joy,positive
+28,1480_0,0,It was just so awkward and bumpy.,Jade,./data/MELD/MELD/audio_files/1480_0_0.wav,neutral,neutral
+29,1480_0,1,Bumpy?,Ross,./data/MELD/MELD/audio_files/1480_0_1.wav,surprise,negative
+30,148_1,0,"Oh, I know.  Yâknow, just-just talking about it is getting me kinda",Ross,./data/MELD/MELD/audio_files/148_1_0.wav,neutral,neutral
+31,148_1,1,"Oh, me too.",Carol,./data/MELD/MELD/audio_files/148_1_1.wav,neutral,neutral
+32,1499_0,0,"Well, we are fond of the silliness, but we also have a soft spot for the love.",Chandler,./data/MELD/MELD/audio_files/1499_0_0.wav,neutral,neutral
+33,1499_0,1,Love is the best medicine.,Monica,./data/MELD/MELD/audio_files/1499_0_1.wav,joy,positive
+34,1525_0,0,Can I tell you a little secret?,Phoebe,./data/MELD/MELD/audio_files/1525_0_0.wav,neutral,neutral
+35,1525_0,1,Yeah!,Rachel,./data/MELD/MELD/audio_files/1525_0_1.wav,joy,positive
+36,1533_0,0,"Oh. God, crazy Chandler. He spun me...off...the...bed!",Janice,./data/MELD/MELD/audio_files/1533_0_0.wav,joy,positive
+37,1533_0,1,Wow! Spinning that sounds like fun.,Rachel,./data/MELD/MELD/audio_files/1533_0_1.wav,joy,positive
+38,1533_0,2,"Oh,  I wish. No, you know he was just trying Ross's Hug and Roll thing.",Janice,./data/MELD/MELD/audio_files/1533_0_2.wav,joy,positive
+39,1533_0,3,Ross's what?,Rachel,./data/MELD/MELD/audio_files/1533_0_3.wav,surprise,positive
+40,1543_0,0,"Guess what, I got an audition!",Student,./data/MELD/MELD/audio_files/1543_0_0.wav,joy,positive
+41,1543_0,1,"Awww, one of my students got an audition. Iâm so proud.",Joey,./data/MELD/MELD/audio_files/1543_0_1.wav,joy,positive
+42,1543_0,2,I was wondering if you would consider coaching me for it?,Student,./data/MELD/MELD/audio_files/1543_0_2.wav,neutral,neutral
+43,1543_0,3,You bet! Whatâs the part?,Joey,./data/MELD/MELD/audio_files/1543_0_3.wav,joy,positive
+44,1569_0,0,"Okay, okay, but Rachelâs gonna be here too, canât I just ask her this stuff?",Phoebe,./data/MELD/MELD/audio_files/1569_0_0.wav,neutral,neutral
+45,1569_0,1,"Yeah, okay, give that a try!",Monica,./data/MELD/MELD/audio_files/1569_0_1.wav,neutral,neutral
+46,1585_0,0,"I know, I lied! I didnât want her to think I was a terrible mother! I canât even see my own baby!",Rachel,./data/MELD/MELD/audio_files/1585_0_0.wav,sadness,negative
+47,1585_0,1,"Oh sure, come here!  Sure you can! Uh, look come here look,  itâs-itâs-itâs, itâs right there .",Ross,./data/MELD/MELD/audio_files/1585_0_1.wav,neutral,neutral
+48,1585_0,2,"Oh. Oh, itâs beautiful. I see it now.",Rachel,./data/MELD/MELD/audio_files/1585_0_2.wav,joy,positive
+49,1585_0,3,Do you really?,Ross,./data/MELD/MELD/audio_files/1585_0_3.wav,neutral,neutral
+50,1585_0,4,"No, I donât see it!",Rachel,./data/MELD/MELD/audio_files/1585_0_4.wav,anger,negative
+51,1585_0,5,"Come on! Come on! Here, okay-okay, you see this?  This tiny thing that looks like a peanut?",Ross,./data/MELD/MELD/audio_files/1585_0_5.wav,joy,positive
+52,1585_0,6,Yeah.,Rachel,./data/MELD/MELD/audio_files/1585_0_6.wav,neutral,neutral
+53,1585_0,7,Sweetie thatâs it.,Ross,./data/MELD/MELD/audio_files/1585_0_7.wav,joy,positive
+54,1585_0,8,"Thatâs it? Well I saw that! Ohh-ohh-oh, thank you.",Rachel,./data/MELD/MELD/audio_files/1585_0_8.wav,joy,positive
+55,1585_0,9,Youâre welcome.,Ross,./data/MELD/MELD/audio_files/1585_0_9.wav,neutral,neutral
+56,1585_0,10,Wow! I canât believe thatâs our baby.,Rachel,./data/MELD/MELD/audio_files/1585_0_10.wav,surprise,positive
+57,1585_0,11,"Yeah, thatâs our baby.",Ross,./data/MELD/MELD/audio_files/1585_0_11.wav,joy,positive
+58,161_0,0,"Anyway, thereâs this big charity ball this weekend and Ralph Lauren bought a table, so I kinda have to go",Rachel,./data/MELD/MELD/audio_files/161_0_0.wav,neutral,neutral
+59,161_0,1,Whatâs the charity?,Monica,./data/MELD/MELD/audio_files/161_0_1.wav,neutral,neutral
+60,161_0,2,"I donât know, something either trees or diseaseâRalph mumbles a lot.",Rachel,./data/MELD/MELD/audio_files/161_0_2.wav,neutral,neutral
+61,161_0,3,Does Ralph mumble when youâre not paying attention?,Monica,./data/MELD/MELD/audio_files/161_0_3.wav,neutral,neutral
+62,1621_0,0,Y'know you guys were a lot more supportive when I wanted to make denim furniture.,Phoebe,./data/MELD/MELD/audio_files/1621_0_0.wav,joy,positive
+63,1621_0,1,"No, Pheebs, listen, if you decide to do this, weâll be supportive like crazy.",Joey,./data/MELD/MELD/audio_files/1621_0_1.wav,neutral,neutral
+64,1641_0,0,"Ow, no âwoo-hooing,â no âwoo-hooing.â",Chandler,./data/MELD/MELD/audio_files/1641_0_0.wav,anger,negative
+65,1641_0,1,"Why, what happened?",Phoebe,./data/MELD/MELD/audio_files/1641_0_1.wav,surprise,negative
+66,1645_0,0,"Ah, I fooled around with Joeyâs sister.  Well, thatâs not the worst part.",Chandler,./data/MELD/MELD/audio_files/1645_0_0.wav,sadness,negative
+67,1645_0,1,What is the worse part?,Monica,./data/MELD/MELD/audio_files/1645_0_1.wav,neutral,neutral
+68,1682_0,0,I donât know. Should we try it?,Chandler,./data/MELD/MELD/audio_files/1682_0_0.wav,neutral,neutral
+69,1682_0,1,Sure.,Joey,./data/MELD/MELD/audio_files/1682_0_1.wav,neutral,neutral
+70,1690_0,0,"Honey, I was wondering....",Rachel,./data/MELD/MELD/audio_files/1690_0_0.wav,neutral,neutral
+71,1690_0,1,Hmm?,Ross,./data/MELD/MELD/audio_files/1690_0_1.wav,neutral,neutral
+72,1695_0,0,We can't do that.,Joey,./data/MELD/MELD/audio_files/1695_0_0.wav,neutral,neutral
+73,1695_0,1,What? What can't you do?,Chandler,./data/MELD/MELD/audio_files/1695_0_1.wav,surprise,negative
+74,1700_0,0,"Shh. He did it. He told her off, and not just about the kiss, about everything.",Joey,./data/MELD/MELD/audio_files/1700_0_0.wav,neutral,neutral
+75,1700_0,1,You're kidding.,Ross,./data/MELD/MELD/audio_files/1700_0_1.wav,surprise,negative
+76,1721_0,0,"Y'know, I love doing crossword puzzles with you honey!",Monica,./data/MELD/MELD/audio_files/1721_0_0.wav,joy,positive
+77,1721_0,1,"Aww, me too. Now let's finish this and go to bed.",Joey,./data/MELD/MELD/audio_files/1721_0_1.wav,joy,positive
+78,1721_1,0,Yes! You are so smart!  I love you.,Monica,./data/MELD/MELD/audio_files/1721_1_0.wav,joy,positive
+79,1721_1,1,I love you too.,Joey,./data/MELD/MELD/audio_files/1721_1_1.wav,joy,positive
+80,1738_0,0,"Oh, everything went great.",Rachel,./data/MELD/MELD/audio_files/1738_0_0.wav,joy,positive
+81,1738_0,1,Good.,Phoebe,./data/MELD/MELD/audio_files/1738_0_1.wav,neutral,neutral
+82,1746_0,0,Thanks a million.,Bonnie,./data/MELD/MELD/audio_files/1746_0_0.wav,joy,positive
+83,1746_0,1,"Oh, youâre welcome a million.",Rachel,./data/MELD/MELD/audio_files/1746_0_1.wav,joy,positive
+84,1755_0,0,"Yeah well, Iâm-Iâm a slut.",Rachel,./data/MELD/MELD/audio_files/1755_0_0.wav,sadness,negative
+85,1755_0,1,Me too.,Jill,./data/MELD/MELD/audio_files/1755_0_1.wav,neutral,neutral
+86,1760_0,0,"As bad as that went, I actually enjoyed myself. I think that Iâm going to apologize for all of the stupid things I do.",Chandler,./data/MELD/MELD/audio_files/1760_0_0.wav,neutral,neutral
+87,1760_0,1,Why donât you just stop doing stupid things? Then you wouldnât have to apologize.,Monica,./data/MELD/MELD/audio_files/1760_0_1.wav,neutral,neutral
+88,1760_0,2,I would really love it if I could do both.,Chandler,./data/MELD/MELD/audio_files/1760_0_2.wav,neutral,neutral
+89,1760_0,3,"All right, Iâ¦I have to ask.",Monica,./data/MELD/MELD/audio_files/1760_0_3.wav,sadness,negative
+90,1765_0,0,"Oh thanks, but listen, I was just at Monicaâs and she and Chandler had a big fight and theyâre not moving in.",Rachel,./data/MELD/MELD/audio_files/1765_0_0.wav,sadness,negative
+91,1765_0,1,"What do you mean, theyâre not moving in? They-theyâre still moving in right?",Ross,./data/MELD/MELD/audio_files/1765_0_1.wav,surprise,negative
+92,1765_0,2,"No-no, they just had a big blowout over what to do with my room.",Rachel,./data/MELD/MELD/audio_files/1765_0_2.wav,neutral,neutral
+93,1765_0,3,What?! Over a stupid room!,Ross,./data/MELD/MELD/audio_files/1765_0_3.wav,surprise,negative
+94,1765_0,4,"Yeah, I feel kinda bad for them, but Iâm also really psyched âcause I donât have to move in here!",Rachel,./data/MELD/MELD/audio_files/1765_0_4.wav,joy,positive
+95,1765_0,5,"Oh no, yeah no, that partâs great!",Ross,./data/MELD/MELD/audio_files/1765_0_5.wav,joy,positive
+96,1822_0,0,"Look, I donât feel like dancing, I feel like having a drink. Okay?",Ross,./data/MELD/MELD/audio_files/1822_0_0.wav,sadness,negative
+97,1822_0,1,"Oh, okay.  Hey, two beers.",Chloe,./data/MELD/MELD/audio_files/1822_0_1.wav,neutral,neutral
+98,1825_0,0,Oh and I need to talk to you.,Phoebe,./data/MELD/MELD/audio_files/1825_0_0.wav,neutral,neutral
+99,1825_0,1,About what?,Monica,./data/MELD/MELD/audio_files/1825_0_1.wav,neutral,neutral
+100,1838_0,0,"Hey, oh, you know that guy who's been following me? I talked to him today.",Phoebe,./data/MELD/MELD/audio_files/1838_0_0.wav,neutral,neutral
+101,1838_0,1,You talked to him. Are you crazy?,Joey,./data/MELD/MELD/audio_files/1838_0_1.wav,surprise,negative
+102,1851_0,0,"Well, as old as he is in dog years, do you think Snoopy should still be allowed to fly this thing?",Chandler,./data/MELD/MELD/audio_files/1851_0_0.wav,sadness,negative
+103,1851_0,1,"Eh, do you believe that?",Rachel,./data/MELD/MELD/audio_files/1851_0_1.wav,surprise,positive
+104,1853_0,0,"Do you remember when you first came here, how you spent two weeks getting trained by another waitress?",Gunther,./data/MELD/MELD/audio_files/1853_0_0.wav,neutral,neutral
+105,1853_0,1,"Oh, sure! Do you need me to train somebody new?",Rachel,./data/MELD/MELD/audio_files/1853_0_1.wav,joy,positive
+106,1874_0,0,Because I think about shaving it all off again sometime.,Bonnie,./data/MELD/MELD/audio_files/1874_0_0.wav,neutral,neutral
+107,1874_0,1,Really?!,Rachel,./data/MELD/MELD/audio_files/1874_0_1.wav,surprise,positive
+108,1874_0,2,Yeah!,Bonnie,./data/MELD/MELD/audio_files/1874_0_2.wav,joy,positive
+109,1874_0,2,Yeah!,Rachel,./data/MELD/MELD/audio_files/1874_0_2.wav,joy,positive
+110,1874_0,3,I mean you definitely should do that.,Rachel,./data/MELD/MELD/audio_files/1874_0_3.wav,neutral,neutral
+111,1874_0,4,"Y'know what, I should do it.",Bonnie,./data/MELD/MELD/audio_files/1874_0_4.wav,joy,positive
+112,1874_0,5,Yeah!,Bonnie,./data/MELD/MELD/audio_files/1874_0_5.wav,joy,positive
+113,1874_0,5,Yeah!,Rachel,./data/MELD/MELD/audio_files/1874_0_5.wav,joy,positive
+114,1874_0,6,"Yeah, thank you Rachel, you are soo cool.",Bonnie,./data/MELD/MELD/audio_files/1874_0_6.wav,joy,positive
+115,1874_0,7,"Awww, stop. Come on. Now go shave that head!",Rachel,./data/MELD/MELD/audio_files/1874_0_7.wav,neutral,neutral
+116,1879_0,0,I can't believe it! He's looking right at us!,Ross,./data/MELD/MELD/audio_files/1879_0_0.wav,surprise,negative
+117,1879_0,1,"Oh, that is so sick.",Rachel,./data/MELD/MELD/audio_files/1879_0_1.wav,disgust,negative
+118,1882_0,0,Man that was great! Huh? Can you believe how long we threw that ball around?,Joey,./data/MELD/MELD/audio_files/1882_0_0.wav,joy,positive
+119,1882_0,1,"Yeah, it is amazing it lasted that long.",Rachel,./data/MELD/MELD/audio_files/1882_0_1.wav,neutral,neutral
+120,1930_0,0,"Uh, morning. Do you guys think you could close your eyes for just a sec?",Rachel,./data/MELD/MELD/audio_files/1930_0_0.wav,neutral,neutral
+121,1930_0,1,What's goin' on?,Phoebe,./data/MELD/MELD/audio_files/1930_0_1.wav,neutral,neutral
+122,1932_0,0,"No-no-no-no-no,  I'm not fallin' for that again.",Joey,./data/MELD/MELD/audio_files/1932_0_0.wav,anger,negative
+123,1932_0,1,What's goin' on?,Phoebe,./data/MELD/MELD/audio_files/1932_0_1.wav,neutral,neutral
+124,1933_0,0,"Well, I sorta did a stupid thing last night.",Rachel,./data/MELD/MELD/audio_files/1933_0_0.wav,neutral,neutral
+125,1933_0,1,What stupid thing did you do?,Chandler,./data/MELD/MELD/audio_files/1933_0_1.wav,neutral,neutral
+126,1936_0,0,"So Chandler, have you heard about Monica's secret boyfriend?",Rachel,./data/MELD/MELD/audio_files/1936_0_0.wav,neutral,neutral
+127,1936_0,1,"Uhh, yeah. She uh, she uh, she uh might've mentioned him.",Chandler,./data/MELD/MELD/audio_files/1936_0_1.wav,neutral,neutral
+128,1936_0,2,"So Mon, when are we gonna meet this new secret waiter man?",Rachel,./data/MELD/MELD/audio_files/1936_0_2.wav,neutral,neutral
+129,1936_0,3,"Yeah, I don't think he's up to meeting everyone yet.",Chandler,./data/MELD/MELD/audio_files/1936_0_3.wav,neutral,neutral
+130,1943_0,0,"Umm, going to the beach. When it stays light real late.",Monica,./data/MELD/MELD/audio_files/1943_0_0.wav,neutral,neutral
+131,1943_0,1,Yeah,Rachel,./data/MELD/MELD/audio_files/1943_0_1.wav,neutral,neutral
+132,1946_0,0,"I don't know. We're talking about whipped fish, Monica. I'm just happy I'm keeping it down, y'know?",Joey,./data/MELD/MELD/audio_files/1946_0_0.wav,disgust,negative
+133,1946_0,1,My God! What happened to you?,Rachel,./data/MELD/MELD/audio_files/1946_0_1.wav,surprise,negative
+134,1966_0,0,"Oh, better, actually. Y'know I-I-I think I finally figured out why we were having so much trouble lately.",Ross,./data/MELD/MELD/audio_files/1966_0_0.wav,neutral,neutral
+135,1966_0,1,"Oh, really?",Phoebe,./data/MELD/MELD/audio_files/1966_0_1.wav,surprise,positive
+136,1975_0,0,"Iâm not supposed to drink coffee, it makes me gassy.",Mr. Kaplan,./data/MELD/MELD/audio_files/1975_0_0.wav,neutral,neutral
+137,1975_0,1,I know!,Rachel,./data/MELD/MELD/audio_files/1975_0_1.wav,joy,positive
+138,1980_0,0,"Yeah, I'm sorry too. But, I gotta tell you, I am a little relieved.",Alan,./data/MELD/MELD/audio_files/1980_0_0.wav,neutral,neutral
+139,1980_0,1,Relieved?,Monica,./data/MELD/MELD/audio_files/1980_0_1.wav,surprise,positive
+140,2007_0,0,Really? You'd-you'd do that for me?!,Joey,./data/MELD/MELD/audio_files/2007_0_0.wav,surprise,positive
+141,2007_0,1,Yeah!,Ross,./data/MELD/MELD/audio_files/2007_0_1.wav,joy,positive
+142,2021_0,0,"Oh, I uh, just came by to pick up my skull. Well, not mine, but",Ross,./data/MELD/MELD/audio_files/2021_0_0.wav,neutral,neutral
+143,2021_0,1,Come in.,Susan,./data/MELD/MELD/audio_files/2021_0_1.wav,neutral,neutral
+144,2021_0,2,"Thanks. Yeah, Carol borrowed it for a class, and I have to get it back to the museum.",Ross,./data/MELD/MELD/audio_files/2021_0_2.wav,neutral,neutral
+145,2021_0,3,What's it look like?,Susan,./data/MELD/MELD/audio_files/2021_0_3.wav,neutral,neutral
+146,2021_0,4,Kinda like a big face without skin.,Ross,./data/MELD/MELD/audio_files/2021_0_4.wav,neutral,neutral
+147,2021_0,5,"Yes, I'm familiar with the concept. We can just look for it.",Susan,./data/MELD/MELD/audio_files/2021_0_5.wav,neutral,neutral
+148,211_0,0,"I don't know, I just kinda ran into him last night.",Rachel,./data/MELD/MELD/audio_files/211_0_0.wav,fear,negative
+149,211_0,1,Where?,Phoebe,./data/MELD/MELD/audio_files/211_0_1.wav,neutral,neutral
+150,21_0,0,This witness won't return my calls so we're gonna see if we can surprise him coming home.,Gary,./data/MELD/MELD/audio_files/21_0_0.wav,neutral,neutral
+151,21_0,1,"Sur-surprise him? We're not, we're not gonna make anybody mad are we?",Chandler,./data/MELD/MELD/audio_files/21_0_1.wav,fear,negative
+152,232_0,0,I still don't get why Greg and Jenny would give us a fake number.,Monica,./data/MELD/MELD/audio_files/232_0_0.wav,anger,negative
+153,232_0,1,"Yâknow, if they knew what they were doing they probably didnât give you real names either.",Joey,./data/MELD/MELD/audio_files/232_0_1.wav,neutral,neutral
+154,236_0,0,"No, Iâm sorry. Itâs just my foot itches like crazy.",Cliff,./data/MELD/MELD/audio_files/236_0_0.wav,neutral,neutral
+155,236_0,1,"Oh, Iâll get it.",Phoebe,./data/MELD/MELD/audio_files/236_0_1.wav,neutral,neutral
+156,239_0,0,"Well, nobody wants a ghost. But youâve got one, because the house is sitting on an ancient Indian burial ground.",Phoebe,./data/MELD/MELD/audio_files/239_0_0.wav,neutral,neutral
+157,239_0,1,"Wait a minute, the house was built on radioactive waste, and an ancient Indian burial ground? That would never happen.",Ross,./data/MELD/MELD/audio_files/239_0_1.wav,surprise,positive
+158,242_0,0,I need to talk to you!,Rachel,./data/MELD/MELD/audio_files/242_0_0.wav,joy,positive
+159,242_0,1,"Sure, whatâs up?",Ross,./data/MELD/MELD/audio_files/242_0_1.wav,neutral,neutral
+160,254_0,0,"Oh yeah, Dana Keystone. She was in my Movement class.",Chandler,./data/MELD/MELD/audio_files/254_0_0.wav,neutral,neutral
+161,254_0,1,Whatâs a Movement class?,Phoebe,./data/MELD/MELD/audio_files/254_0_1.wav,neutral,neutral
+162,262_0,0,"That was Alice's mom, she said she left five hours ago. She should be here by now!",Frank,./data/MELD/MELD/audio_files/262_0_0.wav,fear,negative
+163,262_0,1,"Oh, honey, donât worry. She's gonna make it on time.",Rachel,./data/MELD/MELD/audio_files/262_0_1.wav,neutral,neutral
+164,42_0,0,Why isnât that valet back with my Porsche?,Joey,./data/MELD/MELD/audio_files/42_0_0.wav,anger,negative
+165,42_0,1,Maybe because youâve got the keys?,Passerby,./data/MELD/MELD/audio_files/42_0_1.wav,anger,negative
+166,4862_0,0,also I was the point person on my companyâs transition from the KL-5 to GR-6 system.,Chandler,./data/MELD/MELD/audio_files/4862_0_0.wav,neutral,neutral
+167,4862_0,1,You mustâve had your hands full.,The Interviewer,./data/MELD/MELD/audio_files/4862_0_1.wav,neutral,neutral
+168,4864_0,0,Hey-hey-hey. You wanna hear something that sucks.,Monica,./data/MELD/MELD/audio_files/4864_0_0.wav,neutral,neutral
+169,4864_0,1,Do I ever.,Chandler,./data/MELD/MELD/audio_files/4864_0_1.wav,joy,positive
+170,4864_0,2,Chris says theyâre closing down the bar.,Monica,./data/MELD/MELD/audio_files/4864_0_2.wav,sadness,negative
+171,4864_0,3,No way!,Chandler,./data/MELD/MELD/audio_files/4864_0_3.wav,surprise,negative
+172,4864_0,4,"Yeah, apparently theyâre turning it into some kinda coffee place.",Monica,./data/MELD/MELD/audio_files/4864_0_4.wav,neutral,neutral
+173,4864_0,5,Just coffee! Where are we gonna hang out now?,Chandler,./data/MELD/MELD/audio_files/4864_0_5.wav,disgust,negative
+174,4867_1,0,"Oh well, the woman I interviewed with was pretty tough, but y'know thank God Mark coached me, because once I started talking about the fall line, she got all happy and wouldnât shut up.",Rachel,./data/MELD/MELD/audio_files/4867_1_0.wav,joy,positive
+175,4867_1,1,Iâm so proud of you.,Ross,./data/MELD/MELD/audio_files/4867_1_1.wav,joy,positive
+176,4917_0,0,Is it a good sign that they asked us to hang around after the audition?,Carol,./data/MELD/MELD/audio_files/4917_0_0.wav,surprise,positive
+177,4917_0,1,Who knows?,Joey,./data/MELD/MELD/audio_files/4917_0_1.wav,neutral,neutral
+178,4948_0,0,"Okay, we have a lot of options here, a number of prototypes for you to try on.",Monica,./data/MELD/MELD/audio_files/4948_0_0.wav,neutral,neutral
+179,4948_0,1,Wow! This looks great!,Joey,./data/MELD/MELD/audio_files/4948_0_1.wav,joy,positive
+180,4955_0,0,I have a question about this scene.,Kate,./data/MELD/MELD/audio_files/4955_0_0.wav,neutral,neutral
+181,4955_0,1,Yes?,The Director,./data/MELD/MELD/audio_files/4955_0_1.wav,neutral,neutral
+182,4960_0,0,Do you still wanna call âem? I wanna call âem.,Monica,./data/MELD/MELD/audio_files/4960_0_0.wav,neutral,neutral
+183,4960_0,1,Letâs call âem.,Chandler,./data/MELD/MELD/audio_files/4960_0_1.wav,neutral,neutral
+184,4983_0,0,"Ooh, I have to tell you something.",Phoebe,./data/MELD/MELD/audio_files/4983_0_0.wav,joy,positive
+185,4983_0,1,What?,Monica,./data/MELD/MELD/audio_files/4983_0_1.wav,neutral,neutral
+186,4983_0,2,But I canât tell you.,Phoebe,./data/MELD/MELD/audio_files/4983_0_2.wav,neutral,neutral
+187,4983_0,3,"Okay, but wouldnât it be easier if you had to tell me something that you could tell me.",Monica,./data/MELD/MELD/audio_files/4983_0_3.wav,neutral,neutral
+188,5018_0,0,Weâre not throwing it away! I built that canoe!,Peter,./data/MELD/MELD/audio_files/5018_0_0.wav,anger,negative
+189,5018_0,1,Good for you!!,Joey,./data/MELD/MELD/audio_files/5018_0_1.wav,anger,negative
+190,5031_0,0,"OK, you've got to promise that you'll never, ever tell Ross that I told you.",Joey,./data/MELD/MELD/audio_files/5031_0_0.wav,neutral,neutral
+191,5031_0,1,About what?,Monica,./data/MELD/MELD/audio_files/5031_0_1.wav,neutral,neutral
+192,5031_0,2,He's planning your birthday party.,Joey,./data/MELD/MELD/audio_files/5031_0_2.wav,neutral,neutral
+193,5031_0,3,Oh my God! I love him!,Monica,./data/MELD/MELD/audio_files/5031_0_3.wav,joy,positive
+194,5061_0,0,"Wait no, honey, honey throw it to me, throw it to me.",Rachel,./data/MELD/MELD/audio_files/5061_0_0.wav,neutral,neutral
+195,5061_0,1,Here you go.,Ross,./data/MELD/MELD/audio_files/5061_0_1.wav,neutral,neutral
+196,5064_0,0,I thought I heard voices. You must be Chandler.,Cassie,./data/MELD/MELD/audio_files/5064_0_0.wav,neutral,neutral
+197,5064_0,1,Hi! Nice to meet you!,Chandler,./data/MELD/MELD/audio_files/5064_0_1.wav,joy,positive
+198,5068_0,0,"Itâs from Franceâ¦In Europeâ¦Western Europe. Yâknow umm, a few years ago I actually was backpacking across Western Europe.",Ross,./data/MELD/MELD/audio_files/5068_0_0.wav,neutral,neutral
+199,5068_0,1,Really?,Kristen,./data/MELD/MELD/audio_files/5068_0_1.wav,surprise,positive
+200,5068_0,2,"Uh-hmmâWait! It gets better. Um, yeah I was in Barcelona.",Ross,./data/MELD/MELD/audio_files/5068_0_2.wav,joy,positive
+201,5068_0,3,I studied for a year in Barcelona.,Kristen,./data/MELD/MELD/audio_files/5068_0_3.wav,neutral,neutral
+202,5068_0,4,"Anyway, umm so I was um, I was hiking",Ross,./data/MELD/MELD/audio_files/5068_0_4.wav,neutral,neutral
+203,5068_0,5,I love hiking!,Kristen,./data/MELD/MELD/audio_files/5068_0_5.wav,joy,positive
+204,5084_0,0,"All right, I definitely taste nutmeg.",Monica,./data/MELD/MELD/audio_files/5084_0_0.wav,neutral,neutral
+205,5084_0,1,You do?,Phoebe,./data/MELD/MELD/audio_files/5084_0_1.wav,surprise,positive
+206,5088_0,0,And they knew about it?,Ross,./data/MELD/MELD/audio_files/5088_0_0.wav,surprise,negative
+207,5088_0,1,"Okay, well Ross, what is this really about?",Phoebe,./data/MELD/MELD/audio_files/5088_0_1.wav,surprise,negative
+208,5112_0,0,"I loved this place! To tell you the truth, I wish I didn't have to move.",Ross,./data/MELD/MELD/audio_files/5112_0_0.wav,joy,positive
+209,5112_0,1,"Uhh, are you saying that you're not entirely happy about this?",Joey,./data/MELD/MELD/audio_files/5112_0_1.wav,surprise,negative
+210,5118_0,0,"Stating the obvious, but thank you. And itâs not weird is it.",Phoebe,./data/MELD/MELD/audio_files/5118_0_0.wav,joy,positive
+211,5118_0,1,No. Ooohh,Monica,./data/MELD/MELD/audio_files/5118_0_1.wav,joy,positive
+212,5124_0,0,"Yeah. Well, umm.....",Rachel,./data/MELD/MELD/audio_files/5124_0_0.wav,sadness,negative
+213,5124_0,1,"Rach, are you okay?",Mark,./data/MELD/MELD/audio_files/5124_0_1.wav,surprise,negative
+214,5130_0,0,A test?!!,All,./data/MELD/MELD/audio_files/5130_0_0.wav,surprise,negative
+215,5130_0,1,Come on! Tests make us all better learners! Oh yeah!  We should have essay questions!!,Monica,./data/MELD/MELD/audio_files/5130_0_1.wav,joy,positive
+216,5160_0,0,Ross?,Mona,./data/MELD/MELD/audio_files/5160_0_0.wav,neutral,neutral
+217,5160_0,1,Yeah?,Ross,./data/MELD/MELD/audio_files/5160_0_1.wav,neutral,neutral
+218,5160_0,2,Hey itâs Mona! From the wedding.,Mona,./data/MELD/MELD/audio_files/5160_0_2.wav,joy,positive
+219,5160_0,3,Oh hi!,Ross,./data/MELD/MELD/audio_files/5160_0_3.wav,joy,positive
+220,5160_0,4,Hi!,Mona,./data/MELD/MELD/audio_files/5160_0_4.wav,joy,positive
+221,5160_0,5,Wow! Uhâ¦how are you?,Ross,./data/MELD/MELD/audio_files/5160_0_5.wav,surprise,positive
+222,5160_0,6,"Iâm good except umm, you still owe me a dance.",Mona,./data/MELD/MELD/audio_files/5160_0_6.wav,neutral,neutral
+223,5160_0,7,"Oh thatâs right. Well uh, would you be interested in seeing a Ukrainian film?",Ross,./data/MELD/MELD/audio_files/5160_0_7.wav,joy,positive
+224,5160_0,8,Oh youâre serious. Sure!,Mona,./data/MELD/MELD/audio_files/5160_0_8.wav,surprise,positive
+225,5160_0,9,Great! Well umm,Ross,./data/MELD/MELD/audio_files/5160_0_9.wav,joy,positive
+226,5160_0,10,I think I might need one more cup of coffee.,Mona,./data/MELD/MELD/audio_files/5160_0_10.wav,neutral,neutral
+227,5160_0,11,"Sure! Uh, let me get it for ya.",Ross,./data/MELD/MELD/audio_files/5160_0_11.wav,neutral,neutral
+228,5164_0,0,"Oh well, this was a really important experience for me, and    I wanted to share it with you.",Chandler,./data/MELD/MELD/audio_files/5164_0_0.wav,joy,positive
+229,5164_0,1,"Oh, you're so wonderful.",Monica,./data/MELD/MELD/audio_files/5164_0_1.wav,joy,positive
+230,5189_0,0,"OK, I have a question. Well, actually, it's not so much a question as.. more of a general wondering... ment.",Ross,./data/MELD/MELD/audio_files/5189_0_0.wav,neutral,neutral
+231,5189_0,1,OK.,Rachel,./data/MELD/MELD/audio_files/5189_0_1.wav,neutral,neutral
+232,5193_0,0,Everything was delicious!,1st Customer,./data/MELD/MELD/audio_files/5193_0_0.wav,joy,positive
+233,5193_0,1,Thank you!,Monica,./data/MELD/MELD/audio_files/5193_0_1.wav,joy,positive
+234,5195_0,0,Actually I do have one small complaint.,3rd Customer,./data/MELD/MELD/audio_files/5195_0_0.wav,neutral,neutral
+235,5195_0,1,Oh..please!I-I welcome criticism.,Monica,./data/MELD/MELD/audio_files/5195_0_1.wav,neutral,neutral
+236,5195_0,2,The musician right outside the restaurant...it's kind    of a mood-killer!,3rd Customer,./data/MELD/MELD/audio_files/5195_0_2.wav,sadness,negative
+237,5195_0,3,What musician?,Monica,./data/MELD/MELD/audio_files/5195_0_3.wav,surprise,positive
+238,5221_0,0,"Oh, I'd love to, but I gotta get up so early the next day and    so, you know me, work comes first",Joey,./data/MELD/MELD/audio_files/5221_0_0.wav,neutral,neutral
+239,5221_0,1,"Oh, yeah, yeah, yeah...",Rachel,./data/MELD/MELD/audio_files/5221_0_1.wav,neutral,neutral
+240,5221_1,0,I do it every year.,Joey,./data/MELD/MELD/audio_files/5221_1_0.wav,neutral,neutral
+241,5221_1,1,You do that every year??,Rachel,./data/MELD/MELD/audio_files/5221_1_1.wav,surprise,negative
+242,5228_0,0,I really like waking up with you.,Gary,./data/MELD/MELD/audio_files/5228_0_0.wav,joy,positive
+243,5228_0,1,"I like waking up with you too.  Oh! It's such a beautiful morning.  Oh, I can stay here all day.",Phoebe,./data/MELD/MELD/audio_files/5228_0_1.wav,joy,positive
+244,5228_0,2,That would be great!,Gary,./data/MELD/MELD/audio_files/5228_0_2.wav,joy,positive
+245,5228_0,3,We could have breakfast in bed,Phoebe,./data/MELD/MELD/audio_files/5228_0_3.wav,joy,positive
+246,5230_0,0,Well I hope you have fun tonight.,Phoebe,./data/MELD/MELD/audio_files/5230_0_0.wav,neutral,neutral
+247,5230_0,1,Thanks! You too.,Bonnie,./data/MELD/MELD/audio_files/5230_0_1.wav,joy,positive
+248,5267_0,0,No! He blew us off!,Joey,./data/MELD/MELD/audio_files/5267_0_0.wav,anger,negative
+249,5267_0,1,What?!,Ross,./data/MELD/MELD/audio_files/5267_0_1.wav,surprise,negative
+250,5267_1,0,I canât believe it.  Can I tell you something? Iâm a little mad at him now.,Ross,./data/MELD/MELD/audio_files/5267_1_0.wav,anger,negative
+251,5267_1,1,Can I tell you something? Me too.,Joey,./data/MELD/MELD/audio_files/5267_1_1.wav,anger,negative
+252,5267_1,2,"Yâknow what? He didnât want to talk to us about being angry, well maybe we donât talk to him",Ross,./data/MELD/MELD/audio_files/5267_1_2.wav,anger,negative
+253,5267_1,3,Ooooh! Freeze him out.,Joey,./data/MELD/MELD/audio_files/5267_1_3.wav,joy,positive
+254,5267_1,4,Thatâs right!,Ross,./data/MELD/MELD/audio_files/5267_1_4.wav,joy,positive
+255,5267_1,5,I like it!,Joey,./data/MELD/MELD/audio_files/5267_1_5.wav,joy,positive
+256,5272_0,0,Hey Ross! The babyâs kicking!,Joey,./data/MELD/MELD/audio_files/5272_0_0.wav,joy,positive
+257,5272_0,1,What?! It is?!,Ross,./data/MELD/MELD/audio_files/5272_0_1.wav,surprise,positive
+258,5273_0,0,Itâs not kicking right now. Although we would love to see you do  that again.,Rachel,./data/MELD/MELD/audio_files/5273_0_0.wav,joy,positive
+259,5273_0,1,"Hey, when-when was it kicking? What happened?",Ross,./data/MELD/MELD/audio_files/5273_0_1.wav,joy,positive
+260,5288_0,0,so we finally get to the top of the mountain and airhead here  forgets the camera!,Danny,./data/MELD/MELD/audio_files/5288_0_0.wav,disgust,negative
+261,5288_0,1,"Oh, y'know the same thing happened to me one time.",Joey,./data/MELD/MELD/audio_files/5288_0_1.wav,neutral,neutral
+262,5289_0,0,"Oh, y'know the same thing happened to me one time.",Joey,./data/MELD/MELD/audio_files/5289_0_0.wav,neutral,neutral
+263,5289_0,1,When did that happen to you?!,Chandler,./data/MELD/MELD/audio_files/5289_0_1.wav,surprise,negative
+264,5292_0,0,Yep.  I'm gonna wear these on our date tonight.,Danny,./data/MELD/MELD/audio_files/5292_0_0.wav,joy,positive
+265,5292_0,1,"Oh, great!",Rachel,./data/MELD/MELD/audio_files/5292_0_1.wav,surprise,positive
+266,5301_0,0,I remember when we first got engaged.,Mr. Geller,./data/MELD/MELD/audio_files/5301_0_0.wav,joy,positive
+267,5301_0,1,"Oh, I donât think I ever heard that story.",Chandler,./data/MELD/MELD/audio_files/5301_0_1.wav,neutral,neutral
+268,5310_0,0,"Hey, uh, Iâm really, really sorry about what happened in the cafeteria today.",Ross,./data/MELD/MELD/audio_files/5310_0_0.wav,sadness,negative
+269,5310_0,1,"Itâs no big deal. Hey, yâknow, you do what you gotta do. Right?",Joey,./data/MELD/MELD/audio_files/5310_0_1.wav,neutral,neutral
+270,5322_0,0,"Yeah, theyâre out of town.",Joshua,./data/MELD/MELD/audio_files/5322_0_0.wav,neutral,neutral
+271,5322_0,1,Ohh.,Rachel,./data/MELD/MELD/audio_files/5322_0_1.wav,surprise,positive
+272,5344_0,0,"Yeah, well, it's an important day. I wanna look nice. Um, has uh Dr. Franzblau been by?",Rachel,./data/MELD/MELD/audio_files/5344_0_0.wav,neutral,neutral
+273,5344_0,1,"No, I haven't seen him.",Monica,./data/MELD/MELD/audio_files/5344_0_1.wav,neutral,neutral
+274,5345_0,0,I'm the holiday armadillo! I'm a friend of Santa's and he sent me here to wish you  a Merry Christmas!,Ross,./data/MELD/MELD/audio_files/5345_0_0.wav,joy,positive
+275,5345_0,1,"What happened to Santa, Holiday Armadillo?",Monica,./data/MELD/MELD/audio_files/5345_0_1.wav,surprise,negative
+276,5378_0,0,Oh! You have a window!,Phoebe,./data/MELD/MELD/audio_files/5378_0_0.wav,surprise,positive
+277,5378_0,1,Yes indeedy!  With a beautiful view of...,Chandler,./data/MELD/MELD/audio_files/5378_0_1.wav,joy,positive
+278,5400_0,0,"Well umm, do you wanna get something to eat? Iâm kinda hungry.",Phoebe,./data/MELD/MELD/audio_files/5400_0_0.wav,neutral,neutral
+279,5400_0,1,Hey! Me too!,Phoebe Sr.,./data/MELD/MELD/audio_files/5400_0_1.wav,surprise,positive
+280,56_0,0,My first time with Carol was...,Ross,./data/MELD/MELD/audio_files/56_0_0.wav,neutral,neutral
+281,56_0,1,What?,Joey,./data/MELD/MELD/audio_files/56_0_1.wav,neutral,neutral
+282,69_0,0,"Man, it must be so cool remembering stuff like that! I don't have any past life memories.",Joey,./data/MELD/MELD/audio_files/69_0_0.wav,joy,positive
+283,69_0,1,Of course you don't sweetie. You're brand new.,Phoebe,./data/MELD/MELD/audio_files/69_0_1.wav,neutral,neutral
+284,70_0,0,"Oh no, I know! I know! It's the one where Joey got Monica's turkey stuck on his head!",Phoebe,./data/MELD/MELD/audio_files/70_0_0.wav,joy,positive
+285,70_0,1,What?! Joey got a turkey stuck on his head?!,Rachel,./data/MELD/MELD/audio_files/70_0_1.wav,surprise,positive
+286,71_0,0,I know Monica's worst Thanksgiving.,Rachel,./data/MELD/MELD/audio_files/71_0_0.wav,neutral,neutral
+287,71_0,1,"Oh, let's not tell this story.",Monica,./data/MELD/MELD/audio_files/71_0_1.wav,sadness,negative
+288,84_0,0,"Okay. Oh wait, wait-wait, youâre not gonna come with me?",Rachel,./data/MELD/MELD/audio_files/84_0_0.wav,sadness,negative
+289,84_0,1,Of course I am. I just have to make a call.,Ross,./data/MELD/MELD/audio_files/84_0_1.wav,surprise,positive
+290,84_1,0,Thank you.  Oww!!!! God!,Rachel,./data/MELD/MELD/audio_files/84_1_0.wav,surprise,negative
+291,84_1,1,"What?! I wh-, whatâs wrong?",Ross,./data/MELD/MELD/audio_files/84_1_1.wav,fear,negative
+292,99_0,0,"Jen, I know this may sound a littleâ¦ But uh, would you maybe wanna grab a cup of coffee sometime, or",Ross,./data/MELD/MELD/audio_files/99_0_0.wav,neutral,neutral
+293,99_0,1,Sure! That would be nice.,Jen,./data/MELD/MELD/audio_files/99_0_1.wav,joy,positive
+294,99_1,0,Oh! My number is on there.  Give me a call.,Jen,./data/MELD/MELD/audio_files/99_1_0.wav,joy,positive
+295,99_1,1,I will give you a call.,Ross,./data/MELD/MELD/audio_files/99_1_1.wav,neutral,neutral
+296,5405_0,0,Oh. Oh I just cannot believe Clark stood me up!,Janice,./data/MELD/MELD/audio_files/5405_0_0.wav,anger,negative
+297,5405_0,1,He might still show up.,Monica,./data/MELD/MELD/audio_files/5405_0_1.wav,neutral,neutral
+298,5405_0,2,"Oh, what are you, stupid? Itâs been three hours.",Janice,./data/MELD/MELD/audio_files/5405_0_2.wav,anger,negative
+299,5405_0,3,Is that all?,Monica,./data/MELD/MELD/audio_files/5405_0_3.wav,neutral,neutral
+300,5418_0,0,"I don't care, Rach! Look, I am tired of being the guy who knows all the secrets but can't tell anyone!",Joey,./data/MELD/MELD/audio_files/5418_0_0.wav,disgust,negative
+301,5418_0,1,What? What secrets? You know secrets? What are they?,Rachel,./data/MELD/MELD/audio_files/5418_0_1.wav,surprise,positive
+302,5424_0,0,Yes! And he said really mean things that were only partly true.,Rachel,./data/MELD/MELD/audio_files/5424_0_0.wav,sadness,negative
+303,5424_0,1,Iâm gonna go down there and teach that guy a lesson.,Joey,./data/MELD/MELD/audio_files/5424_0_1.wav,anger,negative
+304,5424_0,2,"Thatâs easy for you to say, you werenât almost just killed.",Rachel,./data/MELD/MELD/audio_files/5424_0_2.wav,anger,negative
+305,5424_0,3,"All right thatâs it, school is in session!",Joey,./data/MELD/MELD/audio_files/5424_0_3.wav,neutral,neutral
+306,5425_0,0,Iâm gonna go down there and teach that guy a lesson.,Joey,./data/MELD/MELD/audio_files/5425_0_0.wav,anger,negative
+307,5425_0,1,"Joey, please donât do that. I think itâs best that we just forget about it.",Monica,./data/MELD/MELD/audio_files/5425_0_1.wav,fear,negative
+308,5428_0,0,"Oh yeah, gym member. I try to go four times a week, but Iâve missed the last 1200 times.",Chandler,./data/MELD/MELD/audio_files/5428_0_0.wav,neutral,neutral
+309,5428_0,1,So why donât you quit?,Ross,./data/MELD/MELD/audio_files/5428_0_1.wav,neutral,neutral
+310,5428_1,0,"Oh Maria. You canât say no to her, sheâs like this lycra spandex covered gymâ¦treat.",Chandler,./data/MELD/MELD/audio_files/5428_1_0.wav,joy,positive
+311,5428_1,1,You need me to go down there with you and hold your hand?,Ross,./data/MELD/MELD/audio_files/5428_1_1.wav,neutral,neutral
+312,5429_0,0,"Pheebs, I donât think anyone's mad about that.",Rachel,./data/MELD/MELD/audio_files/5429_0_0.wav,neutral,neutral
+313,5429_0,1,Exactly! Because it's in the past!,Phoebe,./data/MELD/MELD/audio_files/5429_0_1.wav,anger,negative
+314,5447_0,0,No-no wait-wait! I canât just let you hang up! Just please talk to me.,Phoebe,./data/MELD/MELD/audio_files/5447_0_0.wav,fear,negative
+315,5447_0,1,Wellâ¦I only have one thing to do today.  I guess I could push it back.,Earl,./data/MELD/MELD/audio_files/5447_0_1.wav,neutral,neutral
+316,5463_0,0,Y'know what?,Joey,./data/MELD/MELD/audio_files/5463_0_0.wav,neutral,neutral
+317,5463_0,1,Umm?,Chandler,./data/MELD/MELD/audio_files/5463_0_1.wav,neutral,neutral
+318,5486_0,0,"Oh, hey, Mon, do you still have your like old blouses and dresses from high school?",Phoebe,./data/MELD/MELD/audio_files/5486_0_0.wav,neutral,neutral
+319,5486_0,1,"Yeah, I think I have some around here somewhere. Why?",Monica,./data/MELD/MELD/audio_files/5486_0_1.wav,neutral,neutral
+320,5500_0,0,The keyâs stuck in the lock.,Chandler,./data/MELD/MELD/audio_files/5500_0_0.wav,neutral,neutral
+321,5500_0,1,I can fix it. Hold on.  Look out. Look out.,Joey,./data/MELD/MELD/audio_files/5500_0_1.wav,neutral,neutral
+322,5517_0,0,"I donât know, Iâm still pretty tired out from this afternoon.",Eric,./data/MELD/MELD/audio_files/5517_0_0.wav,neutral,neutral
+323,5517_0,1,Why?,Phoebe,./data/MELD/MELD/audio_files/5517_0_1.wav,surprise,positive
+324,5517_0,2,"Uh, the sex.",Eric,./data/MELD/MELD/audio_files/5517_0_2.wav,neutral,neutral
+325,5517_0,3,What sex?,Phoebe,./data/MELD/MELD/audio_files/5517_0_3.wav,surprise,positive
+326,5523_0,0,"Oh-oh, thatâs a risky little game!",Rachel,./data/MELD/MELD/audio_files/5523_0_0.wav,surprise,negative
+327,5523_0,1,Are you really gonna do this?,Monica,./data/MELD/MELD/audio_files/5523_0_1.wav,fear,negative
+328,5533_0,0,"Oh great!  Wow! Yeah, itâs comfortable.",Joshua,./data/MELD/MELD/audio_files/5533_0_0.wav,joy,positive
+329,5533_0,1,Yeah?,Rachel,./data/MELD/MELD/audio_files/5533_0_1.wav,neutral,neutral
+330,5536_0,0,Sorry.,All,./data/MELD/MELD/audio_files/5536_0_0.wav,neutral,neutral
+331,5536_0,1,What happened?,Monica,./data/MELD/MELD/audio_files/5536_0_1.wav,neutral,neutral
+332,5560_0,0,"Oh honey, I'm so sorry, you were right, this feels great!",Rachel,./data/MELD/MELD/audio_files/5560_0_0.wav,joy,positive
+333,5560_0,1,"See? And you don't care if people are staring, it's just for a second cause then you're gone!",Phoebe,./data/MELD/MELD/audio_files/5560_0_1.wav,neutral,neutral
+334,5569_0,0,"Well, I can't give you a massage, because my licence has been    revoked again!",Phoebe,./data/MELD/MELD/audio_files/5569_0_0.wav,sadness,negative
+335,5569_0,1,"Phoebe, what happened?",Ross,./data/MELD/MELD/audio_files/5569_0_1.wav,neutral,neutral
+336,5570_0,0,"So, do you guys wanna come and eat dinner at the restaurant    sometime in the next few weeks?",Monica,./data/MELD/MELD/audio_files/5570_0_0.wav,neutral,neutral
+337,5570_0,1,I'd love to!,Ross,./data/MELD/MELD/audio_files/5570_0_1.wav,joy,positive
+338,5587_0,0,He musta been sweeping. They found a broom in his hand.,Mr. Treeger,./data/MELD/MELD/audio_files/5587_0_0.wav,neutral,neutral
+339,5587_0,1,That's terrible.,Monica,./data/MELD/MELD/audio_files/5587_0_1.wav,anger,negative
+340,5588_0,0,I know. I was sweeping yesterday. It coulda been me.,Mr. Treeger,./data/MELD/MELD/audio_files/5588_0_0.wav,neutral,neutral
+341,5588_0,1,"Sure, you coulda. You never know.",Ross,./data/MELD/MELD/audio_files/5588_0_1.wav,neutral,neutral
+342,5609_0,0,"Well maybe, you know, maybe we should stay for one song.",Ross,./data/MELD/MELD/audio_files/5609_0_0.wav,neutral,neutral
+343,5609_0,1,"Yeah, I mean, it would be rude to them  for us to leave now.",Chandler,./data/MELD/MELD/audio_files/5609_0_1.wav,neutral,neutral
+344,5611_0,0,"Okay, Iâve got three of my five.",Ross,./data/MELD/MELD/audio_files/5611_0_0.wav,neutral,neutral
+345,5611_0,1,"Three of your five, what?",Rachel,./data/MELD/MELD/audio_files/5611_0_1.wav,neutral,neutral
+346,5611_0,2,Celebrities Iâm allowed to sleep with.,Ross,./data/MELD/MELD/audio_files/5611_0_2.wav,neutral,neutral
+347,5611_0,3,Oh my God! You are giving this a lot of thought.,Rachel,./data/MELD/MELD/audio_files/5611_0_3.wav,surprise,negative
+348,5634_0,0,Check it out.  How much of a man am I?!,Joey,./data/MELD/MELD/audio_files/5634_0_0.wav,joy,positive
+349,5634_0,1,Wow! Nice! Manly and also kind of a slut.,Phoebe,./data/MELD/MELD/audio_files/5634_0_1.wav,fear,negative
+350,5653_0,0,"So great. Oh, we took a nap today and my Mom fell asleep on my tummy and purred.",Phoebe,./data/MELD/MELD/audio_files/5653_0_0.wav,joy,positive
+351,5653_0,1,Thatâs so sweet.  Iâm gonna get some coffee.,Joey,./data/MELD/MELD/audio_files/5653_0_1.wav,neutral,neutral
+352,5665_0,0,Iâve had better.,Ross,./data/MELD/MELD/audio_files/5665_0_0.wav,neutral,neutral
+353,5665_0,1,Okay! When?!,Joey,./data/MELD/MELD/audio_files/5665_0_1.wav,anger,negative
+354,5665_0,2,All right! All right! It was the best nap ever!,Ross,./data/MELD/MELD/audio_files/5665_0_2.wav,joy,positive
+355,5665_0,3,Uh-huh!,Joey,./data/MELD/MELD/audio_files/5665_0_3.wav,anger,negative
+356,5695_0,0,"Looks good, uh?",Joey,./data/MELD/MELD/audio_files/5695_0_0.wav,sadness,negative
+357,5695_0,1,Yeah.,Ross,./data/MELD/MELD/audio_files/5695_0_1.wav,neutral,neutral
+358,5698_0,0,Why? I love that thing.,Rachel,./data/MELD/MELD/audio_files/5698_0_0.wav,joy,positive
+359,5698_0,1,You want it?,Chandler,./data/MELD/MELD/audio_files/5698_0_1.wav,neutral,neutral
+360,5710_0,0,"Hey! You guys, Iâm writing a holiday song for everyone. Do you want to hear it?",Phoebe,./data/MELD/MELD/audio_files/5710_0_0.wav,joy,positive
+361,5710_0,1,"Pheebs, thatâs great!",Rachel,./data/MELD/MELD/audio_files/5710_0_1.wav,joy,positive
+362,5714_0,0,"What I do doâ¦is manage to uh, create an atmosphere of support for the people working with me.",Chandler,./data/MELD/MELD/audio_files/5714_0_0.wav,neutral,neutral
+363,5714_0,1,I see. Nice sidestep on the do do thing by the way.,Phoebe,./data/MELD/MELD/audio_files/5714_0_1.wav,neutral,neutral
+364,5736_0,0,"Well, we thought we would all go to a picnic , in Central Park!",Monica,./data/MELD/MELD/audio_files/5736_0_0.wav,joy,positive
+365,5736_0,1,"Yeah, all of us! All day!",Joey,./data/MELD/MELD/audio_files/5736_0_1.wav,joy,positive
+366,5739_0,0,"Yeah. Sheâs putting her down now, thatâs her.",Ross,./data/MELD/MELD/audio_files/5739_0_0.wav,neutral,neutral
+367,5739_0,1,Oh itâs all right.,Rachel,./data/MELD/MELD/audio_files/5739_0_1.wav,neutral,neutral
+368,5745_0,0,Why would you serve food on such a sharp stick?,Mr. Geller,./data/MELD/MELD/audio_files/5745_0_0.wav,surprise,negative
+369,5745_0,1,"Thatâs a good question, dad. Thatâs a good question",Ross,./data/MELD/MELD/audio_files/5745_0_1.wav,neutral,neutral
+370,5757_0,0,"Ok, Pheebs, you know what, if we had that, we wouldn't be doing the ritual in the first place.",Rachel,./data/MELD/MELD/audio_files/5757_0_0.wav,neutral,neutral
+371,5757_0,1,"Ok, yeah, ok.  Oh, OK.",Phoebe,./data/MELD/MELD/audio_files/5757_0_1.wav,neutral,neutral
+372,5766_0,0,"Oh Rachel, I know the best coffee house and itâs sooo close.",Monica,./data/MELD/MELD/audio_files/5766_0_0.wav,neutral,neutral
+373,5766_0,1,Closer than here?,Rachel,./data/MELD/MELD/audio_files/5766_0_1.wav,neutral,neutral
+374,5794_0,0,"Yeah, I mean I was up sick all night.",Rachel,./data/MELD/MELD/audio_files/5794_0_0.wav,neutral,neutral
+375,5794_0,1,"Yeah me too, all night.",Joey,./data/MELD/MELD/audio_files/5794_0_1.wav,neutral,neutral
+376,5798_0,0,Some guy bought it. Iâm sorry. I tired to stop it but they  put me in jail!,Phoebe,./data/MELD/MELD/audio_files/5798_0_0.wav,sadness,negative
+377,5798_0,1,They put you in jail?,Chandler,./data/MELD/MELD/audio_files/5798_0_1.wav,surprise,negative
+378,5798_1,0,"Phoebe, I asked you to guard the ring!",Chandler,./data/MELD/MELD/audio_files/5798_1_0.wav,anger,negative
+379,5798_1,1,"I know, Iâm sorry! But yâknow, this ring is better! Monica never even saw the other ring.",Phoebe,./data/MELD/MELD/audio_files/5798_1_1.wav,anger,negative
+380,5798_1,2,Yeah but when he proposed to me with the ring I got goose bumps.,Chandler,./data/MELD/MELD/audio_files/5798_1_2.wav,sadness,negative
+381,5798_1,3,Maybe it was the guy.,Phoebe,./data/MELD/MELD/audio_files/5798_1_3.wav,neutral,neutral
+382,5821_0,0,Man. Can you believe he's only had sex with one woman?,Joey,./data/MELD/MELD/audio_files/5821_0_0.wav,surprise,positive
+383,5821_0,1,"I think it's great. Y'know, it's sweet, it's romantic...",Chandler,./data/MELD/MELD/audio_files/5821_0_1.wav,joy,positive
+384,5821_0,2,Really?,Joey,./data/MELD/MELD/audio_files/5821_0_2.wav,surprise,positive
+385,5821_0,3,"No, you kidding? The guy's a freak..",Chandler,./data/MELD/MELD/audio_files/5821_0_3.wav,disgust,negative
+386,5828_0,0,"Oh, look, wish me luck!",Rachel,./data/MELD/MELD/audio_files/5828_0_0.wav,joy,positive
+387,5828_0,1,What for?,Monica,./data/MELD/MELD/audio_files/5828_0_1.wav,neutral,neutral
+388,5845_0,0,They have a game room downstairs! Ping pong and stuff.,Mike,./data/MELD/MELD/audio_files/5845_0_0.wav,neutral,neutral
+389,5845_0,1,"Ping pong?  Honey, they have ping pong! Let's play!",Monica,./data/MELD/MELD/audio_files/5845_0_1.wav,surprise,positive
+390,5846_0,0,I don't think so!,Chandler,./data/MELD/MELD/audio_files/5846_0_0.wav,joy,positive
+391,5846_0,1,Why not?,Monica,./data/MELD/MELD/audio_files/5846_0_1.wav,neutral,neutral
+392,5846_0,2,"Because you know how competitive you get and well, I say it's cute, others disagree, and I'm lying!",Chandler,./data/MELD/MELD/audio_files/5846_0_2.wav,neutral,neutral
+393,5846_0,3,I'm not always that bad!,Monica,./data/MELD/MELD/audio_files/5846_0_3.wav,neutral,neutral
+394,5874_0,0,Remember when we went to Central Park and rented boats?.. That was fun.,Rachel,./data/MELD/MELD/audio_files/5874_0_0.wav,joy,positive
+395,5874_0,1,Yeah. He could row like a viking.,Ross,./data/MELD/MELD/audio_files/5874_0_1.wav,joy,positive
+396,5878_0,0,Did he mention us?,Phoebe,./data/MELD/MELD/audio_files/5878_0_0.wav,neutral,neutral
+397,5878_0,1,He said he's really gonna miss you guys.,Monica,./data/MELD/MELD/audio_files/5878_0_1.wav,sadness,negative
+398,5892_0,0,Oh yeah! We went to the Knicks game.,Tag,./data/MELD/MELD/audio_files/5892_0_0.wav,joy,positive
+399,5892_0,1,Ohh thatâs nice.,Rachel,./data/MELD/MELD/audio_files/5892_0_1.wav,joy,positive
+400,5892_0,2,Then we went to this bar and he hooked us up with all these women!,Tag,./data/MELD/MELD/audio_files/5892_0_2.wav,joy,positive
+401,5892_0,3,Wo-women? You mean like old women?,Rachel,./data/MELD/MELD/audio_files/5892_0_3.wav,disgust,negative
+402,5892_0,4,"Well kinda old, like 30.",Tag,./data/MELD/MELD/audio_files/5892_0_4.wav,neutral,neutral
+403,5892_0,5,Oh.,Rachel,./data/MELD/MELD/audio_files/5892_0_5.wav,neutral,neutral
+404,5892_0,6,"And I never used to be able to just talk to girls in bars, but I got like 20 phone numbers last night.",Tag,./data/MELD/MELD/audio_files/5892_0_6.wav,surprise,positive
+405,5892_0,7,"Thatâs great! Wow man, so Joey mustâve really taught you some stuff huh?",Rachel,./data/MELD/MELD/audio_files/5892_0_7.wav,surprise,positive
+406,5892_0,8,A little.,Tag,./data/MELD/MELD/audio_files/5892_0_8.wav,neutral,neutral
+407,5892_0,9,Yeah?,Rachel,./data/MELD/MELD/audio_files/5892_0_9.wav,surprise,positive
+408,5914_0,0,"Umm Pheebs, remember when we were in the coffee house we decided that I was going to keep the uh, the cute guyâs cell phone?",Rachel,./data/MELD/MELD/audio_files/5914_0_0.wav,neutral,neutral
+409,5914_0,1,Yeah.,Phoebe,./data/MELD/MELD/audio_files/5914_0_1.wav,neutral,neutral
+410,5914_0,2,And remember how I said I was going to keep it in my purse so that if it rang I could just pick it up?,Rachel,./data/MELD/MELD/audio_files/5914_0_2.wav,neutral,neutral
+411,5914_0,3,Yeah!,Phoebe,./data/MELD/MELD/audio_files/5914_0_3.wav,joy,positive
+412,5914_0,4,And do you remember going into my purse and stealing the phone?!,Rachel,./data/MELD/MELD/audio_files/5914_0_4.wav,anger,negative
+413,5914_0,5,"Ooh, now you lost me.",Phoebe,./data/MELD/MELD/audio_files/5914_0_5.wav,fear,negative
+414,5914_0,6,You stole the phone!,Rachel,./data/MELD/MELD/audio_files/5914_0_6.wav,anger,negative
+415,5914_0,7,No I didnât!,Phoebe,./data/MELD/MELD/audio_files/5914_0_7.wav,anger,negative
+416,5914_0,8,"No? So youâre saying that if I called it, it wouldnât ring?",Rachel,./data/MELD/MELD/audio_files/5914_0_8.wav,anger,negative
+417,5914_0,9,"No. Umm, okay. But while you dial, let me show you the features of my new ringing handbag.  Oh, it does work!",Phoebe,./data/MELD/MELD/audio_files/5914_0_9.wav,fear,negative
+418,5918_0,0,"I know, heâs too charming, but if you two start going out, then itâs just gonna make it so much harder for me to hate him.",Monica,./data/MELD/MELD/audio_files/5918_0_0.wav,disgust,negative
+419,5918_0,1,"Well, youâre just gonna have to try.",Phoebe,./data/MELD/MELD/audio_files/5918_0_1.wav,neutral,neutral
+420,5920_0,0,Oh wait! Stop! Stop! Stop!,Monica,./data/MELD/MELD/audio_files/5920_0_0.wav,joy,positive
+421,5920_0,1,Oh Iâm sorry! Do you need a break?,Chandler,./data/MELD/MELD/audio_files/5920_0_1.wav,surprise,negative
+422,5920_0,2,My boots in tan! Hey! Can you get a little closer so I can see the price?,Monica,./data/MELD/MELD/audio_files/5920_0_2.wav,joy,positive
+423,5920_0,3,I can see it from right here. Itâll cost you one husband.,Chandler,./data/MELD/MELD/audio_files/5920_0_3.wav,joy,positive
+424,5929_0,0,"Seriously, it's moving!",Rachel,./data/MELD/MELD/audio_files/5929_0_0.wav,surprise,negative
+425,5929_0,1,What the hell is in there?,Joey,./data/MELD/MELD/audio_files/5929_0_1.wav,surprise,negative
+426,5933_0,0,"Carol called me to thank me for the lasagna, I asked, she told me.",Monica,./data/MELD/MELD/audio_files/5933_0_0.wav,neutral,neutral
+427,5933_0,1,So what's it gonna be?,Joey,./data/MELD/MELD/audio_files/5933_0_1.wav,joy,positive
+428,5939_0,0,"Nothing, I'm sorry, I'm just, I'm out of sorts.",Phoebe,./data/MELD/MELD/audio_files/5939_0_0.wav,sadness,negative
+429,5939_0,1,"Phoebe, what is it?",Monica,./data/MELD/MELD/audio_files/5939_0_1.wav,neutral,neutral
+430,5942_0,0,"All right, you know Paolo?",Phoebe,./data/MELD/MELD/audio_files/5942_0_0.wav,neutral,neutral
+431,5942_0,1,"I'm familiar with his work, yes...",Ross,./data/MELD/MELD/audio_files/5942_0_1.wav,neutral,neutral
+432,5947_0,0,I think he's shy.,Monica,./data/MELD/MELD/audio_files/5947_0_0.wav,neutral,neutral
+433,5947_0,1,Yeah?,Phoebe,./data/MELD/MELD/audio_files/5947_0_1.wav,surprise,positive
+434,5961_0,0,Yeah! Thank you so much for letting me stay here.,Cassie,./data/MELD/MELD/audio_files/5961_0_0.wav,neutral,neutral
+435,5961_0,1,Oh! No problem! I,Phoebe,./data/MELD/MELD/audio_files/5961_0_1.wav,joy,positive
+436,5966_0,0,"Oh, you like it? You wanna know where I got it?",Ross,./data/MELD/MELD/audio_files/5966_0_0.wav,joy,positive
+437,5966_0,1,Sure!,Phoebe,./data/MELD/MELD/audio_files/5966_0_1.wav,joy,positive
+438,5968_0,0,Am I the only one who doesn't think that she's hot? Ross?,Rachel,./data/MELD/MELD/audio_files/5968_0_0.wav,surprise,positive
+439,5968_0,1,"Eh, I mean, I mena she's not unattractive but hot? I ....",Ross,./data/MELD/MELD/audio_files/5968_0_1.wav,surprise,positive
+440,5974_0,0,"Oh my God, they took my idea!",Phoebe,./data/MELD/MELD/audio_files/5974_0_0.wav,surprise,positive
+441,5974_0,1,That was you?!,Monica,./data/MELD/MELD/audio_files/5974_0_1.wav,surprise,negative
+442,5979_0,0,"Oh, I'm sorry, oh, I just, I thought we could have them whipped and then add some peas and onions.",Phoebe,./data/MELD/MELD/audio_files/5979_0_0.wav,sadness,negative
+443,5979_0,1,Why would we do that?,Monica,./data/MELD/MELD/audio_files/5979_0_1.wav,surprise,negative
+444,5979_0,2,"Well, 'cause then they'd be like my mom used to make them, you know, before she died.",Phoebe,./data/MELD/MELD/audio_files/5979_0_2.wav,sadness,negative
+445,5979_0,3,"Ok, three kinds of potatoes coming up.",Monica,./data/MELD/MELD/audio_files/5979_0_3.wav,neutral,neutral
+446,5983_0,0,Come on. An 80-foot inflatable dog let loose over the city. How often does that happen?,Chandler,./data/MELD/MELD/audio_files/5983_0_0.wav,surprise,negative
+447,5983_0,1,Almost never.,Phoebe,./data/MELD/MELD/audio_files/5983_0_1.wav,anger,negative
+448,5992_0,0,"I'm not crazy, right? I mean, it was never like that.",Rachel,./data/MELD/MELD/audio_files/5992_0_0.wav,surprise,positive
+449,5992_0,1,"Nooo, it wasn't.",Barry,./data/MELD/MELD/audio_files/5992_0_1.wav,neutral,neutral
+450,5993_0,0,"Oh, ain't this nice? It's so quiet, I could just lie here all day.",Chandler,./data/MELD/MELD/audio_files/5993_0_0.wav,joy,positive
+451,5993_0,1,I know,Monica,./data/MELD/MELD/audio_files/5993_0_1.wav,neutral,neutral
+452,6010_0,0,"Look, I understand if you came by to hit me, I deserve it.",Joey,./data/MELD/MELD/audio_files/6010_0_0.wav,sadness,negative
+453,6010_0,1,"No, I donât want to hit you.",Ross,./data/MELD/MELD/audio_files/6010_0_1.wav,neutral,neutral
+454,6010_0,2,Oh what then? Kick me?,Joey,./data/MELD/MELD/audio_files/6010_0_2.wav,anger,negative
+455,6010_0,3,No.,Ross,./data/MELD/MELD/audio_files/6010_0_3.wav,neutral,neutral
+456,6014_0,0,"Alright, so I'm back in high school, I'm standing in the middle of the cafeteria, and I realize I am totally naked.",Chandler,./data/MELD/MELD/audio_files/6014_0_0.wav,neutral,neutral
+457,6014_0,1,"Oh, yeah. Had that dream.",All,./data/MELD/MELD/audio_files/6014_0_1.wav,neutral,neutral
+458,6018_0,0,Thanks sweetheart. Give me a little sugar here.  Okay.,Joey,./data/MELD/MELD/audio_files/6018_0_0.wav,joy,positive
+459,6018_0,1,"Okay, in we go.",Monica,./data/MELD/MELD/audio_files/6018_0_1.wav,joy,positive
+460,6023_0,0,It depends on who asked.,Rachel,./data/MELD/MELD/audio_files/6023_0_0.wav,neutral,neutral
+461,6023_0,1,What if I asked?,Monica,./data/MELD/MELD/audio_files/6023_0_1.wav,neutral,neutral
+462,6023_0,2,"Oh, Mon, sure.",Rachel,./data/MELD/MELD/audio_files/6023_0_2.wav,neutral,neutral
+463,6023_0,3,Really?,Monica,./data/MELD/MELD/audio_files/6023_0_3.wav,surprise,positive
+464,6027_0,0,"So I'm asking you please, take a moment before you judge me.",Janice,./data/MELD/MELD/audio_files/6027_0_0.wav,neutral,neutral
+465,6027_0,1,"Oh, nobody's judging you.",Phoebe,./data/MELD/MELD/audio_files/6027_0_1.wav,neutral,neutral
+466,6033_0,0,"Okay, did you see that?! With the inappropriate and the pinching!!",Chandler,./data/MELD/MELD/audio_files/6033_0_0.wav,disgust,negative
+467,6033_0,1,"Actually, I did!",Monica,./data/MELD/MELD/audio_files/6033_0_1.wav,surprise,positive
+468,6033_1,0,"Ohhh, oh my God! Oh my God! She knows about us!",Monica,./data/MELD/MELD/audio_files/6033_1_0.wav,surprise,negative
+469,6033_1,1,Are you serious?,Chandler,./data/MELD/MELD/audio_files/6033_1_1.wav,surprise,negative
+470,6057_0,0,"And my second grade teacher was Ms. Thomas, and my first grade teacher was Mrs. Cobb.",Julie,./data/MELD/MELD/audio_files/6057_0_0.wav,neutral,neutral
+471,6057_0,1,"Mrs., Mrs. Gobb?",Rachel,./data/MELD/MELD/audio_files/6057_0_1.wav,neutral,neutral
+472,6057_0,2,"No Cobb, as in cobb salad.",Julie,./data/MELD/MELD/audio_files/6057_0_2.wav,neutral,neutral
+473,6057_0,3,"Now, what exactly is in a cobb salad?",Rachel,./data/MELD/MELD/audio_files/6057_0_3.wav,neutral,neutral
+474,6065_0,0,"Hey, this is hollow.",Rachel,./data/MELD/MELD/audio_files/6065_0_0.wav,neutral,neutral
+475,6065_0,1,What?,Phoebe,./data/MELD/MELD/audio_files/6065_0_1.wav,surprise,negative
+476,6067_0,0,"Hi! Iâm so glad youâre here, but itâs gonna be a while. I-I wished youâd called first.",Ross,./data/MELD/MELD/audio_files/6067_0_0.wav,joy,positive
+477,6067_0,1,"Oh thatâs all right, Iâm coming back later with your father.",Mrs. Geller,./data/MELD/MELD/audio_files/6067_0_1.wav,neutral,neutral
+478,6067_1,0,I actually needed to talk to you before the birth.,Mrs. Geller,./data/MELD/MELD/audio_files/6067_1_0.wav,neutral,neutral
+479,6067_1,1,"Okay, whatâs up?",Ross,./data/MELD/MELD/audio_files/6067_1_1.wav,neutral,neutral
+480,6067_2,0,"This is your grandmotherâs engagement ring, I want you to give it to Rachel.",Mrs. Geller,./data/MELD/MELD/audio_files/6067_2_0.wav,joy,positive
+481,6067_2,1,"Mom no, come on! Thank you.",Ross,./data/MELD/MELD/audio_files/6067_2_1.wav,surprise,positive
+482,6069_0,0,"Oh, I did!",Rachel,./data/MELD/MELD/audio_files/6069_0_0.wav,surprise,positive
+483,6069_0,1,Yes.,Mark,./data/MELD/MELD/audio_files/6069_0_1.wav,joy,positive
+484,6073_0,0,"Well, yâknow Iâm wearing layers and itâs warm.",Phoebe,./data/MELD/MELD/audio_files/6073_0_0.wav,neutral,neutral
+485,6073_0,1,Yeah.,Joey,./data/MELD/MELD/audio_files/6073_0_1.wav,joy,positive
+486,6077_1,0,"I know itâs really lame, but I got these tickets from my boss andâOh no! No! No! My God!",Kyle,./data/MELD/MELD/audio_files/6077_1_0.wav,surprise,positive
+487,6077_1,1,"Okay, donât freak out. Iâll go.",Phoebe,./data/MELD/MELD/audio_files/6077_1_1.wav,neutral,neutral
+488,6094_0,0,Of course! Only an idiot would wear this stuff if you didnât have the car! Right?,Joey,./data/MELD/MELD/audio_files/6094_0_0.wav,anger,negative
+489,6094_0,1,That is true.,Chandler,./data/MELD/MELD/audio_files/6094_0_1.wav,neutral,neutral
+490,6099_0,0,"What?! No, you canât, you canât leave me here with them! Weâre baby-sitting!",Phoebe,./data/MELD/MELD/audio_files/6099_0_0.wav,anger,negative
+491,6099_0,1,"The babies are asleep, Iâm sure youâll be okay on your own for a while!",Monica,./data/MELD/MELD/audio_files/6099_0_1.wav,neutral,neutral
+492,6117_0,0,"I've gotta tell you, Bob is terrific.",Monica,./data/MELD/MELD/audio_files/6117_0_0.wav,joy,positive
+493,6117_0,1,"Yeah, isn't he?",Angela,./data/MELD/MELD/audio_files/6117_0_1.wav,joy,positive
+494,6164_0,0,Yoo-hoo! Aaron Litman-Neurolic would like to say hello to his future bride.,Janice,./data/MELD/MELD/audio_files/6164_0_0.wav,joy,positive
+495,6164_0,1,Ohhh!  Wow! He kinda takes your breath away doesnât he?,Rachel,./data/MELD/MELD/audio_files/6164_0_1.wav,joy,positive
+496,6172_0,0,"Oh, no thanks, I got it.  No I donât!",Joey,./data/MELD/MELD/audio_files/6172_0_0.wav,neutral,neutral
+497,6172_0,1,Whoa! Are you okay?,Monica,./data/MELD/MELD/audio_files/6172_0_1.wav,surprise,positive
+498,6172_0,2,"Whew! Stood up to fast, got a little head rush.",Joey,./data/MELD/MELD/audio_files/6172_0_2.wav,surprise,positive
+499,6172_0,3,Itâs the heat.  And-and the humidity.,Monica,./data/MELD/MELD/audio_files/6172_0_3.wav,neutral,neutral
+500,6172_0,4,"Thatâs a uh, thatâs a tough combination.",Joey,./data/MELD/MELD/audio_files/6172_0_4.wav,neutral,neutral
+501,6172_0,5,Do you wanna come in for some lemonade?,Monica,./data/MELD/MELD/audio_files/6172_0_5.wav,neutral,neutral
+502,6188_0,0,I wanna wear this everyday.,Monica,./data/MELD/MELD/audio_files/6188_0_0.wav,joy,positive
+503,6188_0,1,You look so beautiful.,Rachel,./data/MELD/MELD/audio_files/6188_0_1.wav,joy,positive
+504,6196_0,0,Dad?,Ross,./data/MELD/MELD/audio_files/6196_0_0.wav,neutral,neutral
+505,6196_0,1,Iâm here!,Mr. Geller,./data/MELD/MELD/audio_files/6196_0_1.wav,neutral,neutral
+506,6220_0,0,I hope itâs you.,Phoebe,./data/MELD/MELD/audio_files/6220_0_0.wav,neutral,neutral
+507,6220_0,1,Me too!,Rachel,./data/MELD/MELD/audio_files/6220_0_1.wav,joy,positive
+508,6225_0,0,"Ha. Ha, ha.",Phoebe,./data/MELD/MELD/audio_files/6225_0_0.wav,joy,positive
+509,6225_0,1,What?,Monica,./data/MELD/MELD/audio_files/6225_0_1.wav,neutral,neutral
+510,6273_0,0,Don't let him in! I'm supposed to be at a regatta gala.,Rachel,./data/MELD/MELD/audio_files/6273_0_0.wav,fear,negative
+511,6273_0,1,We'll be right there!  Can't you just say it starts later?,Monica,./data/MELD/MELD/audio_files/6273_0_1.wav,anger,negative
+512,6273_0,2,What? What kind of a regatta gala starts at night?!,Rachel,./data/MELD/MELD/audio_files/6273_0_2.wav,surprise,negative
+513,6273_0,3,The fake kind!,Monica,./data/MELD/MELD/audio_files/6273_0_3.wav,anger,negative
+514,6278_0,0,"Oh, not much. I-I got a job.",Rachel,./data/MELD/MELD/audio_files/6278_0_0.wav,joy,positive
+515,6278_0,1,"Oh, that's great.",Barry,./data/MELD/MELD/audio_files/6278_0_1.wav,joy,positive
+516,6284_0,0,"Alright, here's my $7.50.  But I think you should know that this money is cursed.",Phoebe,./data/MELD/MELD/audio_files/6284_0_0.wav,neutral,neutral
+517,6284_0,1,What?,Joey,./data/MELD/MELD/audio_files/6284_0_1.wav,surprise,positive
+518,6288_0,0,"Ok, I just wanna be really sure this time. Andie McDowell's the girl from",Phoebe,./data/MELD/MELD/audio_files/6288_0_0.wav,neutral,neutral
+519,6288_0,1,No. No no no no no. That's Rodney McDowell. Andie McDowell is the guy from,Rachel,./data/MELD/MELD/audio_files/6288_0_1.wav,neutral,neutral
+520,6288_0,2,"Oh, yeah. Ok, thank you.",Phoebe,./data/MELD/MELD/audio_files/6288_0_2.wav,neutral,neutral
+521,6288_0,3,You're welcome.,Rachel,./data/MELD/MELD/audio_files/6288_0_3.wav,neutral,neutral
+522,6305_0,0,I think our loverâs spat will start a little early this month.,Monica,./data/MELD/MELD/audio_files/6305_0_0.wav,anger,negative
+523,6305_0,1,Iâll be waiting.,Phoebe,./data/MELD/MELD/audio_files/6305_0_1.wav,neutral,neutral
+524,6308_0,0,"Well, since the fire was kinda my fault I guess  you should get to stay here.",Phoebe,./data/MELD/MELD/audio_files/6308_0_0.wav,sadness,negative
+525,6308_0,1,"Hey! Hey-hey, now this was no oneâs fault Pheebs. Okay? It was an accident.",Rachel,./data/MELD/MELD/audio_files/6308_0_1.wav,neutral,neutral
+526,6315_0,0,He is so amazing.,Monica,./data/MELD/MELD/audio_files/6315_0_0.wav,joy,positive
+527,6315_0,1,"Oh, I know. Look at him.",Rachel,./data/MELD/MELD/audio_files/6315_0_1.wav,joy,positive
+528,6329_0,0,"Good! âCause Iâve got a product report to read, itâs like eight pages, I hope I donât fall asleep.",Rachel,./data/MELD/MELD/audio_files/6329_0_0.wav,neutral,neutral
+529,6329_0,1,Why? Did you write it?,Ross,./data/MELD/MELD/audio_files/6329_0_1.wav,neutral,neutral
+530,6330_0,0,"Itâs so good.  Oh, thanks.",Phoebe,./data/MELD/MELD/audio_files/6330_0_0.wav,joy,positive
+531,6330_0,1,Iâm so glad you liked it.,Monica,./data/MELD/MELD/audio_files/6330_0_1.wav,joy,positive
+532,6330_0,2,Oh!,Phoebe,./data/MELD/MELD/audio_files/6330_0_2.wav,surprise,negative
+533,6330_0,3,What?!,Monica,./data/MELD/MELD/audio_files/6330_0_3.wav,surprise,negative
+534,6333_0,0,"I've no idea, could be. Listen, I'm sorry I had to work tonight.",Ross,./data/MELD/MELD/audio_files/6333_0_0.wav,sadness,negative
+535,6333_0,1,"Oh it's OK. You were worth the wait, and I don't just mean tonight.",Rachel,./data/MELD/MELD/audio_files/6333_0_1.wav,neutral,neutral
+536,6348_0,0,So I really never get to win anymore?,Chandler,./data/MELD/MELD/audio_files/6348_0_0.wav,sadness,negative
+537,6348_0,1,How much did ever really win before?,Monica,./data/MELD/MELD/audio_files/6348_0_1.wav,neutral,neutral
+538,6352_0,0,Oh my god.,Joey,./data/MELD/MELD/audio_files/6352_0_0.wav,surprise,negative
+539,6352_0,1,What?,Monica,./data/MELD/MELD/audio_files/6352_0_1.wav,surprise,negative
+540,6360_0,0,But the auditionâs in a couple hours and I donât even understand the game.,Joey,./data/MELD/MELD/audio_files/6360_0_0.wav,fear,negative
+541,6360_0,1,Well do you want some help?,Ross,./data/MELD/MELD/audio_files/6360_0_1.wav,neutral,neutral
+542,6360_0,2,Oh really? Thatâd be great! You guys can be the contestants!,Joey,./data/MELD/MELD/audio_files/6360_0_2.wav,surprise,positive
+543,6360_0,3,Awesome!,Ross,./data/MELD/MELD/audio_files/6360_0_3.wav,joy,positive
+544,6368_0,0,You know where I work!,Chip,./data/MELD/MELD/audio_files/6368_0_0.wav,neutral,neutral
+545,6368_0,1,I do?,Monica,./data/MELD/MELD/audio_files/6368_0_1.wav,neutral,neutral
+546,6368_0,2,"The movie theatre, you used to come in all the time.",Chip,./data/MELD/MELD/audio_files/6368_0_2.wav,neutral,neutral
+547,6368_0,3,You still work at the multiplex?,Monica,./data/MELD/MELD/audio_files/6368_0_3.wav,neutral,neutral
+548,6368_0,4,"Oh, like Iâd give up that job! Free popcorn and candy, anytime I want. I can get you free posters for your room.",Chip,./data/MELD/MELD/audio_files/6368_0_4.wav,joy,positive
+549,6368_0,5,"Thanks, Iâm set. Do you still live with your parents?",Monica,./data/MELD/MELD/audio_files/6368_0_5.wav,neutral,neutral
+550,6381_0,0,"Ah yeah, sorry about that.",Cassie,./data/MELD/MELD/audio_files/6381_0_0.wav,sadness,negative
+551,6381_0,1,"Itâs okay. Come, come on in.",Ross,./data/MELD/MELD/audio_files/6381_0_1.wav,neutral,neutral
+552,6389_0,0,Wow! Could everyone totally see up his robe?,Phoebe,./data/MELD/MELD/audio_files/6389_0_0.wav,surprise,negative
+553,6389_0,1,Yeah! Oh my God!,All,./data/MELD/MELD/audio_files/6389_0_1.wav,surprise,negative
+554,6395_0,0,"Okay.  You uh, you wanna hear something weird?",Ross,./data/MELD/MELD/audio_files/6395_0_0.wav,joy,positive
+555,6395_0,1,Always.,Phoebe,./data/MELD/MELD/audio_files/6395_0_1.wav,neutral,neutral
+556,6395_0,2,I didnât get the annulment.,Ross,./data/MELD/MELD/audio_files/6395_0_2.wav,sadness,negative
+557,6395_0,3,What?!,Phoebe,./data/MELD/MELD/audio_files/6395_0_3.wav,surprise,negative
+558,6398_1,0,Fine. I just need to know that youâre not gonna tell your sister.,Ross,./data/MELD/MELD/audio_files/6398_1_0.wav,neutral,neutral
+559,6398_1,1,I can promise not to tell her again.,Issac,./data/MELD/MELD/audio_files/6398_1_1.wav,neutral,neutral
+560,6407_0,0,Yeah! Iâve been sailing my whole life. When I was fifteen my dad bought me my own boat.,Rachel,./data/MELD/MELD/audio_files/6407_0_0.wav,joy,positive
+561,6407_0,1,Your own boat?,Phoebe,./data/MELD/MELD/audio_files/6407_0_1.wav,surprise,negative
+562,6428_0,0,Iâm not gonna tell you! Youâre the bad man who broke Sarahâs leg.,Girl,./data/MELD/MELD/audio_files/6428_0_0.wav,anger,negative
+563,6428_0,1,"Hey now! That was an accident, okay.",Ross,./data/MELD/MELD/audio_files/6428_0_1.wav,anger,negative
+564,6432_0,0,"Ow!-Ow!-Ow! Ow! Ow! Ow! Ow! Ow! Ow! Y'know, ow!",Frank,./data/MELD/MELD/audio_files/6432_0_0.wav,anger,negative
+565,6432_0,1,Hey!-Hey! Whatâs going on?,Phoebe,./data/MELD/MELD/audio_files/6432_0_1.wav,surprise,negative
+566,6442_0,0,"Yeah, and I am okay with being a pushover.",Rachel,./data/MELD/MELD/audio_files/6442_0_0.wav,neutral,neutral
+567,6442_0,1,Thatâs great. Good for you guys.,Phoebe,./data/MELD/MELD/audio_files/6442_0_1.wav,joy,positive
+568,6442_0,2,I am not a pushover!,Rachel,./data/MELD/MELD/audio_files/6442_0_2.wav,anger,negative
+569,6442_0,3,Who said you were?,Phoebe,./data/MELD/MELD/audio_files/6442_0_3.wav,neutral,neutral
+570,6442_0,4,You did!,Rachel,./data/MELD/MELD/audio_files/6442_0_4.wav,anger,negative
+571,6442_0,5,"Oh, Iâm flaky. Iâll say anything.",Phoebe,./data/MELD/MELD/audio_files/6442_0_5.wav,neutral,neutral
+572,6465_0,0,OK... my weirdest place would have to be... the women's room on the second floor of the New York CIty public library.,Joey,./data/MELD/MELD/audio_files/6465_0_0.wav,neutral,neutral
+573,6465_0,1,Oh my God! What were you doing in a library?,Monica,./data/MELD/MELD/audio_files/6465_0_1.wav,surprise,negative
+574,6501_0,0,"And hey, here's to a lousy Christmas.",Ross,./data/MELD/MELD/audio_files/6501_0_0.wav,joy,positive
+575,6501_0,1,And a crappy New Year.,Rachel,./data/MELD/MELD/audio_files/6501_0_1.wav,joy,positive
+576,6508_0,0,"Uh... Oh, Mindy, you are so stupid. Oh, we are both so stupid.",Rachel,./data/MELD/MELD/audio_files/6508_0_0.wav,disgust,negative
+577,6508_0,1,What do you mean?,Mindy,./data/MELD/MELD/audio_files/6508_0_1.wav,neutral,neutral
+578,6508_0,2,Smell familiar?,Rachel,./data/MELD/MELD/audio_files/6508_0_2.wav,neutral,neutral
+579,6508_0,3,Oh no.,Mindy,./data/MELD/MELD/audio_files/6508_0_3.wav,fear,negative
+580,6508_0,4,"Oh, I am so sorry.",Rachel,./data/MELD/MELD/audio_files/6508_0_4.wav,sadness,negative
+581,6508_0,5,"No me, I am so sorry...",Mindy,./data/MELD/MELD/audio_files/6508_0_5.wav,sadness,negative
+582,6515_0,0,Youâre gonna love me so much. I got Sting tickets!!,Ross,./data/MELD/MELD/audio_files/6515_0_0.wav,joy,positive
+583,6515_0,1,Oh my God! I do love you! How did you do it?!,Phoebe,./data/MELD/MELD/audio_files/6515_0_1.wav,joy,positive
+584,6515_0,2,Wellâ¦letâs just say,Ross,./data/MELD/MELD/audio_files/6515_0_2.wav,neutral,neutral
+585,6515_0,3,"Oo, where are the seats?",Phoebe,./data/MELD/MELD/audio_files/6515_0_3.wav,joy,positive
+586,6532_0,0,Well have we finished the scene?,Richard,./data/MELD/MELD/audio_files/6532_0_0.wav,surprise,negative
+587,6532_0,1,Yeah! Youâ¦you were wonderful.,Joey,./data/MELD/MELD/audio_files/6532_0_1.wav,joy,positive
+588,6532_0,2,As were you.,Richard,./data/MELD/MELD/audio_files/6532_0_2.wav,neutral,neutral
+589,6532_0,3,"So I got your car, itâs right outside.",Joey,./data/MELD/MELD/audio_files/6532_0_3.wav,neutral,neutral
+590,6556_0,0,"Oh, well he's yummy. We did a little kissin'.",Phoebe,./data/MELD/MELD/audio_files/6556_0_0.wav,joy,positive
+591,6556_0,1,"Phoebe, what are you doing?",Rachel,./data/MELD/MELD/audio_files/6556_0_1.wav,surprise,negative
+592,6556_0,2,"Oh, no, no, no, no. You know what, he's not into that stuff anymore. He quit for me.",Phoebe,./data/MELD/MELD/audio_files/6556_0_2.wav,neutral,neutral
+593,6556_0,3,"Pheebs, this guy has been obsessed with your sister, for God knows how long, okay, you don't just give up something like that.",Rachel,./data/MELD/MELD/audio_files/6556_0_3.wav,disgust,negative
+594,6561_0,0,Hey guys check it out! My mom sent me the paper!,Monica,./data/MELD/MELD/audio_files/6561_0_0.wav,joy,positive
+595,6561_0,1,"Ooh, letâs see it!",Phoebe,./data/MELD/MELD/audio_files/6561_0_1.wav,joy,positive
+596,6580_0,0,"No, I let him winâRoss!",Chandler,./data/MELD/MELD/audio_files/6580_0_0.wav,neutral,neutral
+597,6580_0,1,Yeah?,Ross,./data/MELD/MELD/audio_files/6580_0_1.wav,surprise,positive
+598,6580_0,2,Would you tell her I let you win please?,Chandler,./data/MELD/MELD/audio_files/6580_0_2.wav,anger,negative
+599,6580_0,3,Oh. Yeah.  Uh Chandler,Ross,./data/MELD/MELD/audio_files/6580_0_3.wav,neutral,neutral
+600,6603_0,0,They're gonna call her Chandler.,Phoebe,./data/MELD/MELD/audio_files/6603_0_0.wav,neutral,neutral
+601,6603_0,1,"That's kind of a masculine name, don't you think?",Chandler,./data/MELD/MELD/audio_files/6603_0_1.wav,neutral,neutral
+602,6664_0,0,"Hey! Oh, I was just about to leave. I-I-I-I didnât think you were coming.",David,./data/MELD/MELD/audio_files/6664_0_0.wav,surprise,positive
+603,6664_0,1,"Oh, I wouldnât miss this.",Phoebe,./data/MELD/MELD/audio_files/6664_0_1.wav,joy,positive
+604,6667_0,0,Do you have a minute?,Tag,./data/MELD/MELD/audio_files/6667_0_0.wav,neutral,neutral
+605,6667_0,1,"Well yeah, sure, whatâs up?",Rachel,./data/MELD/MELD/audio_files/6667_0_1.wav,neutral,neutral
+606,6668_0,0,Yeah. Did you tell someone that I was gay?,Tag,./data/MELD/MELD/audio_files/6668_0_0.wav,neutral,neutral
+607,6668_0,1,"Oh, did you not want people to know that?",Rachel,./data/MELD/MELD/audio_files/6668_0_1.wav,joy,positive
+608,6669_0,0,I donât think I should say.,Tag,./data/MELD/MELD/audio_files/6669_0_0.wav,neutral,neutral
+609,6669_0,1,"Ohh, you can say. Come on, I donât want you to feel like you canât tell me things.",Rachel,./data/MELD/MELD/audio_files/6669_0_1.wav,neutral,neutral
+610,6669_0,2,Okay.,Tag,./data/MELD/MELD/audio_files/6669_0_2.wav,neutral,neutral
+611,6669_0,3,âKay.,Rachel,./data/MELD/MELD/audio_files/6669_0_3.wav,neutral,neutral
+612,6669_0,4,Well,Tag,./data/MELD/MELD/audio_files/6669_0_4.wav,neutral,neutral
+613,6669_0,5,Yeah.,Rachel,./data/MELD/MELD/audio_files/6669_0_5.wav,neutral,neutral
+614,6683_0,0,Ed Begley Jr. is not gay.,Rachel,./data/MELD/MELD/audio_files/6683_0_0.wav,neutral,neutral
+615,6683_0,1,Really?!,Phoebe,./data/MELD/MELD/audio_files/6683_0_1.wav,surprise,positive
+616,6733_0,0,"Aww, thank you.  Uh Rach?",Monica,./data/MELD/MELD/audio_files/6733_0_0.wav,neutral,neutral
+617,6733_0,1,Yeah?,Rachel,./data/MELD/MELD/audio_files/6733_0_1.wav,neutral,neutral
+618,6733_0,2,Why does my cinamon stick have an eraser?,Monica,./data/MELD/MELD/audio_files/6733_0_2.wav,surprise,negative
+619,6733_0,3,Oh! That's why.  I'm sorry!,Rachel,./data/MELD/MELD/audio_files/6733_0_3.wav,surprise,positive
+620,6765_0,0,Damn! I thought that was going to be romantic as hell!,Ross,./data/MELD/MELD/audio_files/6765_0_0.wav,surprise,negative
+621,6765_0,1,It was.,Emily,./data/MELD/MELD/audio_files/6765_0_1.wav,neutral,neutral
+622,6777_0,0,"Yeah, if you get married in Vegas, youâre only married in Vegas.",Phoebe,./data/MELD/MELD/audio_files/6777_0_0.wav,neutral,neutral
+623,6777_0,1,What are you talking about? If you get married in Vegas youâre married everywhere.,Monica,./data/MELD/MELD/audio_files/6777_0_1.wav,neutral,neutral
+624,6777_0,2,Really?!,Phoebe,./data/MELD/MELD/audio_files/6777_0_2.wav,surprise,negative
+625,6777_0,3,Yeah!,Monica,./data/MELD/MELD/audio_files/6777_0_3.wav,neutral,neutral
+626,6778_0,0,I missed this.,Richard,./data/MELD/MELD/audio_files/6778_0_0.wav,joy,positive
+627,6778_0,1,Me too.,Monica,./data/MELD/MELD/audio_files/6778_0_1.wav,anger,negative
+628,6788_0,0,"I just wanted to let you know I've changed my mind: I'm gonna    do it, I'm gonna kiss Joey.",Rachel,./data/MELD/MELD/audio_files/6788_0_0.wav,anger,negative
+629,6788_0,1,"No, you can't! Friends hooking up is a bad idea.",Monica,./data/MELD/MELD/audio_files/6788_0_1.wav,fear,negative
+630,6788_0,2,"Please, what about you and Chandler?",Rachel,./data/MELD/MELD/audio_files/6788_0_2.wav,anger,negative
+631,6788_0,3,That's different! I was drunk and stupid!,Monica,./data/MELD/MELD/audio_files/6788_0_3.wav,anger,negative
+632,6788_1,0,"I could, I could but I don't want to! I want to kiss Joey!",Rachel,./data/MELD/MELD/audio_files/6788_1_0.wav,anger,negative
+633,6788_1,1,Alright . I think it's a big mistake but it's your decision.,Monica,./data/MELD/MELD/audio_files/6788_1_1.wav,neutral,neutral
+634,6788_1,2,I'm gonna do it.,Rachel,./data/MELD/MELD/audio_files/6788_1_2.wav,joy,positive
+635,6788_1,3,And I can't stop you.,Monica,./data/MELD/MELD/audio_files/6788_1_3.wav,neutral,neutral
+636,6808_1,0,"Actually I ah, I am a poet.",Julio,./data/MELD/MELD/audio_files/6808_1_0.wav,neutral,neutral
+637,6808_1,1,"Oh, then you do know it.  So um what kind of things do you write about?",Monica,./data/MELD/MELD/audio_files/6808_1_1.wav,neutral,neutral
+638,6808_1,2,"Things that move me. The, the shadow of a tree, a child laughing, or this lip.",Julio,./data/MELD/MELD/audio_files/6808_1_2.wav,neutral,neutral
+639,6808_1,3,Mine?  Right here?,Monica,./data/MELD/MELD/audio_files/6808_1_3.wav,neutral,neutral
+640,6829_0,0,"See? Ben doesn't think you're a loser, he thinks you're a cowboy! Now that's something.",Monica,./data/MELD/MELD/audio_files/6829_0_0.wav,joy,positive
+641,6829_0,1,That really is something.. that's really cool.,Rachel,./data/MELD/MELD/audio_files/6829_0_1.wav,joy,positive
+642,6837_0,0,"Joey, Ross is gonna be here any second, would you mind watching Ben for me while I use the ladies' room?",Carol,./data/MELD/MELD/audio_files/6837_0_0.wav,neutral,neutral
+643,6837_0,1,"Oh yeah, no problem.",Joey,./data/MELD/MELD/audio_files/6837_0_1.wav,neutral,neutral
+644,6847_0,0,"Uh actually, I think I'm gonna skip it.",Ross,./data/MELD/MELD/audio_files/6847_0_0.wav,sadness,negative
+645,6847_0,1,Really?,Joey,./data/MELD/MELD/audio_files/6847_0_1.wav,surprise,positive
+646,6866_0,0,"Hey Rach, wanna hear the new song I'm thinkin' of singing this afternoon? I wrote it this morning in the shower.",Phoebe,./data/MELD/MELD/audio_files/6866_0_0.wav,joy,positive
+647,6866_0,1,Ok.,Rachel,./data/MELD/MELD/audio_files/6866_0_1.wav,neutral,neutral
+648,6881_0,0,"You uh, you may have been right about Jill.",Ross,./data/MELD/MELD/audio_files/6881_0_0.wav,sadness,negative
+649,6881_0,1,Oh! I knew it! What happened?,Rachel,./data/MELD/MELD/audio_files/6881_0_1.wav,surprise,negative
+650,6881_0,2,"Umm, she kissed me.",Ross,./data/MELD/MELD/audio_files/6881_0_2.wav,sadness,negative
+651,6881_0,3,What?! You kissed!,Rachel,./data/MELD/MELD/audio_files/6881_0_3.wav,surprise,negative
+652,6884_0,0,"I can't decide which route to take to Vegas. Hey, you've traveled a lot right?",Joey,./data/MELD/MELD/audio_files/6884_0_0.wav,neutral,neutral
+653,6884_0,1,"Yeah, I've been around.",Phoebe,./data/MELD/MELD/audio_files/6884_0_1.wav,neutral,neutral
+654,6884_0,2,"Okay, so-so which route should I take the northern route or the southern route?",Joey,./data/MELD/MELD/audio_files/6884_0_2.wav,neutral,neutral
+655,6884_0,3,"Ooh, if you take the northern route there's a man in Illinois with a beard of bees.",Phoebe,./data/MELD/MELD/audio_files/6884_0_3.wav,neutral,neutral
+656,6885_0,0,"All right, first thing we gotta do, damage control.",Estelle,./data/MELD/MELD/audio_files/6885_0_0.wav,neutral,neutral
+657,6885_0,1,Why?,Joey,./data/MELD/MELD/audio_files/6885_0_1.wav,surprise,negative
+658,6891_0,0,I donât want them to move to a,Joey,./data/MELD/MELD/audio_files/6891_0_0.wav,sadness,negative
+659,6891_0,1,Itâll be okay Joe.,Ross,./data/MELD/MELD/audio_files/6891_0_1.wav,neutral,neutral
+660,6919_0,0,I think It's the most beautiful table I've ever seen.,Ross,./data/MELD/MELD/audio_files/6919_0_0.wav,joy,positive
+661,6919_0,1,I know!,Chandler,./data/MELD/MELD/audio_files/6919_0_1.wav,joy,positive
+662,6926_0,0,But then I'd have to go all the way around the dry cleaner place.,Gunther,./data/MELD/MELD/audio_files/6926_0_0.wav,neutral,neutral
+663,6926_0,1,"Oh, so you're saying you'd choose convenience over health?!",Larry,./data/MELD/MELD/audio_files/6926_0_1.wav,disgust,negative
+664,6958_0,0,"Well, theyâre just gonna have to wait arenât they? Iâve only got two hands!!",Monica,./data/MELD/MELD/audio_files/6958_0_0.wav,anger,negative
+665,6958_0,1,Need some help?,Ross,./data/MELD/MELD/audio_files/6958_0_1.wav,neutral,neutral
+666,6961_0,0,You have a son!,Rachel,./data/MELD/MELD/audio_files/6961_0_0.wav,surprise,positive
+667,6961_0,1,I know. I know.,Ross,./data/MELD/MELD/audio_files/6961_0_1.wav,neutral,neutral
+668,6974_0,0,"Well, I'm keeping so many things to myself these days, something was bound to slip out!",Joey,./data/MELD/MELD/audio_files/6974_0_0.wav,anger,negative
+669,6974_0,1,"Well, I think it's very brave what you said.",Chandler,./data/MELD/MELD/audio_files/6974_0_1.wav,anger,negative
+670,6986_0,0,"Well itâs just my entire family was run out of Scotland byâ¦Vikings. Anyway, lots of bad memories.",Chandler,./data/MELD/MELD/audio_files/6986_0_0.wav,sadness,negative
+671,6986_0,1,"Oh well, it sounds to me like your family is ready to uh, rediscover its Scottish roots.",Ross,./data/MELD/MELD/audio_files/6986_0_1.wav,neutral,neutral
+672,6995_0,0,"Well, my Grandfather was Swedish and my Grandmother was actually a tiny little bunny.",Chandler,./data/MELD/MELD/audio_files/6995_0_0.wav,joy,positive
+673,6995_0,1,"Okay, now you're even cuter!!",Monica,./data/MELD/MELD/audio_files/6995_0_1.wav,joy,positive
+674,6995_0,2,Y'know that is a popular opinion today I must say.,Chandler,./data/MELD/MELD/audio_files/6995_0_2.wav,neutral,neutral
+675,6995_0,3,What?,Monica,./data/MELD/MELD/audio_files/6995_0_3.wav,surprise,negative
+676,6995_0,4,"The weirdest thing happened at the coffee house, I think, I think Phoebe was hitting on me.",Chandler,./data/MELD/MELD/audio_files/6995_0_4.wav,surprise,negative
+677,6995_0,5,What are you talking about?,Monica,./data/MELD/MELD/audio_files/6995_0_5.wav,surprise,negative
+678,6995_0,6,I'm telling you I think Phoebe thinks I'm foxy.,Chandler,./data/MELD/MELD/audio_files/6995_0_6.wav,joy,positive
+679,6995_0,7,That's not possible!,Monica,./data/MELD/MELD/audio_files/6995_0_7.wav,joy,positive
+680,6995_0,8,Ow!,Chandler,./data/MELD/MELD/audio_files/6995_0_8.wav,surprise,positive
+681,6995_0,9,"I'm sorry it's just, Phoebe just always thought you were, you were charming in a, in a sexless kind of way.",Monica,./data/MELD/MELD/audio_files/6995_0_9.wav,joy,positive
+682,6995_0,10,"Oh, y'know I-I can't hear that enough.",Chandler,./data/MELD/MELD/audio_files/6995_0_10.wav,anger,negative
+683,6995_0,11,"I'm sorry, I think that you just misunderstood her.",Monica,./data/MELD/MELD/audio_files/6995_0_11.wav,sadness,negative
+684,6995_0,12,"No, I didn't misunderstand, okay? She was all over me! She touched my bicep for crying out loud!",Chandler,./data/MELD/MELD/audio_files/6995_0_12.wav,anger,negative
+685,6995_0,13,This bicep?,Monica,./data/MELD/MELD/audio_files/6995_0_13.wav,surprise,negative
+686,6998_0,0,Is this about me taking your watch?,Chloe,./data/MELD/MELD/audio_files/6998_0_0.wav,sadness,negative
+687,6998_0,1,You took my watch?,Ross,./data/MELD/MELD/audio_files/6998_0_1.wav,surprise,negative
+688,6998_1,0,"Just you keep it, listen did you, did you tell anyone about us?",Ross,./data/MELD/MELD/audio_files/6998_1_0.wav,sadness,negative
+689,6998_1,1,"Oh no. I feel it isnât really anybodyâs business, y'know.",Chloe,./data/MELD/MELD/audio_files/6998_1_1.wav,neutral,neutral
+690,6999_0,0,"Oh, one other thing. Hoshi thinks that you being ringside may have affected my concentration.",Pete,./data/MELD/MELD/audio_files/6999_0_0.wav,neutral,neutral
+691,6999_0,1,Yeah. That-that was the problem.,Monica,./data/MELD/MELD/audio_files/6999_0_1.wav,neutral,neutral

@@ -1,0 +1,145 @@
+,conv_id,utter_id,utterance,speaker,file_path,scam
+0,166_0,0,"The painting is a constant reminder that of the three of us, she is the least cool.",AMY,./data/MUStARD/MUStARD/audio_files/166_0_0.wav,False
+1,166_0,1,"Yeah, that's... that's what it is, so...",PENNY,./data/MUStARD/MUStARD/audio_files/166_0_1.wav,False
+2,183_0,0,"Yeah, well, Bernadette's a little under the weather and my mom's kind of under my dentist.",HOWARD,./data/MUStARD/MUStARD/audio_files/183_0_0.wav,False
+3,183_0,1,"Wait, your, your mother is sleeping with your dentist?",RAJ,./data/MUStARD/MUStARD/audio_files/183_0_1.wav,False
+4,183_0,2,"Former dentist.
+I need a new one now that I know where his hands have been.",HOWARD,./data/MUStARD/MUStARD/audio_files/183_0_2.wav,False
+5,183_0,3,"So you're wandering all around by yourself?
+That's not the kind of hero's welcome an astronaut should come home to.",RAJ,./data/MUStARD/MUStARD/audio_files/183_0_3.wav,False
+6,188_0,0,You are now the only woman in my life who I'll see naked in the bathroom.,HOWARD,./data/MUStARD/MUStARD/audio_files/188_0_0.wav,False
+7,188_0,1,"I know this wasn't easy.
+You doing okay?",BERNADETTE,./data/MUStARD/MUStARD/audio_files/188_0_1.wav,False
+8,188_0,2,"Oh, I'm fine.
+It's just her I'm worried about.",HOWARD,./data/MUStARD/MUStARD/audio_files/188_0_2.wav,False
+9,188_0,3,"Aw, she'll be okay.
+She's a grown woman.",BERNADETTE,./data/MUStARD/MUStARD/audio_files/188_0_3.wav,False
+10,188_0,4,"I know. 
+It's just ever since my dad left, I've felt responsible for her.",HOWARD,./data/MUStARD/MUStARD/audio_files/188_0_4.wav,False
+11,188_0,5,That's a lot for a kid to deal with.,BERNADETTE,./data/MUStARD/MUStARD/audio_files/188_0_5.wav,False
+12,196_0,0,"Hey, I got a favor to ask.",HOWARD,./data/MUStARD/MUStARD/audio_files/196_0_0.wav,True
+13,196_0,1,Sure.,RAJ,./data/MUStARD/MUStARD/audio_files/196_0_1.wav,True
+14,199_0,0,It's nice that all the people who are lonely on Valentine's Day can come here tonight and be together.,RAJ,./data/MUStARD/MUStARD/audio_files/199_0_0.wav,True
+15,199_0,1,"Yeah, I'm really looking forward to it. In fact, there's no place I would rather be than here.",PERSON,./data/MUStARD/MUStARD/audio_files/199_0_1.wav,True
+16,222_0,0,"His name is Ron.
+I met him at my prayer group.",PERSON,./data/MUStARD/MUStARD/audio_files/222_0_0.wav,False
+17,222_0,1,How long have you been involved with him?,SHELDON,./data/MUStARD/MUStARD/audio_files/222_0_1.wav,False
+18,237_0,0,There were only three minutes left in the auction and it was a mint condition Scotty from a smoke-free home.,HOWARD,./data/MUStARD/MUStARD/audio_files/237_0_0.wav,False
+19,237_0,1,"How much, Howie?",BERNADETTE,./data/MUStARD/MUStARD/audio_files/237_0_1.wav,False
+20,237_0,2,Not a lot.,HOWARD,./data/MUStARD/MUStARD/audio_files/237_0_2.wav,False
+21,237_0,3,How much?,BERNADETTE,./data/MUStARD/MUStARD/audio_files/237_0_3.wav,False
+22,240_0,0,"but since you seem to be okay with the article being canceled, I have a little confession.
+I'm the reason it was pulled.",AMY,./data/MUStARD/MUStARD/audio_files/240_0_0.wav,False
+23,240_0,1,What? How?,BERNADETTE,./data/MUStARD/MUStARD/audio_files/240_0_1.wav,False
+24,240_0,2,I sent the editors of the magazine a pretty scathing e-mail.,AMY,./data/MUStARD/MUStARD/audio_files/240_0_2.wav,False
+25,240_0,3,"Amy, what did you say?",BERNADETTE,./data/MUStARD/MUStARD/audio_files/240_0_3.wav,False
+26,248_0,0,"You heard what he said about his parents. 
+It was the little things they kept bottled up. 
+I don't want that to happen to us.",BERNADETTE,./data/MUStARD/MUStARD/audio_files/248_0_0.wav,True
+27,248_0,1,How can I convince you it won't?,HOWARD,./data/MUStARD/MUStARD/audio_files/248_0_1.wav,True
+28,275_0,0,I am making molecular cocktails. This sphere is actually a cosmopolitan.,HOWARD,./data/MUStARD/MUStARD/audio_files/275_0_0.wav,False
+29,275_0,1,How do you drink it?,BERNADETTE,./data/MUStARD/MUStARD/audio_files/275_0_1.wav,False
+30,276_0,0,I don't know-- some time tomorrow morning.,LEONARD,./data/MUStARD/MUStARD/audio_files/276_0_0.wav,True
+31,276_0,1,Don't you want to know for sure?,PENNY,./data/MUStARD/MUStARD/audio_files/276_0_1.wav,True
+32,288_0,0,"Great. It was great. She is , uh, she is great, great looking, great personality, she is greatness",CHANDLER,./data/MUStARD/MUStARD/audio_files/288_0_0.wav,True
+33,288_0,1,Sounds like she has got the whole package!,MONICA,./data/MUStARD/MUStARD/audio_files/288_0_1.wav,True
+34,310_0,0,Whats pleh?,MONICA,./data/MUStARD/MUStARD/audio_files/310_0_0.wav,True
+35,310_0,1,ThatÕs Help spelled backwards so that helicopters can read it from the air.,JOEY,./data/MUStARD/MUStARD/audio_files/310_0_1.wav,True
+36,325_0,0,"When I had insurance I could get hit by a bus or catch on fire, it wouldn't matter. Now I got to be careful?",JOEY,./data/MUStARD/MUStARD/audio_files/325_0_0.wav,True
+37,325_0,1,I'm sorry man there is never a good time to have to .. Stop catching on fire.,CHANDLER,./data/MUStARD/MUStARD/audio_files/325_0_1.wav,True
+38,330_0,0,Key is stuck in the lock.,CHANDLER,./data/MUStARD/MUStARD/audio_files/330_0_0.wav,True
+39,330_0,1,"I could fix it hold on hold on, watch out watch out.",JOEY,./data/MUStARD/MUStARD/audio_files/330_0_1.wav,True
+40,334_0,0,"Wait wait, you hear that? There are in the table?",JOEY,./data/MUStARD/MUStARD/audio_files/334_0_0.wav,True
+41,334_0,1,That can't be good,CHANDLER,./data/MUStARD/MUStARD/audio_files/334_0_1.wav,True
+42,334_0,2,We have to get them out of there,JOEY,./data/MUStARD/MUStARD/audio_files/334_0_2.wav,True
+43,334_0,3,how?,CHANDLER,./data/MUStARD/MUStARD/audio_files/334_0_3.wav,True
+44,342_0,0,"When that guy was robbing us and I was locked in the entertainment unit for like six hours, do you know what I was doing there in all that time? I was thinking about how I let you down. Yeah. But if I had known what kind of friend you would turn out to be, I wouldn't have worried about it so much. See you around!",JOEY,./data/MUStARD/MUStARD/audio_files/342_0_0.wav,False
+45,342_0,1,"Wait! Just wait one second. There has to be something that I can do, something. If we still had that entertainment unit, I would get in there for six hours and think about  how I let you down.",CHANDLER,./data/MUStARD/MUStARD/audio_files/342_0_1.wav,False
+46,343_0,0,Well cathy's last boyfriend was Joey.,CHANDLER,./data/MUStARD/MUStARD/audio_files/343_0_0.wav,True
+47,343_0,1,And you're afraid you wont be able to fill his shoes,ROSS,./data/MUStARD/MUStARD/audio_files/343_0_1.wav,True
+48,352_0,0,Still upset because I saw her boobies.,CHANDLER,./data/MUStARD/MUStARD/audio_files/352_0_0.wav,True
+49,352_0,1,Well what? What were you doing seeing her boobies?,ROSS,./data/MUStARD/MUStARD/audio_files/352_0_1.wav,True
+50,36_0,0,"So, we're all standing around looking at the post-op X ray and there it is, clear as day, right in the guy's chest cavity...one of my earrings.",PERSON,./data/MUStARD/MUStARD/audio_files/36_0_0.wav,False
+51,36_0,1,"Oh, my God, what did you do?",LEONARD,./data/MUStARD/MUStARD/audio_files/36_0_1.wav,False
+52,392_0,0,You wanna hear something that sucks.,MONICA,./data/MUStARD/MUStARD/audio_files/392_0_0.wav,False
+53,392_0,1,Do I ever.,CHANDLER,./data/MUStARD/MUStARD/audio_files/392_0_1.wav,False
+54,392_0,2,Chris says they're closing down the bar.,MONICA,./data/MUStARD/MUStARD/audio_files/392_0_2.wav,False
+55,392_0,3,No way!,CHANDLER,./data/MUStARD/MUStARD/audio_files/392_0_3.wav,False
+56,394_0,0,You liked it? You really liked it?,JOEY,./data/MUStARD/MUStARD/audio_files/394_0_0.wav,True
+57,394_0,1,"Oh-ho-ho, yeah!",CHANDLER,./data/MUStARD/MUStARD/audio_files/394_0_1.wav,True
+58,397_0,0,"Ross, can I talk to you for a minute?",PERSON1,./data/MUStARD/MUStARD/audio_files/397_0_0.wav,False
+59,397_0,1,"Yes, please!  So, what's going on?",ROSS,./data/MUStARD/MUStARD/audio_files/397_0_1.wav,False
+60,397_0,2,"Uh, well... Joey and I broke up.",PERSON1,./data/MUStARD/MUStARD/audio_files/397_0_2.wav,False
+61,397_0,3,"Oh my God, wh-what happened?",ROSS,./data/MUStARD/MUStARD/audio_files/397_0_3.wav,False
+62,399_0,0,"Hey Ross, wouldn't it be great if we could go two straight hours without dropping it?!",JOEY,./data/MUStARD/MUStARD/audio_files/399_0_0.wav,False
+63,399_0,1,Yeah it would!,ROSS,./data/MUStARD/MUStARD/audio_files/399_0_1.wav,False
+64,401_0,0,"Look honey, Mark is in fashion okay, I like having a friend that I can share this stuff with. You guys would never want to go to a lecture with me.",RACHEL,./data/MUStARD/MUStARD/audio_files/401_0_0.wav,False
+65,401_0,1,Pa-haa!! I would love to go with you.,ROSS,./data/MUStARD/MUStARD/audio_files/401_0_1.wav,False
+66,415_0,0,"I'd love to ask you in, but uh, my sister's visiting and I think she's asleep on the couch.",PERSON,./data/MUStARD/MUStARD/audio_files/415_0_0.wav,False
+67,415_0,1,You're sister? You're sister's asleep on the couch? Ohhh! I saw,RACHEL,./data/MUStARD/MUStARD/audio_files/415_0_1.wav,False
+68,419_0,0,I would love to live with you Ross.. that's-that's great! Thank you!,RACHEL,./data/MUStARD/MUStARD/audio_files/419_0_0.wav,False
+69,419_0,1,"Well, I'm-I'm just glad I could, y'know, help you out.",ROSS,./data/MUStARD/MUStARD/audio_files/419_0_1.wav,False
+70,424_0,0,Oh but look! That's gonna leave a stain!,RACHEL,./data/MUStARD/MUStARD/audio_files/424_0_0.wav,False
+71,424_0,1,Rach! Hey! It's fine! You're at Joey's!,JOEY,./data/MUStARD/MUStARD/audio_files/424_0_1.wav,False
+72,424_0,2,Really?,RACHEL,./data/MUStARD/MUStARD/audio_files/424_0_2.wav,False
+73,424_0,3,Yeah! Look!,JOEY,./data/MUStARD/MUStARD/audio_files/424_0_3.wav,False
+74,425_0,0,He's planning your birthday party.,JOEY,./data/MUStARD/MUStARD/audio_files/425_0_0.wav,False
+75,425_0,1,Oh my God! I love him!,MONICA,./data/MUStARD/MUStARD/audio_files/425_0_1.wav,False
+76,434_0,0,"It's from France .. In Europe .. Western Europe. Y'know umm, a few years ago I actually was backpacking across Western Europe.",ROSS,./data/MUStARD/MUStARD/audio_files/434_0_0.wav,False
+77,434_0,1,Really?,PERSON,./data/MUStARD/MUStARD/audio_files/434_0_1.wav,False
+78,434_0,2,"Uh-hmm,Wait! It gets better. Um, yeah I was in Barcelona.",ROSS,./data/MUStARD/MUStARD/audio_files/434_0_2.wav,False
+79,434_0,3,I studied for a year in Barcelona.,PERSON,./data/MUStARD/MUStARD/audio_files/434_0_3.wav,False
+80,441_0,0,"Well, I kinda wanted to sell the cookies. The girl who sells the most wins a trip to Spacecamp, and gets to sit in a",PERSON,./data/MUStARD/MUStARD/audio_files/441_0_0.wav,False
+81,441_0,1,"Wow, you ah, you really like all this space stuff, huh?",ROSS,./data/MUStARD/MUStARD/audio_files/441_0_1.wav,False
+82,450_0,0,"Uhh, well I've got an audition down the street and I spilled sauce all over the front of my shirt.  You got an extra one?",JOEY,./data/MUStARD/MUStARD/audio_files/450_0_0.wav,False
+83,450_0,1,"Yeah, sure. Umm .. here.",RACHEL,./data/MUStARD/MUStARD/audio_files/450_0_1.wav,False
+84,451_0,0,"Yeah. Well, umm.....",RACHEL,./data/MUStARD/MUStARD/audio_files/451_0_0.wav,False
+85,451_0,1,"Rach, are you okay?",PERSON,./data/MUStARD/MUStARD/audio_files/451_0_1.wav,False
+86,455_0,0,"It's just y'know, been a couple of hours, and she hasn't called. Not that I even care, y'know.",PHOEBE,./data/MUStARD/MUStARD/audio_files/455_0_0.wav,False
+87,455_0,1,Phoebe why don't you just call her? You obviously want to.,MONICA,./data/MUStARD/MUStARD/audio_files/455_0_1.wav,False
+88,455_0,2,You think you know me so well.,PHOEBE,./data/MUStARD/MUStARD/audio_files/455_0_2.wav,False
+89,455_0,3,"Well, don't  'cha wanna?",MONICA,./data/MUStARD/MUStARD/audio_files/455_0_3.wav,False
+90,465_0,0,"OK, I have a question. Well, actually, it's not so much a question as.. more of a general wondering... ment.",ROSS,./data/MUStARD/MUStARD/audio_files/465_0_0.wav,False
+91,465_0,1,OK.,RACHEL,./data/MUStARD/MUStARD/audio_files/465_0_1.wav,False
+92,474_0,0,No! He blew us off!,JOEY,./data/MUStARD/MUStARD/audio_files/474_0_0.wav,False
+93,474_0,1,What?!,ROSS,./data/MUStARD/MUStARD/audio_files/474_0_1.wav,False
+94,474_0,2,I know!,JOEY,./data/MUStARD/MUStARD/audio_files/474_0_2.wav,False
+95,474_0,3,I can't believe it.  Can I tell you something? I'm a little mad at him now.,ROSS,./data/MUStARD/MUStARD/audio_files/474_0_3.wav,False
+96,480_0,0,"Oh, y'know the same thing happened to me one time.",JOEY,./data/MUStARD/MUStARD/audio_files/480_0_0.wav,False
+97,480_0,1,When did that happen to you?!,CHANDLER,./data/MUStARD/MUStARD/audio_files/480_0_1.wav,False
+98,481_0,0,I remember when we first got engaged.,PERSON,./data/MUStARD/MUStARD/audio_files/481_0_0.wav,True
+99,481_0,1,"Oh, I don't think I ever heard that story.",CHANDLER,./data/MUStARD/MUStARD/audio_files/481_0_1.wav,True
+100,498_0,0,"All I could think of was y'know, ""Is he gonna kiss me? Is he gonna kiss me?""",PHOEBE,./data/MUStARD/MUStARD/audio_files/498_0_0.wav,False
+101,498_0,1,And did he?,MONICA,./data/MUStARD/MUStARD/audio_files/498_0_1.wav,False
+102,529_0,0,"I don't know, I'm still pretty tired out from this afternoon.",PERSON,./data/MUStARD/MUStARD/audio_files/529_0_0.wav,False
+103,529_0,1,Why?,PHOEBE,./data/MUStARD/MUStARD/audio_files/529_0_1.wav,False
+104,53_0,0,Thanks so much for helping me.,PERSON,./data/MUStARD/MUStARD/audio_files/53_0_0.wav,False
+105,53_0,1,Thank you so much for giving me the opportunity to help.,LEONARD,./data/MUStARD/MUStARD/audio_files/53_0_1.wav,False
+106,551_0,0,"Okay, that-that's all for today. Oh, uh does anyone know where the Freeman building is?",ROSS,./data/MUStARD/MUStARD/audio_files/551_0_0.wav,False
+107,551_0,1,"Yeah, it's the new building on Avenue A.",PERSON,./data/MUStARD/MUStARD/audio_files/551_0_1.wav,False
+108,560_0,0,"I go see my doctor tomorrow, I'll ask her about this. Maybe she can give me a pill or something.",RACHEL,./data/MUStARD/MUStARD/audio_files/560_0_0.wav,True
+109,560_0,1,"Yeah. Yeah, that's what you need a good .. pill.",PHOEBE,./data/MUStARD/MUStARD/audio_files/560_0_1.wav,True
+110,583_0,0,"Yeah, I mean I was up sick all night.",RACHEL,./data/MUStARD/MUStARD/audio_files/583_0_0.wav,False
+111,583_0,1,"Yeah me too, all night. Really?!",JOEY,./data/MUStARD/MUStARD/audio_files/583_0_1.wav,False
+112,598_0,0,You roll another hard eight and we get married here tonight.,CHANDLER,./data/MUStARD/MUStARD/audio_files/598_0_0.wav,False
+113,598_0,1,Are you serious?!,MONICA,./data/MUStARD/MUStARD/audio_files/598_0_1.wav,False
+114,598_0,2,Yes! I love you!,CHANDLER,./data/MUStARD/MUStARD/audio_files/598_0_2.wav,False
+115,598_0,3,I've never loved anybody as much as I love you.,MONICA,./data/MUStARD/MUStARD/audio_files/598_0_3.wav,False
+116,603_0,0,"The blond woman is my ex-wife, and the woman touching her is her... close, personal friend.",ROSS,./data/MUStARD/MUStARD/audio_files/603_0_0.wav,True
+117,603_0,1,You mean they're lovers.,PERSON,./data/MUStARD/MUStARD/audio_files/603_0_1.wav,True
+118,619_0,0,"Whop, it is really coming down.",DOROTHY,./data/MUStARD/MUStARD/audio_files/619_0_0.wav,True
+119,619_0,1,Whats coming down?,ROSE,./data/MUStARD/MUStARD/audio_files/619_0_1.wav,True
+120,632_0,0,Oh I am so nervous. Have you ever given an eulogy?,DOROTHY,./data/MUStARD/MUStARD/audio_files/632_0_0.wav,True
+121,632_0,1,You mean at a funeral?,ROSE,./data/MUStARD/MUStARD/audio_files/632_0_1.wav,True
+122,72_0,0,"Well, I wouldn't put it exactly that way.",LEONARD,./data/MUStARD/MUStARD/audio_files/72_0_0.wav,False
+123,72_0,1,How would you put it?,SHELDON,./data/MUStARD/MUStARD/audio_files/72_0_1.wav,False
+124,82_0,0,Thank you for driving me back to my hotel.,PERSON,./data/MUStARD/MUStARD/audio_files/82_0_0.wav,False
+125,82_0,1,"Oh,it's not a problem.",PENNY,./data/MUStARD/MUStARD/audio_files/82_0_1.wav,False
+126,8_0,0,"You know, I am not going to enjoy this party.",SHELDON,./data/MUStARD/MUStARD/audio_files/8_0_0.wav,True
+127,8_0,1,"I know, I'm familiar with you.",LEONARD,./data/MUStARD/MUStARD/audio_files/8_0_1.wav,True
+128,8_0,2,"The last department party, Professor Finkleday cornered me and talked about spelunking for 45 minutes.",SHELDON,./data/MUStARD/MUStARD/audio_files/8_0_2.wav,True
+129,8_0,3,"Yes, I was there.",LEONARD,./data/MUStARD/MUStARD/audio_files/8_0_3.wav,True
+130,8_0,4,You know what's interesting about caves?,SHELDON,./data/MUStARD/MUStARD/audio_files/8_0_4.wav,True
+131,8_0,5,What?,LEONARD,./data/MUStARD/MUStARD/audio_files/8_0_5.wav,True
+132,8_0,6,Nothing.,SHELDON,./data/MUStARD/MUStARD/audio_files/8_0_6.wav,True
+133,8_0,7,"Then we'll avoid him, we'll meet the new department head, congratulate him, shake his hand and go.",LEONARD,./data/MUStARD/MUStARD/audio_files/8_0_7.wav,True
