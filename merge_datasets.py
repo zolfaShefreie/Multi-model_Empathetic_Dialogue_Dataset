@@ -1,10 +1,11 @@
 import os
 import shutil
-
 import pandas as pd
+from datasets import load_dataset
 
 from dataset_format_converter.dataset_process import MELDDatasetFormatter, DailyTalkDatasetFormatter, \
     MUStARDDatasetFormatter, AnnoMIDatasetFormatter
+from settings import HUGGING_FACE_REPO_NAME, HUGGING_FACE_IS_PRIVATE, HUGGING_FACE_TOKEN
 
 
 class DatasetMerger:
@@ -152,5 +153,10 @@ class DatasetMerger:
 
 if __name__ == '__main__':
     DatasetMerger().run()
+
+    upload_to_hugging_face = False
+    if upload_to_hugging_face:
+        ds = load_dataset(DatasetMerger.SAVED_DIR)
+        ds.push_to_hub(HUGGING_FACE_REPO_NAME, private=HUGGING_FACE_IS_PRIVATE, token=HUGGING_FACE_TOKEN)
 
 

@@ -35,3 +35,8 @@ OPENAI_MODEL = 'gpt-3.5-turbo-1106'
 
 TOGETHER_API_KEY = env("TOGETHER_API_KEY", default=None)
 TOGETHER_MODEL = "togethercomputer/CodeLlama-34b-Instruct"
+
+
+HUGGING_FACE_REPO_NAME = env("HUGGING_FACE_REPO_NAME", default="")
+HUGGING_FACE_IS_PRIVATE = env("HUGGING_FACE_IS_PRIVATE", default=True)
+HUGGING_FACE_TOKEN = env("HUGGING_FACE_TOKEN", default=None)
