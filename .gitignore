@@ -166,3 +166,4 @@ pretrained_models/
 middle_pipeline_stage/
 
 data/**/audio_files/
+data/**/audio/
