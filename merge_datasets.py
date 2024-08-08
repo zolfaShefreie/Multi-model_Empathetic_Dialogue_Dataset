@@ -2,6 +2,7 @@ import os
 import shutil
 import pandas as pd
 from datasets import load_dataset
+from huggingface_hub import HfApi
 
 from dataset_format_converter.dataset_process import MELDDatasetFormatter, DailyTalkDatasetFormatter, \
     MUStARDDatasetFormatter, AnnoMIDatasetFormatter
@@ -156,7 +157,24 @@ if __name__ == '__main__':
 
     upload_to_hugging_face = False
     if upload_to_hugging_face:
-        ds = load_dataset(DatasetMerger.SAVED_DIR)
-        ds.push_to_hub(HUGGING_FACE_REPO_NAME, private=HUGGING_FACE_IS_PRIVATE, token=HUGGING_FACE_TOKEN)
+        # ds = load_dataset(DatasetMerger.SAVED_DIR)
+        # ds.push_to_hub(HUGGING_FACE_REPO_NAME, private=HUGGING_FACE_IS_PRIVATE, token=HUGGING_FACE_TOKEN)
+
+        Stop_Loop = False
+        api = HfApi(token=HUGGING_FACE_TOKEN)
+        while not Stop_Loop:
+            try:
+                api.upload_folder(
+                    folder_path=DatasetMerger.SAVED_DIR,
+                    repo_id=HUGGING_FACE_REPO_NAME,
+                    repo_type="dataset",
+                    multi_commits=True,
+                    multi_commits_verbose=True,
+                    create_pr=True,
+                )
+                Stop_Loop = True
+            except Exception as e:
+                print(e)
+                Stop_Loop = False
 
 
